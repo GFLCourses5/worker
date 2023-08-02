@@ -3,80 +3,75 @@ package executor.service.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertSame;
 
 public class ScenarioTest {
-
-    private Scenario scenario;
-
-
-    //Initialize a new script before each test
-    @Before
-    public void setUp() {
-        List<Step> steps = new ArrayList<>();
-        steps.add(new Step("Action 1", "Value 1"));
-        steps.add(new Step("Action 2", "Value 2"));
-
-        scenario = new Scenario("Test Scenario", "example.com", steps);
+    @Test
+    public void testConstructor() {
+        Scenario actualScenario = new Scenario();
+        actualScenario.setName("Name");
+        actualScenario.setSite("Site");
+        ArrayList<Step> steps = new ArrayList<>();
+        actualScenario.setSteps(steps);
+        assertEquals("Name", actualScenario.getName());
+        assertEquals("Site", actualScenario.getSite());
+        assertSame(steps, actualScenario.getSteps());
     }
 
     @Test
-    public void testGetName() {
-        assertEquals("Test Scenario", scenario.getName());
+    public void testConstructor2() {
+        ArrayList<Step> steps = new ArrayList<>();
+        Scenario actualScenario = new Scenario("Name", "Site", steps);
+        actualScenario.setName("Name");
+        actualScenario.setSite("Site");
+        ArrayList<Step> steps2 = new ArrayList<>();
+        actualScenario.setSteps(steps2);
+        assertEquals("Name", actualScenario.getName());
+        assertEquals("Site", actualScenario.getSite());
+        List<Step> steps3 = actualScenario.getSteps();
+        assertSame(steps2, steps3);
+        assertEquals(steps, steps3);
     }
-
-    @Test
-    public void testGetSite() {
-        assertEquals("example.com", scenario.getSite());
-    }
-    @Test
-    public void testGetSteps() {
-        List<Step> expectedSteps = new ArrayList<>();
-        expectedSteps.add(new Step("Action 1", "Value 1"));
-        expectedSteps.add(new Step("Action 2", "Value 2"));
-
-        assertEquals(expectedSteps, scenario.getSteps());
-    }
-
-    @Test
-    public void testSetName() {
-        scenario.setName("New Name");
-        assertEquals("New Name", scenario.getName());
-    }
-
-    @Test
-    public void testSetSite() {
-        scenario.setSite("example1.com");
-        assertEquals("example1.com", scenario.getSite());
-    }
-
-    @Test
-    public void testSetSteps() {
-        List<Step> newSteps = new ArrayList<>();
-        newSteps.add(new Step("New Action 1", "New Value 1"));
-        newSteps.add(new Step("New Action 2", "New Value 2"));
-
-        scenario.setSteps(newSteps);
-
-        assertEquals(newSteps, scenario.getSteps());
-    }
-
     @Test
     public void testEquals() {
-        Scenario sameScenario = new Scenario("Test Scenario", "example.com", scenario.getSteps());
-        Scenario differentScenario = new Scenario("Different Scenario", "example.com", scenario.getSteps());
-
-        assertEquals(scenario, sameScenario);
-        assertNotEquals(scenario, differentScenario);
+        assertNotEquals(new Scenario(), null);
+        assertNotEquals(new Scenario(), "Different type to Scenario");
     }
-
     @Test
-    public void testHashCode() {
-        Scenario sameScenario = new Scenario("Test Scenario", "example.com", scenario.getSteps());
-        assertEquals(scenario.hashCode(), sameScenario.hashCode());
+    public void testEquals2() {
+        Scenario scenario = new Scenario();
+        assertEquals(scenario, scenario);
+        int expectedHashCodeResult = scenario.hashCode();
+        assertEquals(expectedHashCodeResult, scenario.hashCode());
+    }
+    @Test
+    public void testEquals3() {
+        Scenario scenario = new Scenario();
+        Scenario scenario2 = new Scenario();
+        assertEquals(scenario, scenario2);
+        int expectedHashCodeResult = scenario.hashCode();
+        assertEquals(expectedHashCodeResult, scenario2.hashCode());
+    }
+    @Test
+    public void testEquals4() {
+        Scenario scenario = new Scenario("Name", "Site", new ArrayList<>());
+        assertNotEquals(scenario, new Scenario());
+    }
+    @Test
+    public void testEquals5() {
+        Scenario scenario = new Scenario();
+        scenario.setSite("Site");
+        assertNotEquals(scenario, new Scenario());
+    }
+    @Test
+    public void testEquals6() {
+        Scenario scenario = new Scenario();
+        scenario.setSteps(new ArrayList<>());
+        assertNotEquals(scenario, new Scenario());
     }
 
 }
