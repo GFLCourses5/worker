@@ -37,3 +37,4 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/.fastRequest/config/fastRequestCurrentProjectConfig.json
