@@ -1,4 +1,5 @@
-package executor.service.model;
+package executor.service.model.model;
+import executor.service.model.entity.Step;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
