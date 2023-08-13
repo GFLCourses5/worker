@@ -1,4 +1,4 @@
-package executor.service.model;
+package executor.service.model.entity;
 
 import java.util.Objects;
 import java.util.List;

@@ -1,14 +1,14 @@
-package executor.service.service;
+package executor.service.service.executors;
 
-import executor.service.model.Scenario;
+import executor.service.model.entity.Scenario;
 import org.openqa.selenium.WebDriver;
 
-public class ParalleFlowExecutorService {
+public class ParallelFlowExecutorService {
 
     private final WebDriver webDriver;
     private final ExecutionService executionService;
 
-    public ParalleFlowExecutorService(WebDriver webDriver, ExecutionService executionService) {
+    public ParallelFlowExecutorService(WebDriver webDriver, ExecutionService executionService) {
         this.webDriver = webDriver;
         this.executionService = executionService;
     }

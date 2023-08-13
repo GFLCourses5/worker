@@ -1,8 +1,9 @@
-package executor.service.service;
+package executor.service.service.webdrivers;
 
-import executor.service.model.ProxyConfigHolder;
-import executor.service.model.WebDriverConfig;
+import executor.service.model.proxy.ProxyConfigHolder;
+import executor.service.model.configs.WebDriverConfig;
 import org.openqa.selenium.WebDriver;
+
 
 public class WebDriverInitializer {
     private WebDriverConfig webDriverConfig;

@@ -1,13 +1,26 @@
 package executor.service.service;
 
-import executor.service.service.impl.*;
+import executor.service.service.executors.ParallelFlowExecutorService;
+import executor.service.service.proxy.selenium.ProxySourcesClientImpl;
+import executor.service.service.proxy.ProxySourcesClient;
+import executor.service.service.scenario.ScenarioExecutor;
+import executor.service.service.scenario.ScenarioSourceListener;
+import executor.service.service.scenario.selenium.ScenarioExecutorImpl;
+import executor.service.service.scenario.common.ScenarioSourceListenerImpl;
+import executor.service.service.stepexecutors.selenium.StepExecutionClickCss;
+import executor.service.service.stepexecutors.selenium.StepExecutionClickCssImpl;
+import executor.service.service.stepexecutors.selenium.StepExecutionClickXpath;
+import executor.service.service.stepexecutors.selenium.StepExecutionClickXpathImpl;
+import executor.service.service.stepexecutors.selenium.StepExecutionSleep;
+import executor.service.service.stepexecutors.selenium.StepExecutionSleepImpl;
+import executor.service.service.webdrivers.WebDriverInitializer;
 
 public class FactoryForDI {
     private final WebDriverInitializer webDriverInitializer;
     private final ProxySourcesClient proxySourcesClient;
     private final ScenarioSourceListener scenarioSourceListener;
-    private final ParalleFlowExecutorService paralleFlowExecutorService;
-    private final ExecutionService executionService;
+    private final ParallelFlowExecutorService parallelFlowExecutorService;
+    //private final ExecutionService executionService;
     private final ScenarioExecutor scenarioExecutor;
     private final StepExecutionSleep stepExecutionSleep;
     private final StepExecutionClickXpath stepExecutionClickXpath;
@@ -18,8 +31,8 @@ public class FactoryForDI {
         webDriverInitializer = new WebDriverInitializer(null,null);
         proxySourcesClient = new ProxySourcesClientImpl();
         scenarioSourceListener = new ScenarioSourceListenerImpl();
-        paralleFlowExecutorService = new ParalleFlowExecutorService(null,null);
-        executionService = new ExecutionServiceImpl();
+        parallelFlowExecutorService = new ParallelFlowExecutorService(null,null);
+        //executionService = new ExecutionServiceImpl();
         scenarioExecutor = new ScenarioExecutorImpl();
         stepExecutionSleep = new StepExecutionSleepImpl();
         stepExecutionClickCss = new StepExecutionClickCssImpl();
@@ -38,13 +51,15 @@ public class FactoryForDI {
         return scenarioSourceListener;
     }
 
-    public ParalleFlowExecutorService getParalleFlowExecutorService() {
-        return paralleFlowExecutorService;
+    public ParallelFlowExecutorService getParalleFlowExecutorService() {
+        return parallelFlowExecutorService;
     }
 
+    /*
     public ExecutionService getExecutionService() {
         return executionService;
     }
+     */
 
     public ScenarioExecutor getScenarioExecutor() {
         return scenarioExecutor;

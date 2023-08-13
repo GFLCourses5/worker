@@ -1,6 +1,6 @@
-package executor.service.service.impl;
+package executor.service.service.scenario.common;
 
-import executor.service.service.ScenarioSourceListener;
+import executor.service.service.scenario.ScenarioSourceListener;
 
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
     @Override
