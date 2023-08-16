@@ -3,6 +3,7 @@ package executor.service.service.stepexecutors.selenium.impl;
 import executor.service.model.entity.Step;
 import executor.service.service.stepexecutors.selenium.SeleniumStepExecutionFactory.SeleniumAction;
 import executor.service.service.stepexecutors.selenium.StepExecutionSleep;
+import java.util.Random;
 import org.openqa.selenium.WebDriver;
 
 public class StepExecutionSleepImpl implements StepExecutionSleep {
@@ -14,38 +15,25 @@ public class StepExecutionSleepImpl implements StepExecutionSleep {
 
     @Override
     public void step(WebDriver webDriver, Step step) {
-
-        Range range = getRange(step.getValue());
-
         try {
-            Thread.sleep(range.random());
+            Thread.sleep(getRandom(step.getValue()));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    static class Range {
+    private int getRandom(String value) {
 
-        int min;
-        int max;
+        String values[] = value.split(":");
+        Random random = new Random();
+        int min = Integer.parseInt(values[0]);
+        int max = Integer.parseInt(values[values.length - 1]);
 
-        Range(int min, int max) {
-            this.max = max;
-            this.min = min;
-        }
+        return random.ints(min, max + 1)
+            .findFirst().orElse(1);
 
-        int random() {
-            max -= min;
-            return (int) (Math.random() * ++max) + min;
-        }
     }
 
-    private Range getRange(String value) {
-        String[] rangeValue = value.split(";");
 
-        int min = Integer.parseInt(rangeValue[0]);
-        int max = Integer.parseInt(rangeValue[rangeValue.length - 1]);
-        return new Range(min, max);
-    }
 }
