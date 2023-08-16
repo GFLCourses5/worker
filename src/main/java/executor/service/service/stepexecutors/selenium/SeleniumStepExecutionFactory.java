@@ -18,7 +18,7 @@ public class SeleniumStepExecutionFactory implements StepExecutionFabric {
 
   @Override
   public StepExecution getStepExecutor(String stepAction) {
-    Action action = Action.valueOf(stepAction);
+    SeleniumAction action = SeleniumAction.valueOf(stepAction);
     switch (action) {
       case CLICK_CSS:
         return css;
@@ -32,14 +32,14 @@ public class SeleniumStepExecutionFactory implements StepExecutionFabric {
 
   }
 
-  enum Action {
+  public enum SeleniumAction {
     CLICK_CSS("clickCss"),
     SLEEP("sleep"),
     CLICK_XPATH("clickXpath");
 
     private final String name;
 
-    private Action(String name) {
+    private SeleniumAction(String name) {
       this.name = name;
     }
 
