@@ -2,9 +2,6 @@ package executor.service.service.stepexecutors;
 
 public interface StepExecutionFabric {
 
-  StepExecution getExecutionClickCss();
+   StepExecution getStepExecutor(String stepAction);
 
-  StepExecution getExecutionSleep();
-
-  StepExecution getExecutionXpath();
 }

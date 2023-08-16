@@ -17,17 +17,35 @@ public class SeleniumStepExecutionFactory implements StepExecutionFabric {
   }
 
   @Override
-  public StepExecution getExecutionClickCss() {
-    return css;
+  public StepExecution getStepExecutor(String stepAction) {
+    Action action = Action.valueOf(stepAction);
+    switch (action) {
+      case CLICK_CSS:
+        return css;
+      case SLEEP:
+        return sleep;
+      case CLICK_XPATH:
+        return xpath;
+      default:
+        throw new UnsupportedOperationException("");
+    }
+
   }
 
-  @Override
-  public StepExecution getExecutionSleep() {
-    return sleep;
+  enum Action {
+    CLICK_CSS("clickCss"),
+    SLEEP("sleep"),
+    CLICK_XPATH("clickXpath");
+
+    private final String name;
+
+    private Action(String name) {
+      this.name = name;
+    }
+
+    public String getName() {
+      return name;
+    }
   }
 
-  @Override
-  public StepExecution getExecutionXpath() {
-    return xpath;
-  }
 }

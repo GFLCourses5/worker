@@ -1,9 +1,10 @@
-package executor.service.service.stepexecutors.selenium;
+package executor.service.service.stepexecutors.selenium.impl;
 
 import executor.service.model.entity.Step;
+import executor.service.service.stepexecutors.selenium.StepExecutionClickXpath;
 import org.openqa.selenium.WebDriver;
 
-public class StepExecutionSleepImpl implements StepExecutionSleep {
+public class StepExecutionClickXpathImpl implements StepExecutionClickXpath {
     @Override
     public String getStepAction() {
         return null;
