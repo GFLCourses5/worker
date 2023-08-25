@@ -1,4 +1,4 @@
-package executor.service.model.proxy;
+package executor.service.model.serversproxy;
 
 import java.util.Objects;
 

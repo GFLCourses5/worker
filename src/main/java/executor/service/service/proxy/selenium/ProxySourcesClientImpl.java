@@ -1,6 +1,6 @@
 package executor.service.service.proxy.selenium;
 
-import executor.service.model.proxy.ProxyConfigHolder;
+import executor.service.model.serversproxy.ProxyConfigHolder;
 import executor.service.service.proxy.ProxySourcesClient;
 
 public class ProxySourcesClientImpl implements ProxySourcesClient {
