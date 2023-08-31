@@ -48,8 +48,7 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
 
     private List<ProxyCredentials> readProxyCredentialsFromJson() {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROXY_CREDENTIALS)) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(inputStream, new TypeReference<>() {});
+            return new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
         } catch (IOException e) {
             log.info("""
                     Exception with parsing proxy-credentials.json from resources file in the ProxySourcesClientImpl.class.
@@ -60,8 +59,7 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
 
     private List<ProxyNetworkConfig> readProxyNetworkConfigFromJson() {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROXY_NETWORK_CONFIG)) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(inputStream, new TypeReference<>() {});
+            return new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
         } catch (IOException e) {
             log.info("""
                     Exception with parsing proxy-network.json from resources file in the ProxySourcesClientImpl.class.
