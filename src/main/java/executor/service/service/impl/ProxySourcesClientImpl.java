@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static executor.service.config.properties.PropertiesConstants.PROXY_CREDENTIALS_FILE;
-import static executor.service.config.properties.PropertiesConstants.PROXY_NETWORK_CONFIG_FILE;
+import static executor.service.config.properties.PropertiesConstants.PROXY_CREDENTIALS;
+import static executor.service.config.properties.PropertiesConstants.PROXY_NETWORK_CONFIG;
 
 public class ProxySourcesClientImpl implements ProxySourcesClient {
 
@@ -47,7 +47,7 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
     }
 
     private List<ProxyCredentials> readProxyCredentialsFromJson() {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROXY_CREDENTIALS_FILE)) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROXY_CREDENTIALS)) {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(inputStream, new TypeReference<>() {});
         } catch (IOException e) {
@@ -59,7 +59,7 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
     }
 
     private List<ProxyNetworkConfig> readProxyNetworkConfigFromJson() {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROXY_NETWORK_CONFIG_FILE)) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROXY_NETWORK_CONFIG)) {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(inputStream, new TypeReference<>() {});
         } catch (IOException e) {
