@@ -1,7 +1,7 @@
 package executor.service.service.impl;
 
+import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.WebDriverConfig;
 import executor.service.service.WebDriverInitializer;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,13 +17,13 @@ import java.util.zip.ZipOutputStream;
 public class WebDriverInitializerImpl implements WebDriverInitializer {
 
     @Override
-    public WebDriver getInstance(WebDriverConfig webDriverConfig, ProxyConfigHolder proxyConfigHolder) {
-        ChromeDriver driver = new ChromeDriver(getChromeOptions(webDriverConfig, proxyConfigHolder));
+    public WebDriver getInstance(ProxyConfigHolder proxyConfigHolder) {
+        ChromeDriver driver = new ChromeDriver(getChromeOptions(proxyConfigHolder));
         new File("proxy_auth_plugin.zip").delete();
         return driver;
     }
 
-    private ChromeOptions getChromeOptions(WebDriverConfig webDriverConfig, ProxyConfigHolder proxyConfigHolder) {
+    private ChromeOptions getChromeOptions( ProxyConfigHolder proxyConfigHolder) {
         String host = proxyConfigHolder.getProxyNetworkConfig().getHostname();
         Integer port = proxyConfigHolder.getProxyNetworkConfig().getPort();
         String username = proxyConfigHolder.getProxyCredentials().getUsername();
@@ -37,10 +37,10 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
         }
 
         chromeOptions.addArguments("--remote-allow-origins=*");
-        chromeOptions.setBinary(webDriverConfig.getWebDriverExecutable());
-        chromeOptions.addArguments("user-agent=" + webDriverConfig.getUserAgent());
-        chromeOptions.setImplicitWaitTimeout(Duration.ofMillis(webDriverConfig.getImplicitlyWait()));
-        chromeOptions.setPageLoadTimeout(Duration.ofMillis(webDriverConfig.getPageLoadTimeout()));
+        chromeOptions.setBinary(PropertiesConstants.WEBDRIVER_EXECUTABLE_PATH);
+        chromeOptions.addArguments("user-agent=" + PropertiesConstants.USER_AGENT);
+        chromeOptions.setImplicitWaitTimeout(Duration.ofMillis(PropertiesConstants.IMPLICITLY_WAIT_TIMEOUT));
+        chromeOptions.setPageLoadTimeout(Duration.ofMillis(PropertiesConstants.PAGE_LOAD_TIMEOUT));
 
         return chromeOptions;
     }
