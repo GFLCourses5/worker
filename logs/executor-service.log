@@ -1,0 +1,7 @@
+13:19:18.527 [main] INFO  org.reflections.Reflections - Reflections took 248 ms to scan 1 urls, producing 12 keys and 13 values
+13:19:19.025 [main] INFO  reactor.Flux.Iterable.1 - | onSubscribe([Synchronous Fuseable] FluxIterable.IterableSubscription)
+13:19:19.029 [main] INFO  reactor.Flux.Iterable.1 - | request(1)
+13:19:19.029 [main] INFO  reactor.Flux.Iterable.1 - | onNext(Scenario{name='test scenario 1', site='http://info.cern.ch', steps=[Step{action='clickCss', value='body > ul > li:nth-child(1) > a'}, Step{action='sleep', value='5:10'}, Step{action='clickXpath', value='/html/body/p'}]})
+13:19:19.380 [main] INFO  reactor.Flux.Iterable.2 - | onSubscribe([Synchronous Fuseable] FluxIterable.IterableSubscription)
+13:19:19.380 [main] INFO  reactor.Flux.Iterable.2 - | request(1)
+13:19:19.381 [main] INFO  reactor.Flux.Iterable.2 - | onNext(executor.service.model.ProxyConfigHolder@6c838333)
