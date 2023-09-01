@@ -17,6 +17,12 @@ public final class PropertiesConstants {
     public static final String KEEP_ALIVE_TIME = "keep.alive.time";
     public static final String COMMONS_CONFIGURATION_PROPERTIES = "web-driver.properties";
 
+    public static final String WEB_DRIVER = "web-driver.properties";
+    public static final String WEB_DRIVER_EXECUTABLE = "webDriver-executable";
+    public static final String USER_AGENT = "user-agent";
+    public static final String PAGE_LOAD_TIMEOUT = "page-load-timeout";
+    public static final String IMPLICITLY_WAIT = "implicitly-wait";
+
     public static final String PROXY_CREDENTIALS = "proxy-credentials.json";
     public static final String PROXY_NETWORK_CONFIG = "proxy-network.json";
 }
