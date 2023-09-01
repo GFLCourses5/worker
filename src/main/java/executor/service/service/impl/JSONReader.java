@@ -1,6 +1,7 @@
-package executor.service.service;
+package executor.service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import executor.service.service.Provider;
 import executor.service.service.impl.ProxySourcesClientImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
