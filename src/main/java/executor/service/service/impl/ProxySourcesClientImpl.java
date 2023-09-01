@@ -25,6 +25,9 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
     public static final int DELAY = 1;
 
+    public ProxySourcesClientImpl() {
+    }
+
     @Override
     public Flux<ProxyConfigHolder> getProxies() {
         List<ProxyConfigHolder> proxyConfigHoldersPrototype = getProxyConfigHoldersPrototype();
