@@ -12,10 +12,13 @@ import java.util.List;
 
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
 
-    public static final int DELAY = 1;
-    private final ScenarioProvider provider;
-
     private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);
+    public static final int DELAY = 1;
+
+    private ScenarioProvider provider;
+
+    public ScenarioSourceListenerImpl() {
+    }
 
     public ScenarioSourceListenerImpl(ScenarioProvider provider) {
         this.provider = provider;
