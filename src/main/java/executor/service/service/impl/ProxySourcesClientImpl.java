@@ -8,9 +8,11 @@ import executor.service.model.ProxyNetworkConfig;
 import executor.service.service.ProxySourcesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,10 +23,23 @@ import static executor.service.config.properties.PropertiesConstants.PROXY_NETWO
 public class ProxySourcesClientImpl implements ProxySourcesClient {
 
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
+    public static final int DELAY = 1;
 
     @Override
-    public List<ProxyConfigHolder> getProxies() {
-        return getProxyConfigHoldersPrototype();
+    public Flux<ProxyConfigHolder> getProxies() {
+        List<ProxyConfigHolder> proxyConfigHoldersPrototype = getProxyConfigHoldersPrototype();
+        validateProxies(proxyConfigHoldersPrototype);
+        return Flux.fromIterable(proxyConfigHoldersPrototype)
+                .log()
+                .delayElements(Duration.ofSeconds(DELAY))
+                .repeat();
+    }
+
+    private void validateProxies(List<ProxyConfigHolder> proxies) {
+        if(proxies == null || proxies.isEmpty()) {
+            log.error("Bad proxies list");
+            throw new IllegalArgumentException("List cannot be null or empty");
+        }
     }
 
     private List<ProxyConfigHolder> getProxyConfigHoldersPrototype() {

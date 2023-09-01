@@ -1,11 +1,10 @@
 package executor.service.service;
 
 import executor.service.model.ProxyConfigHolder;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 public interface ProxySourcesClient {
 
-    List<ProxyConfigHolder> getProxies();
+    Flux<ProxyConfigHolder> getProxies();
 
 }
