@@ -8,7 +8,7 @@ public class ParallelFlowExecutorService {
     private  WebDriver webDriver;
     private  ExecutionService executionService;
 
-    public ParalleFlowExecutorService() {
+    public ParallelFlowExecutorService() {
     }
 
     public ParallelFlowExecutorService(WebDriver webDriver, ExecutionService executionService) {

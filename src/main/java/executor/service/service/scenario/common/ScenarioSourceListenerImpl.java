@@ -1,18 +1,13 @@
 package executor.service.service.scenario.common;
 
-<<<<<<< HEAD:src/main/java/executor/service/service/scenario/common/ScenarioSourceListenerImpl.java
-import executor.service.service.scenario.ScenarioSourceListener;
-=======
-import executor.service.model.Scenario;
+import executor.service.model.entity.Scenario;
 import executor.service.service.ScenarioProvider;
-import executor.service.service.ScenarioSourceListener;
+import executor.service.service.scenario.ScenarioSourceListener;
+import java.time.Duration;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
-
-import java.time.Duration;
-import java.util.List;
->>>>>>> beta-main-merge-beta-sokolksyi:src/main/java/executor/service/service/impl/ScenarioSourceListenerImpl.java
 
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
 

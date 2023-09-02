@@ -39,7 +39,7 @@ public class SeleniumStepExecutionFactory implements StepExecutionFabric {
 
     private final String name;
 
-    private SeleniumAction(String name) {
+    SeleniumAction(String name) {
       this.name = name;
     }
 

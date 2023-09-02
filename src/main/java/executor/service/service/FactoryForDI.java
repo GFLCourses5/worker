@@ -30,7 +30,7 @@ public class FactoryForDI {
     public FactoryForDI() {
         webDriverInitializer = new WebDriverInitializer(null,null);
         proxySourcesClient = new ProxySourcesClientImpl();
-        scenarioSourceListener = new ScenarioSourceListenerImpl();
+        scenarioSourceListener = new ScenarioSourceListenerImpl(null);
         parallelFlowExecutorService = new ParallelFlowExecutorService(null,null);
         //executionService = new ExecutionServiceImpl();
         scenarioExecutor = new ScenarioExecutorImpl();
@@ -51,7 +51,7 @@ public class FactoryForDI {
         return scenarioSourceListener;
     }
 
-    public ParallelFlowExecutorService getParalleFlowExecutorService() {
+    public ParallelFlowExecutorService getParallelFlowExecutorService() {
         return parallelFlowExecutorService;
     }
 

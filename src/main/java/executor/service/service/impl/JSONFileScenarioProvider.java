@@ -2,17 +2,16 @@ package executor.service.service.impl;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import executor.service.model.Scenario;
+import executor.service.model.entity.Scenario;
 import executor.service.service.ScenarioProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JSONFileScenarioProvider implements ScenarioProvider {
 
