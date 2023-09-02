@@ -1,10 +1,12 @@
-package executor.service.service;
+package executor.service.service.parallel;
 
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.model.ThreadPoolConfig;
-import reactor.core.publisher.Flux;
+import executor.service.service.ExecutionService;
+import executor.service.service.ProxySourcesClient;
+import executor.service.service.ScenarioSourceListener;
 
 import java.util.Queue;
 import java.util.concurrent.*;
@@ -23,7 +25,6 @@ public class ParalleFlowExecutorService {
     private static final Queue<ProxyConfigHolder> PROXY_QUEUE = new ConcurrentLinkedQueue<>();
     private static final int NUMBER_TIMES = 3;
     private static final CountDownLatch CDL = new CountDownLatch(NUMBER_TIMES);
-    private static final int DELAY = 3;
 
     private ExecutionService service;
     private ScenarioSourceListener scenarioSourceListener;
@@ -54,40 +55,14 @@ public class ParalleFlowExecutorService {
         configureThreadPoolConfig(propertiesConfig, threadPoolConfig);
         ExecutorService threadPoolExecutor = createThreadPoolExecutor(threadPoolConfig);
 
-        threadPoolExecutor.execute(getScenariosRunnable());
+        threadPoolExecutor.execute(new ScenarioTask(scenarioSourceListener, SCENARIO_QUEUE, CDL));
 
-        threadPoolExecutor.execute(getProxiesRunnable());
+        threadPoolExecutor.execute(new ProxyTask(proxySourcesClient, PROXY_QUEUE, CDL));
 
-        threadPoolExecutor.execute(getExecutionServiceRunnable());
+        threadPoolExecutor.execute(new ExecutionTask(service, SCENARIO_QUEUE, PROXY_QUEUE, CDL));
 
         await();
         threadPoolExecutor.shutdown();
-    }
-
-    private Runnable getScenariosRunnable() {
-        return () -> {
-            Flux<Scenario> scenariosFlux = scenarioSourceListener.getScenarios();
-            scenariosFlux.subscribe(SCENARIO_QUEUE::add);
-            getDelay();
-            CDL.countDown();
-        };
-    }
-
-    private Runnable getProxiesRunnable() {
-        return () -> {
-            Flux<ProxyConfigHolder> proxiesFlux = proxySourcesClient.getProxies();
-            proxiesFlux.subscribe(PROXY_QUEUE::add);
-            getDelay();
-            CDL.countDown();
-        };
-    }
-
-    private void getDelay() {
-        try {
-            TimeUnit.SECONDS.sleep(DELAY);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private Runnable getExecutionServiceRunnable() {
