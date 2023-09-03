@@ -65,13 +65,6 @@ public class ParalleFlowExecutorService {
         threadPoolExecutor.shutdown();
     }
 
-    private Runnable getExecutionServiceRunnable() {
-        return () -> {
-            service.execute(SCENARIO_QUEUE, PROXY_QUEUE);
-            CDL.countDown();
-        };
-    }
-
     private void await() {
         try {
             CDL.await();
