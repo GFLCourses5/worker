@@ -65,6 +65,9 @@ public class ParalleFlowExecutorService {
         threadPoolExecutor.shutdown();
     }
 
+    /**
+     * Wait for the Workers threads to complete.
+     * */
     private void await() {
         try {
             cdlParallelFlow.await();
