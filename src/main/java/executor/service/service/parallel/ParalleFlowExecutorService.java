@@ -55,11 +55,14 @@ public class ParalleFlowExecutorService {
         configureThreadPoolConfig(propertiesConfig, threadPoolConfig);
         ExecutorService threadPoolExecutor = createThreadPoolExecutor(threadPoolConfig);
 
-        threadPoolExecutor.execute(new TaskWorker<>(scenarioSourceListener.getScenarios(), SCENARIO_QUEUE, cdlParallelFlow));
+        threadPoolExecutor.execute(new TaskWorker<>(scenarioSourceListener.getScenarios(), SCENARIO_QUEUE));
+        cdlParallelFlow.countDown();
 
-        threadPoolExecutor.execute(new TaskWorker<>(proxySourcesClient.getProxies(), PROXY_QUEUE, cdlParallelFlow));
+        threadPoolExecutor.execute(new TaskWorker<>(proxySourcesClient.getProxies(), PROXY_QUEUE));
+        cdlParallelFlow.countDown();
 
-        threadPoolExecutor.execute(new ExecutionWorker(service, SCENARIO_QUEUE, PROXY_QUEUE, cdlParallelFlow));
+        threadPoolExecutor.execute(new ExecutionWorker(service, SCENARIO_QUEUE, PROXY_QUEUE));
+        cdlParallelFlow.countDown();
 
         await();
         threadPoolExecutor.shutdown();
