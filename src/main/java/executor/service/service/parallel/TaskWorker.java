@@ -9,6 +9,7 @@ import java.util.Queue;
 public class TaskWorker<T> implements Runnable {
 
     private static final Logger log = LoggerFactory.getLogger(TaskWorker.class);
+    private static final long TIME = 3000;
 
     private final Flux<T> flux;
     private final Queue<T> queue;
@@ -29,7 +30,7 @@ public class TaskWorker<T> implements Runnable {
      */
     private void threadSleep() {
         try {
-            Thread.sleep(3000);
+            Thread.sleep(TIME);
         } catch (InterruptedException e) {
             log.info("Thread was interrupted");
             Thread.currentThread().interrupt();
