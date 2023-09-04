@@ -24,7 +24,7 @@ public class ParalleFlowExecutorService {
     private static final Queue<Scenario> SCENARIO_QUEUE = new ConcurrentLinkedQueue<>();
     private static final Queue<ProxyConfigHolder> PROXY_QUEUE = new ConcurrentLinkedQueue<>();
     private static final int NUMBER_TIMES = 3;
-    private static final CountDownLatch cdlParallelFlow = new CountDownLatch(NUMBER_TIMES);
+    private static final CountDownLatch COUNTER = new CountDownLatch(NUMBER_TIMES);
 
     private ExecutionService service;
     private ScenarioSourceListener scenarioSourceListener;
@@ -56,13 +56,13 @@ public class ParalleFlowExecutorService {
         ExecutorService threadPoolExecutor = createThreadPoolExecutor(threadPoolConfig);
 
         threadPoolExecutor.execute(new TaskWorker<>(scenarioSourceListener.getScenarios(), SCENARIO_QUEUE));
-        cdlParallelFlow.countDown();
+        COUNTER.countDown();
 
         threadPoolExecutor.execute(new TaskWorker<>(proxySourcesClient.getProxies(), PROXY_QUEUE));
-        cdlParallelFlow.countDown();
+        COUNTER.countDown();
 
         threadPoolExecutor.execute(new ExecutionWorker(service, SCENARIO_QUEUE, PROXY_QUEUE));
-        cdlParallelFlow.countDown();
+        COUNTER.countDown();
 
         await();
         threadPoolExecutor.shutdown();
@@ -73,7 +73,7 @@ public class ParalleFlowExecutorService {
      * */
     private void await() {
         try {
-            cdlParallelFlow.await();
+            COUNTER.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
