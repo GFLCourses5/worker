@@ -1,7 +1,6 @@
-package executor.service.service.stepexecutors.selenium;
+package executor.service.service.stepexecutors;
 
 import executor.service.model.entity.Step;
-import executor.service.service.stepexecutors.StepExecution;
 import org.openqa.selenium.WebDriver;
 
 public interface StepExecutionSleep extends StepExecution {
