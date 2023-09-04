@@ -7,12 +7,12 @@ import executor.service.service.scenario.ScenarioExecutor;
 import executor.service.service.scenario.ScenarioSourceListener;
 import executor.service.service.scenario.selenium.ScenarioExecutorImpl;
 import executor.service.service.scenario.common.ScenarioSourceListenerImpl;
-import executor.service.service.stepexecutors.selenium.StepExecutionClickCss;
-import executor.service.service.stepexecutors.selenium.impl.StepExecutionClickCssImpl;
-import executor.service.service.stepexecutors.selenium.StepExecutionClickXpath;
-import executor.service.service.stepexecutors.selenium.impl.StepExecutionClickXpathImpl;
-import executor.service.service.stepexecutors.selenium.StepExecutionSleep;
-import executor.service.service.stepexecutors.selenium.impl.StepExecutionSleepImpl;
+import executor.service.service.stepexecutors.StepExecutionClickCss;
+import executor.service.service.stepexecutors.impl.StepExecutionClickCssImpl;
+import executor.service.service.stepexecutors.StepExecutionClickXpath;
+import executor.service.service.stepexecutors.impl.StepExecutionClickXpathImpl;
+import executor.service.service.stepexecutors.StepExecutionSleep;
+import executor.service.service.stepexecutors.impl.StepExecutionSleepImpl;
 import executor.service.service.webdrivers.WebDriverInitializer;
 
 public class FactoryForDI {
