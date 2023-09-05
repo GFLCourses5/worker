@@ -7,7 +7,10 @@ import executor.service.model.WebDriverConfig;
 import executor.service.service.ExecutionService;
 import executor.service.service.ScenarioExecutor;
 import executor.service.service.WebDriverInitializer;
+import executor.service.service.parallel.ParallelFlowExecutorServiceImpl;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -20,6 +23,8 @@ import static executor.service.config.properties.PropertiesConstants.*;
  *  @version 01
  * */
 public class ExecutionServiceImpl implements ExecutionService {
+
+    private static final Logger log = LoggerFactory.getLogger(ParallelFlowExecutorServiceImpl.class);
 
     private ScenarioExecutor scenarioExecutor;
     private PropertiesConfig propertiesConfig;
@@ -57,6 +62,7 @@ public class ExecutionServiceImpl implements ExecutionService {
 
                 scenarioExecutor.execute(scenario, webDriver);
             } catch (InterruptedException e) {
+                log.info("Thread was interrupted in ExecutionServiceImpl.class");
                 Thread.currentThread().interrupt();
             }
         }
