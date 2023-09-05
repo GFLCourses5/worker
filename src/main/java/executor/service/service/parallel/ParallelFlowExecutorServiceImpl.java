@@ -5,6 +5,7 @@ import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.model.ThreadPoolConfig;
 import executor.service.service.ExecutionService;
+import executor.service.service.ParallelFlowExecutorService;
 import executor.service.service.ProxySourcesClient;
 import executor.service.service.ScenarioSourceListener;
 
@@ -19,7 +20,7 @@ import static executor.service.config.properties.PropertiesConstants.*;
  * @author Oleksandr Tuleninov
  * @version 01
  */
-public class ParalleFlowExecutorService {
+public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
     private static final Queue<Scenario> SCENARIO_QUEUE = new ConcurrentLinkedQueue<>();
     private static final Queue<ProxyConfigHolder> PROXY_QUEUE = new ConcurrentLinkedQueue<>();
@@ -31,14 +32,14 @@ public class ParalleFlowExecutorService {
     private ThreadPoolConfig threadPoolConfig;
     private ExecutorService threadPoolExecutor;
 
-    public ParalleFlowExecutorService() {
+    public ParallelFlowExecutorServiceImpl() {
     }
 
-    public ParalleFlowExecutorService(ExecutionService service,
-                                      ScenarioSourceListener scenarioSourceListener,
-                                      ProxySourcesClient proxySourcesClient,
-                                      PropertiesConfig propertiesConfig,
-                                      ThreadPoolConfig threadPoolConfig) {
+    public ParallelFlowExecutorServiceImpl(ExecutionService service,
+                                           ScenarioSourceListener scenarioSourceListener,
+                                           ProxySourcesClient proxySourcesClient,
+                                           PropertiesConfig propertiesConfig,
+                                           ThreadPoolConfig threadPoolConfig) {
         this.service = service;
         this.scenarioSourceListener = scenarioSourceListener;
         this.proxySourcesClient = proxySourcesClient;
@@ -52,6 +53,7 @@ public class ParalleFlowExecutorService {
      * in parallel multi-threaded mode.
      *
      */
+    @Override
     public void execute() {
         configureThreadPoolConfig(propertiesConfig, threadPoolConfig);
         threadPoolExecutor = createThreadPoolExecutor(threadPoolConfig);
@@ -67,6 +69,7 @@ public class ParalleFlowExecutorService {
      * Initiates an orderly shutdown in which previously submitted tasks are executed,
      * but no new tasks will be accepted.
      * */
+    @Override
     public void shutdown() {
         threadPoolExecutor.shutdown();
     }
