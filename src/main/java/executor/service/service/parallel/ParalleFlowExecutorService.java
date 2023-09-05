@@ -31,6 +31,7 @@ public class ParalleFlowExecutorService {
     private ProxySourcesClient proxySourcesClient;
     private PropertiesConfig propertiesConfig;
     private ThreadPoolConfig threadPoolConfig;
+    private ExecutorService threadPoolExecutor;
 
     public ParalleFlowExecutorService() {
     }
@@ -45,38 +46,31 @@ public class ParalleFlowExecutorService {
         this.proxySourcesClient = proxySourcesClient;
         this.propertiesConfig = propertiesConfig;
         this.threadPoolConfig = threadPoolConfig;
+
     }
 
     /**
      * Start ScenarioSourceListener, ProxySourcesClient, ExecutionService
      * in parallel multi-threaded mode.
+     *
      */
     public void execute() {
         configureThreadPoolConfig(propertiesConfig, threadPoolConfig);
-        ExecutorService threadPoolExecutor = createThreadPoolExecutor(threadPoolConfig);
+        threadPoolExecutor = createThreadPoolExecutor(threadPoolConfig);
 
         threadPoolExecutor.execute(new TaskWorker<>(scenarioSourceListener.getScenarios(), SCENARIO_QUEUE));
-        COUNTER.countDown();
 
         threadPoolExecutor.execute(new TaskWorker<>(proxySourcesClient.getProxies(), PROXY_QUEUE));
-        COUNTER.countDown();
 
         threadPoolExecutor.execute(new ExecutionWorker(service, SCENARIO_QUEUE, PROXY_QUEUE));
-        COUNTER.countDown();
-
-        await();
-        threadPoolExecutor.shutdown();
     }
 
     /**
-     * Wait for the Workers threads to complete.
+     * Initiates an orderly shutdown in which previously submitted tasks are executed,
+     * but no new tasks will be accepted.
      * */
-    private void await() {
-        try {
-            COUNTER.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+    public void shutdown() {
+        threadPoolExecutor.shutdown();
     }
 
     /**
