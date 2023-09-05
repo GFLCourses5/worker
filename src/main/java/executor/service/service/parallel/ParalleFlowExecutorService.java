@@ -23,8 +23,6 @@ public class ParalleFlowExecutorService {
 
     private static final Queue<Scenario> SCENARIO_QUEUE = new ConcurrentLinkedQueue<>();
     private static final Queue<ProxyConfigHolder> PROXY_QUEUE = new ConcurrentLinkedQueue<>();
-    private static final int NUMBER_TIMES = 3;
-    private static final CountDownLatch COUNTER = new CountDownLatch(NUMBER_TIMES);
 
     private ExecutionService service;
     private ScenarioSourceListener scenarioSourceListener;
