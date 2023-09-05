@@ -4,12 +4,11 @@ import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.model.ThreadPoolConfig;
-import executor.service.service.impl.ExecutionServiceImpl;
 import executor.service.service.ParallelFlowExecutorService;
 import executor.service.service.ProxySourcesClient;
 import executor.service.service.ScenarioSourceListener;
+import executor.service.service.impl.ExecutionServiceImpl;
 
-import java.util.Queue;
 import java.util.concurrent.*;
 
 import static executor.service.config.properties.PropertiesConstants.*;
@@ -22,8 +21,8 @@ import static executor.service.config.properties.PropertiesConstants.*;
  */
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
-    private static final Queue<Scenario> SCENARIO_QUEUE = new ConcurrentLinkedQueue<>();
-    private static final Queue<ProxyConfigHolder> PROXY_QUEUE = new ConcurrentLinkedQueue<>();
+    private static final BlockingQueue<Scenario> SCENARIO_QUEUE = new LinkedBlockingDeque<>();
+    private static final BlockingQueue<ProxyConfigHolder> PROXY_QUEUE = new LinkedBlockingDeque<>();
 
     private ExecutionServiceImpl service;
     private ScenarioSourceListener scenarioSourceListener;

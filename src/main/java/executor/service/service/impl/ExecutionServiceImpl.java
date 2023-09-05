@@ -7,10 +7,9 @@ import executor.service.model.WebDriverConfig;
 import executor.service.service.ExecutionService;
 import executor.service.service.ScenarioExecutor;
 import executor.service.service.WebDriverInitializer;
-import executor.service.service.impl.WebDriverInitializerImpl;
 import org.openqa.selenium.WebDriver;
 
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 
 import static executor.service.config.properties.PropertiesConstants.*;
 
@@ -44,17 +43,22 @@ public class ExecutionServiceImpl implements ExecutionService {
      * @param proxies   the queue with proxies
      */
     @Override
-    public void execute(Queue<Scenario> scenarios, Queue<ProxyConfigHolder> proxies) {
+    public void execute(BlockingQueue<Scenario> scenarios,
+                        BlockingQueue<ProxyConfigHolder> proxies) {
         WebDriverConfig configuredWebDriverConfig = configureWebDriverConfig(propertiesConfig, webDriverConfig);
 
-        for (Scenario scenario : scenarios) {
-            ProxyConfigHolder proxy = proxies.poll();
-            if (scenario == null || proxy == null) continue;
+        while (true) {
+            try {
+                Scenario scenario = scenarios.take();
+                ProxyConfigHolder proxy = proxies.take();
 
-            WebDriver webDriver = getWebDriverPrototype(configuredWebDriverConfig, proxy);
-            if (webDriver == null) continue;
+                WebDriver webDriver = getWebDriverPrototype(configuredWebDriverConfig, proxy);
+                if (webDriver == null) continue;
 
-            scenarioExecutor.execute(scenario, webDriver);
+                scenarioExecutor.execute(scenario, webDriver);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
