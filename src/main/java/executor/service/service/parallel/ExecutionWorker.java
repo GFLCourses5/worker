@@ -2,7 +2,7 @@ package executor.service.service.parallel;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
-import executor.service.service.ExecutionServiceImpl;
+import executor.service.service.impl.ExecutionServiceImpl;
 
 import java.util.Queue;
 

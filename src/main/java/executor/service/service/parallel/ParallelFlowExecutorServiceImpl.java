@@ -4,7 +4,7 @@ import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.model.ThreadPoolConfig;
-import executor.service.service.ExecutionServiceImpl;
+import executor.service.service.impl.ExecutionServiceImpl;
 import executor.service.service.ParallelFlowExecutorService;
 import executor.service.service.ProxySourcesClient;
 import executor.service.service.ScenarioSourceListener;
