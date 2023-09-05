@@ -1,5 +1,6 @@
 package executor.service.service.impl;
 
+import executor.service.handler.ScenarioHandler;
 import executor.service.model.Scenario;
 import executor.service.service.ScenarioProvider;
 import executor.service.service.ScenarioSourceListener;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
 
-    public static final int DELAY = 1;
+    private static final int DELAY = 1;
     private final ScenarioProvider provider;
 
     private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);
@@ -22,13 +23,11 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
     }
 
     @Override
-    public Flux<Scenario> getScenarios() {
-        List<Scenario> scenarios = provider.readScenarios();
-        validateScenarios(scenarios);
-        return Flux.fromIterable(scenarios)
-                .log()
-                .delayElements(Duration.ofSeconds(DELAY))
-                .repeat();
+    public void execute(ScenarioHandler handler) {
+        List<Scenario> scenarioList = provider.readScenarios();
+        validateScenarios(scenarioList);
+        Flux<Scenario> scenarioFlux = getScenarioFlux(scenarioList);
+        scenarioFlux.subscribe(handler::onScenarioReceived);
     }
 
     private void validateScenarios(List<Scenario> scenarios) {
@@ -36,5 +35,12 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
             log.error("Bad scenarios list.");
             throw new IllegalArgumentException("List cannot be null or empty");
         }
+    }
+
+    private Flux<Scenario> getScenarioFlux(List<Scenario> scenarios) {
+        return Flux.fromIterable(scenarios)
+                .log()
+                .delayElements(Duration.ofSeconds(DELAY))
+                .repeat();
     }
 }
