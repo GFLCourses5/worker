@@ -7,6 +7,7 @@ import executor.service.service.ExecutionService;
 import executor.service.service.ScenarioExecutor;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExecutionServiceImpl implements ExecutionService {
     private static final Logger log = LoggerFactory.getLogger(ExecutionServiceImpl.class);
@@ -28,7 +29,9 @@ public class ExecutionServiceImpl implements ExecutionService {
     }
 
     private WebDriver getWebDriverPrototype(WebDriverConfig webDriverConfig, ProxyConfigHolder proxyConfigHolder) {
-        WebDriverInitializer webDriverInitializer = new WebDriverInitializerImpl();
-        return webDriverInitializer.getInstance(webDriverConfig, proxyConfigHolder);
+        //TODO: add WebDriverInitializer
+       // WebDriverInitializer webDriverInitializer = new WebDriverInitializerImpl();
+       // return webDriverInitializer.getInstance(webDriverConfig, proxyConfigHolder);
+        return null;
     }
 }
