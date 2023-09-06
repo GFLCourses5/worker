@@ -36,7 +36,7 @@ public class JSONReader implements Provider {
             return objectMapper.readValue(inputStream,
                     objectMapper.getTypeFactory().constructCollectionType(List.class, valueType));
         } catch (IOException e) {
-            log.info("Exception with parsing {} from resources file in the JSONReader.class.", fileName);
+            log.error("Exception with parsing {} from resources file in the JSONReader.class.", fileName, e);
             return null;
         }
     }
