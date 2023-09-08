@@ -58,9 +58,9 @@ public class BeanConfig {
     }
 
     /**
-     * Create ProxyConfigHolder bean from properties file.
+     * Create default ProxyConfigHolder bean from properties file.
      * */
-    public ProxyConfigHolder proxyConfigHolder() {
+    public ProxyConfigHolder defaultProxyConfigHolder() {
         var proxyNetworkConfigs = jsonReader.provideData(PROXY_NETWORK_DEFAULT, ProxyNetworkConfig.class);
         var proxyCredentials = jsonReader.provideData(PROXY_CREDENTIALS_DEFAULT, ProxyCredentials.class);
 
