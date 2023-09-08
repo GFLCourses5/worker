@@ -1,4 +1,6 @@
-{
-  "hostname": "host1",
-  "port": 8080
-}
+[
+  {
+    "hostname": "host1",
+    "port": 8080
+  }
+]
