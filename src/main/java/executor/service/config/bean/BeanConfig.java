@@ -5,6 +5,7 @@ import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;
 import executor.service.model.ProxyNetworkConfig;
 import executor.service.model.ThreadPoolConfig;
+import executor.service.service.Provider;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -63,6 +64,6 @@ public class BeanConfig {
         var proxyNetworkConfigs = jsonReader.provideData(PROXY_NETWORK_DEFAULT, ProxyNetworkConfig.class);
         var proxyCredentials = jsonReader.provideData(PROXY_CREDENTIALS_DEFAULT, ProxyCredentials.class);
 
-        return new ProxyConfigHolder(proxyNetworkConfigs, proxyCredentials););
+        return new ProxyConfigHolder(proxyNetworkConfigs.get(0), proxyCredentials.get(0));
     }
 }
