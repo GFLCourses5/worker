@@ -37,11 +37,7 @@ public class BeanConfig {
         var corePoolSize = Integer.parseInt(properties.getProperty(CORE_POOL_SIZE));
         var keepAliveTime = Long.parseLong(properties.getProperty(KEEP_ALIVE_TIME));
 
-        var threadPoolConfig = new ThreadPoolConfig();
-        threadPoolConfig.setCorePoolSize(corePoolSize);
-        threadPoolConfig.setKeepAliveTime(keepAliveTime);
-
-        return threadPoolConfig;
+        return new ThreadPoolConfig(corePoolSize, keepAliveTime);
     }
 
     /**
