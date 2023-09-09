@@ -30,7 +30,7 @@ public class BeanConfig {
     }
 
     /**
-     * Create ThreadPoolConfig bean from properties file.
+     * Create a ThreadPoolConfig bean from properties file.
      * */
     public ThreadPoolConfig threadPoolConfig() {
         var properties = propertiesConfig.getProperties(THREAD_POOL_PROPERTIES);
@@ -41,7 +41,7 @@ public class BeanConfig {
     }
 
     /**
-     * Create ThreadPoolExecutor bean from properties file.
+     * Create a ThreadPoolExecutor bean from properties file.
      * */
     public ThreadPoolExecutor threadPoolExecutor(ThreadPoolConfig threadPoolConfig) {
         int MAXIMUM_POOL_SIZE = 5;
@@ -54,7 +54,7 @@ public class BeanConfig {
     }
 
     /**
-     * Create default ProxyConfigHolder bean from properties file.
+     * Create a default ProxyConfigHolder bean from properties file.
      * */
     public ProxyConfigHolder proxyConfigHolderDefault() {
         var proxyNetworkConfigs = jsonReader.provideData(PROXY_NETWORK_DEFAULT, ProxyNetworkConfig.class);
