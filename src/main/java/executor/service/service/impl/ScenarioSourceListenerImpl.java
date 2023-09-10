@@ -16,7 +16,7 @@ import static executor.service.config.properties.PropertiesConstants.SCENARIOS;
 /**
  * Class for application`s constants.
  *
- * @author Yurii Kotsiuba, Oleksandr Tuleninov
+ * @author Yurii Kotsiuba
  * @version 01
  * */
 public class ScenarioSourceListenerImpl<T> implements ScenarioSourceListener<T> {
