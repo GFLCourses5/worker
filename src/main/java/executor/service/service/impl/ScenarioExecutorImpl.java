@@ -16,9 +16,12 @@ import org.openqa.selenium.WebDriver;
  * */
 public class ScenarioExecutorImpl implements ScenarioExecutor {
 
-    private final StepExecutionClickCss stepExecutionClickCss;
-    private final StepExecutionSleep stepExecutionSleep;
-    private final StepExecutionClickXpath stepExecutionClickXpath;
+    private StepExecutionClickCss stepExecutionClickCss;
+    private StepExecutionSleep stepExecutionSleep;
+    private StepExecutionClickXpath stepExecutionClickXpath;
+
+    public ScenarioExecutorImpl() {
+    }
 
     public ScenarioExecutorImpl(StepExecutionClickCss stepExecutionClickCss,
                                 StepExecutionSleep stepExecutionSleep,
