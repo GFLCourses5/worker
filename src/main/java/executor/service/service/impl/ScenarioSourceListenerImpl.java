@@ -12,6 +12,12 @@ import java.util.List;
 
 import static executor.service.config.properties.PropertiesConstants.SCENARIOS;
 
+/**
+ * Class for application`s constants.
+ *
+ * @author Yurii Kotsiuba, Oleksandr Tuleninov
+ * @version 01
+ * */
 public class ScenarioSourceListenerImpl<T> implements ScenarioSourceListener<T> {
 
     private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);
