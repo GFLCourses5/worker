@@ -1,22 +1,17 @@
 package executor.service.service.parallel;
 
 import executor.service.config.bean.BeanConfig;
-import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
-import executor.service.model.ThreadPoolConfig;
-import executor.service.service.ParallelFlowExecutorService;
-import executor.service.service.ProxySourcesClient;
-import executor.service.service.ProxyValidator;
-import executor.service.service.ScenarioSourceListener;
-import executor.service.service.ThreadFactory;
+import executor.service.service.*;
 import executor.service.service.impl.ExecutionServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.*;
-
-import static executor.service.config.properties.PropertiesConstants.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Start ExecutionService in parallel multi-threaded mode.
@@ -35,11 +30,9 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     private ExecutionServiceImpl service;
     private ScenarioSourceListener scenarioSourceListener;
     private ProxySourcesClient proxySourcesClient;
-    private PropertiesConfig propertiesConfig;
-    private ThreadPoolConfig threadPoolConfig;
+    private BeanConfig beanConfig;
     private ExecutorService threadPoolExecutor;
     private ThreadFactory threadFactory;
-    private BeanConfig beanConfig;
     private ProxyValidator proxyValidator;
 
     public ParallelFlowExecutorServiceImpl() {
@@ -48,18 +41,14 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     public ParallelFlowExecutorServiceImpl(ExecutionServiceImpl service,
                                            ScenarioSourceListener scenarioSourceListener,
                                            ProxySourcesClient proxySourcesClient,
-                                           PropertiesConfig propertiesConfig,
-                                           ThreadPoolConfig threadPoolConfig,
-                                           ThreadFactory threadFactory,
                                            BeanConfig beanConfig,
+                                           ThreadFactory threadFactory,
                                            ProxyValidator proxyValidator) {
         this.service = service;
         this.scenarioSourceListener = scenarioSourceListener;
         this.proxySourcesClient = proxySourcesClient;
-        this.propertiesConfig = propertiesConfig;
-        this.threadPoolConfig = threadPoolConfig;
-        this.threadFactory = threadFactory;
         this.beanConfig = beanConfig;
+        this.threadFactory = threadFactory;
         this.proxyValidator = proxyValidator;
     }
 
@@ -69,8 +58,7 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
      */
     @Override
     public void execute() {
-        configureThreadPoolConfig(propertiesConfig, threadPoolConfig);
-        threadPoolExecutor = createThreadPoolExecutor(threadPoolConfig);
+        threadPoolExecutor = beanConfig.threadPoolExecutor();
 
         //threadPoolExecutor.execute(threadFactory.createTaskWorker(scenarioSourceListener, SCENARIO_QUEUE));
 
@@ -115,43 +103,5 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
             if (proxy != null && proxyValidator.isValid(proxy)) defaultProxy = proxy;
             threadPoolExecutor.execute(threadFactory.createExecutionWorker(service, scenario, defaultProxy));
         }
-    }
-
-    /**
-     * Create ThreadPoolExecutor.
-     *
-     * @param threadPoolConfig the config for the ThreadPoolExecutor
-     * @return the ThreadPoolExecutor entity
-     */
-    private ThreadPoolExecutor createThreadPoolExecutor(ThreadPoolConfig threadPoolConfig) {
-        return new ThreadPoolExecutor(
-                threadPoolConfig.getCorePoolSize(),
-                defineMaximumAvailableProcessors(),
-                threadPoolConfig.getKeepAliveTime(),
-                TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>());
-    }
-
-    /**
-     * Configure ThreadPoolConfig from properties file.
-     *
-     * @param propertiesConfig the properties from resources file
-     * @param threadPoolConfig the ThreadPoolConfig entity
-     */
-    private void configureThreadPoolConfig(PropertiesConfig propertiesConfig, ThreadPoolConfig threadPoolConfig) {
-        var properties = propertiesConfig.getProperties(THREAD_POOL_PROPERTIES);
-        var corePoolSize = Integer.parseInt(properties.getProperty(CORE_POOL_SIZE));
-        var keepAliveTime = Long.parseLong(properties.getProperty(KEEP_ALIVE_TIME));
-        threadPoolConfig.setCorePoolSize(corePoolSize);
-        threadPoolConfig.setKeepAliveTime(keepAliveTime);
-    }
-
-    /**
-     * Get the number of available processor cores.
-     *
-     * @return the number of available processor core
-     */
-    private int defineMaximumAvailableProcessors() {
-        return Runtime.getRuntime().availableProcessors();
     }
 }
