@@ -30,20 +30,10 @@ public class BeanConfig {
     }
 
     /**
-     * Create a ThreadPoolConfig bean from properties file.
-     * */
-    public ThreadPoolConfig threadPoolConfig() {
-        var properties = propertiesConfig.getProperties(THREAD_POOL_PROPERTIES);
-        var corePoolSize = Integer.parseInt(properties.getProperty(CORE_POOL_SIZE));
-        var keepAliveTime = Long.parseLong(properties.getProperty(KEEP_ALIVE_TIME));
-
-        return new ThreadPoolConfig(corePoolSize, keepAliveTime);
-    }
-
-    /**
      * Create a ThreadPoolExecutor bean from properties file.
      * */
-    public ThreadPoolExecutor threadPoolExecutor(ThreadPoolConfig threadPoolConfig) {
+    public ThreadPoolExecutor threadPoolExecutor() {
+        ThreadPoolConfig threadPoolConfig = threadPoolConfig();
         int MAXIMUM_POOL_SIZE = 5;
         return new ThreadPoolExecutor(
                 threadPoolConfig.getCorePoolSize(),
@@ -51,6 +41,17 @@ public class BeanConfig {
                 threadPoolConfig.getKeepAliveTime(),
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>());
+    }
+
+    /**
+     * Create a ThreadPoolConfig bean from properties file.
+     * */
+    private ThreadPoolConfig threadPoolConfig() {
+        var properties = propertiesConfig.getProperties(THREAD_POOL_PROPERTIES);
+        var corePoolSize = Integer.parseInt(properties.getProperty(CORE_POOL_SIZE));
+        var keepAliveTime = Long.parseLong(properties.getProperty(KEEP_ALIVE_TIME));
+
+        return new ThreadPoolConfig(corePoolSize, keepAliveTime);
     }
 
     /**
