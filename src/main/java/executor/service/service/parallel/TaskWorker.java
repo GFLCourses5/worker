@@ -20,41 +20,41 @@ public class TaskWorker<T> implements Runnable {
 
     @Override
     public void run() {
-        Consumer<T> itemHandlerConsumer = items -> {
-            try {
-                queue.put(items);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        };
-
-        if (listener instanceof ScenarioSourceListener) {
-            ((ScenarioSourceListener) listener).execute(createItemHandler(itemHandlerConsumer));
-        } else if (listener instanceof ProxySourcesClient) {
-            ((ProxySourcesClient) listener).execute(createItemHandler(itemHandlerConsumer));
-        }
-    }
-
-    private ItemHandler createItemHandler(Consumer<T> consumer) {
-        return items -> consumer.accept((T) items);
-    }
-
-//        if (listener instanceof ScenarioSourceListener) {
-//            ((ScenarioSourceListener) listener).execute(getItemHandler());
-//        } else {
-//            ((ProxySourcesClient) listener).execute(getItemHandler());
-//        }
-
-
-//    private T getItemHandler() {
-//        return items -> {
+//        Consumer<T> itemHandlerConsumer = items -> {
 //            try {
-//                queue.put((T) items);
+//                queue.put(items);
 //            } catch (InterruptedException e) {
 //                Thread.currentThread().interrupt();
 //            }
 //        };
+//
+//        if (listener instanceof ScenarioSourceListener) {
+//            ((ScenarioSourceListener) listener).execute(createItemHandler(itemHandlerConsumer));
+//        } else if (listener instanceof ProxySourcesClient) {
+//            ((ProxySourcesClient) listener).execute(createItemHandler(itemHandlerConsumer));
+//        }
 //    }
+//
+//    private ItemHandler createItemHandler(Consumer<T> consumer) {
+//        return items -> consumer.accept((T) items);
+//    }
+
+        if (listener instanceof ScenarioSourceListener) {
+            ((ScenarioSourceListener) listener).execute(getItemHandler());
+        } else {
+            ((ProxySourcesClient) listener).execute(getItemHandler());
+        }
+    }
+
+    private ItemHandler getItemHandler() {
+        return items -> {
+            try {
+                queue.put((T) items);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        };
+    }
 
 
 }
