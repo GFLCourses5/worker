@@ -3,8 +3,8 @@ package executor.service.service;
 import executor.service.model.ProxyConfigHolder;
 import reactor.core.publisher.Flux;
 
-public interface ProxySourcesClient {
+public interface ProxySourcesClient<T> {
 
-    Flux<ProxyConfigHolder> getProxies();
+    void execute(T handler);
 
 }

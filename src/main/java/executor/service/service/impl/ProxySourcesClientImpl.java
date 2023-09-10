@@ -1,88 +1,106 @@
 package executor.service.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;
 import executor.service.model.ProxyNetworkConfig;
+import executor.service.service.ItemHandler;
+import executor.service.service.Provider;
 import executor.service.service.ProxySourcesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static executor.service.config.properties.PropertiesConstants.PROXY_CREDENTIALS;
-import static executor.service.config.properties.PropertiesConstants.PROXY_NETWORK_CONFIG;
+import static executor.service.config.properties.PropertiesConstants.PROXY_CREDENTIAL;
+import static executor.service.config.properties.PropertiesConstants.PROXY_NETWORK;
 
-public class ProxySourcesClientImpl implements ProxySourcesClient {
+/**
+ * Class for reading properties as JSON from properties file.
+ *
+ * @author Oleksandr Tuleninov, Nikita Hurmaza, Yurii Kotsiuba.
+ * @version 01
+ */
+public class ProxySourcesClientImpl<T> implements ProxySourcesClient<T> {
 
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
     public static final int DELAY = 1;
 
-    public ProxySourcesClientImpl() {
+    private final Provider jsonReader;
+
+    public ProxySourcesClientImpl(Provider jsonReader) {
+        this.jsonReader = jsonReader;
     }
 
     @Override
-    public Flux<ProxyConfigHolder> getProxies() {
-        List<ProxyConfigHolder> proxyConfigHoldersPrototype = getProxyConfigHoldersPrototype();
-        validateProxies(proxyConfigHoldersPrototype);
-        return Flux.fromIterable(proxyConfigHoldersPrototype)
+    public void execute(T handler) {
+        List<ProxyConfigHolder> proxyConfigHoldersPrototypes = getListProxiesPrototypes();
+        validateProxies(proxyConfigHoldersPrototypes);
+        Flux<ProxyConfigHolder> proxiesFlux = getProxyFlux(proxyConfigHoldersPrototypes);
+        proxiesFlux.subscribe(((ItemHandler<ProxyConfigHolder>)handler)::onItemReceived);
+    }
+
+    /**
+     * Check the list of ProxyConfigHolder entities.
+     *
+     * @param proxies list of ProxyConfigHolder entitie
+     */
+    private void validateProxies(List<ProxyConfigHolder> proxies) {
+        if(proxies == null || proxies.isEmpty()) {
+            log.error("Bad proxies list");
+        }
+    }
+
+    /**
+     * Get Flux with ProxyConfigHolder entities continuously.
+     *
+     * @return list with ProxyConfigHolder entities
+     */
+    private Flux<ProxyConfigHolder> getProxyFlux(List<ProxyConfigHolder> proxies) {
+        return Flux.fromIterable(proxies)
                 .log()
                 .delayElements(Duration.ofSeconds(DELAY))
                 .repeat();
     }
 
-    private void validateProxies(List<ProxyConfigHolder> proxies) {
-        if(proxies == null || proxies.isEmpty()) {
-            log.error("Bad proxies list");
-            throw new IllegalArgumentException("List cannot be null or empty");
-        }
-    }
-
-    private List<ProxyConfigHolder> getProxyConfigHoldersPrototype() {
-        List<ProxyCredentials> proxyCredentials = readProxyCredentialsFromJson();
-        List<ProxyNetworkConfig> proxyNetworkConfigs = readProxyNetworkConfigFromJson();
+    /**
+     * Get the list with ProxyConfigHolder entities.
+     *
+     * @return list with ProxyConfigHolder entities
+     */
+    private List<ProxyConfigHolder> getListProxiesPrototypes() {
+        var proxyNetworkConfigs = jsonReader.provideData(PROXY_NETWORK, ProxyNetworkConfig.class);
+        var proxyCredentials = jsonReader.provideData(PROXY_CREDENTIAL, ProxyCredentials.class);
 
         int numberOfIterations = Math.min(
-                Objects.requireNonNull(proxyCredentials).size(),
-                Objects.requireNonNull(proxyNetworkConfigs).size());
+                Objects.requireNonNull(proxyNetworkConfigs).size(),
+                Objects.requireNonNull(proxyCredentials).size());
 
-        List<ProxyConfigHolder> proxyConfigHolders = new ArrayList<>();
+        List<ProxyConfigHolder> proxies = new ArrayList<>();
         for (int i = 0; i < numberOfIterations; i++) {
-            ProxyConfigHolder proxyConfigHolder = new ProxyConfigHolder();
-            proxyConfigHolder.setProxyCredentials(proxyCredentials.get(i));
-            proxyConfigHolder.setProxyNetworkConfig(proxyNetworkConfigs.get(i));
-            proxyConfigHolders.add(proxyConfigHolder);
+            var proxy = createProxyConfigHolderPrototype(proxyNetworkConfigs, proxyCredentials, i);
+            proxies.add(proxy);
         }
 
-        return proxyConfigHolders;
+        return proxies;
     }
 
-    private List<ProxyCredentials> readProxyCredentialsFromJson() {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROXY_CREDENTIALS)) {
-            return new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
-        } catch (IOException e) {
-            log.info("""
-                    Exception with parsing proxy-credentials.json from resources file in the ProxySourcesClientImpl.class.
-                    """);
-            return null;
-        }
-    }
-
-    private List<ProxyNetworkConfig> readProxyNetworkConfigFromJson() {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROXY_NETWORK_CONFIG)) {
-            return new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
-        } catch (IOException e) {
-            log.info("""
-                    Exception with parsing proxy-network.json from resources file in the ProxySourcesClientImpl.class.
-                    """);
-            return null;
-        }
+    /**
+     * Create ProxyConfigHolder entity.
+     *
+     * @param proxyNetworkConfigs list with ProxyNetworkConfig entity
+     * @param proxyCredentials    list with ProxyCredentials entity
+     * @param i                   element number
+     * @return ProxyConfigHolder entity
+     */
+    private ProxyConfigHolder createProxyConfigHolderPrototype(List<ProxyNetworkConfig> proxyNetworkConfigs,
+                                                               List<ProxyCredentials> proxyCredentials,
+                                                               int i) {
+        return new ProxyConfigHolder(
+                proxyNetworkConfigs.get(i),
+                proxyCredentials.get(i));
     }
 }
