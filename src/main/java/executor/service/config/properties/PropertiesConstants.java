@@ -18,7 +18,6 @@ public final class PropertiesConstants {
     public static final String PROXY_VALIDATOR_TARGET_URL = "target.url";
     public static final Integer PROXY_VALIDATOR_CONNECTION_TIMEOUT = Integer.getInteger("connection.timeout");
 
-    public static final String COMMONS_CONFIGURATION_PROPERTIES = "web-driver.properties";
     public static final String SCENARIOS = "scenarios.json";
 
     public static final String WEB_DRIVER = "web-driver.properties";

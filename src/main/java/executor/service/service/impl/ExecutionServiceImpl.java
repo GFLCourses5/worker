@@ -1,12 +1,12 @@
 package executor.service.service.impl;
 
-import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.model.WebDriverConfig;
 import executor.service.service.ExecutionService;
 import executor.service.service.ScenarioExecutor;
 import executor.service.service.WebDriverInitializer;
+<<<<<<< HEAD
 import executor.service.service.parallel.ParallelFlowExecutorServiceImpl;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -15,77 +15,39 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.BlockingQueue;
 
 import static executor.service.config.properties.PropertiesConstants.*;
+=======
+import org.openqa.selenium.WebDriver;
+>>>>>>> execution-service
 
 /**
  * The facade for execute ScenarioExecutor.
  *
- *  @author Oleksandr Tuleninov
- *  @version 01
- * */
+ * @author Oleksandr Tuleninov
+ * @version 01
+ */
 public class ExecutionServiceImpl implements ExecutionService {
 
-    private static final Logger log = LoggerFactory.getLogger(ParallelFlowExecutorServiceImpl.class);
-
-    private ScenarioExecutor scenarioExecutor;
-    private PropertiesConfig propertiesConfig;
-    private WebDriverConfig webDriverConfig;
-
-    public ExecutionServiceImpl() {
-    }
+    private final ScenarioExecutor scenarioExecutor;
+    private final WebDriverConfig webDriverConfig;
 
     public ExecutionServiceImpl(ScenarioExecutor scenarioExecutor,
-                                PropertiesConfig propertiesConfig,
                                 WebDriverConfig webDriverConfig) {
         this.scenarioExecutor = scenarioExecutor;
-        this.propertiesConfig = propertiesConfig;
         this.webDriverConfig = webDriverConfig;
     }
 
     /**
      * Execute ScenarioExecutor.
      *
-     * @param scenarios the queue with scenarios
-     * @param proxies   the queue with proxies
+     * @param scenario the scenario
+     * @param proxy    the proxy
      */
     @Override
-    public void execute(BlockingQueue<Scenario> scenarios,
-                        BlockingQueue<ProxyConfigHolder> proxies) {
-        WebDriverConfig configuredWebDriverConfig = configureWebDriverConfig(propertiesConfig, webDriverConfig);
+    public void execute(Scenario scenario, ProxyConfigHolder proxy) {
+        WebDriver webDriver = getWebDriverPrototype(webDriverConfig, proxy);
+        if (webDriver == null) return;
 
-        while (true) {
-            try {
-                Scenario scenario = scenarios.take();
-                ProxyConfigHolder proxy = proxies.take();
-
-                WebDriver webDriver = getWebDriverPrototype(configuredWebDriverConfig, proxy);
-                if (webDriver == null) continue;
-
-                scenarioExecutor.execute(scenario, webDriver);
-            } catch (InterruptedException e) {
-                log.info("Thread was interrupted in ExecutionServiceImpl.class");
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
-
-    /**
-     * Configure WebDriverConfig from properties file.
-     *
-     * @param propertiesConfig the properties from resources file
-     * @param webDriverConfig  the WebDriverConfig entity
-     */
-    private WebDriverConfig configureWebDriverConfig(PropertiesConfig propertiesConfig, WebDriverConfig webDriverConfig) {
-        var properties = propertiesConfig.getProperties(WEB_DRIVER);
-        var webDriverExecutable = properties.getProperty(WEB_DRIVER_EXECUTABLE);
-        var userAgent = properties.getProperty(USER_AGENT);
-        var pageLoadTimeout = Long.parseLong(properties.getProperty(PAGE_LOAD_TIMEOUT));
-        var implicitlyWait = Long.parseLong(properties.getProperty(IMPLICITLY_WAIT));
-        webDriverConfig.setWebDriverExecutable(webDriverExecutable);
-        webDriverConfig.setUserAgent(userAgent);
-        webDriverConfig.setPageLoadTimeout(pageLoadTimeout);
-        webDriverConfig.setImplicitlyWait(implicitlyWait);
-
-        return webDriverConfig;
+        scenarioExecutor.execute(scenario, webDriver);
     }
 
     /**
