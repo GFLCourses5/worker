@@ -1,12 +1,18 @@
 package executor.service.service.parallel;
 
-import executor.service.service.ProxyHandler;
+import executor.service.service.ItemHandler;
 import executor.service.service.ProxySourcesClient;
 import executor.service.service.ScenarioSourceListener;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.function.Consumer;
 
+/**
+ * Read properties from properties file.
+ *
+ *  @author Oleksandr Tuleninov, Yurii Kotsiuba.
+ *  @version 01
+ * */
 public class TaskWorker<T> implements Runnable {
 
     private final T listener;
@@ -34,7 +40,7 @@ public class TaskWorker<T> implements Runnable {
         }
     }
 
-    private ProxyHandler createItemHandler(Consumer<T> consumer) {
-        return item -> consumer.accept((T) item);
+    private ItemHandler createItemHandler(Consumer<T> consumer) {
+        return items -> consumer.accept((T) items);
     }
 }

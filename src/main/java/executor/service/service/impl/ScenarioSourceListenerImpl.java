@@ -1,13 +1,10 @@
 package executor.service.service.impl;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import executor.service.model.Scenario;
 import executor.service.service.ItemHandler;
 import executor.service.service.Provider;
-import executor.service.service.ScenarioHandler;
 import executor.service.service.ScenarioSourceListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +17,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.List;
-
-import static executor.service.config.properties.PropertiesConstants.SCENARIOS;
 
 /**
  * Class for application`s constants.
@@ -43,20 +38,20 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
         this.jsonReader = jsonReader;
     }
 
-//    @Override
-//    public void execute(ScenarioHandler handler) {
-//        List<Scenario> scenariosPrototypes = getListScenariosPrototypes();
-//        validateScenarios(scenariosPrototypes);
-//        Flux<Scenario> scenariosFlux = getScenarioFlux(scenariosPrototypes);
-//        scenariosFlux.subscribe(handler::onScenarioReceived);
-//    }
-
     @Override
-    public Flux<Scenario> execute() {
+    public void execute(ItemHandler handler) {
         List<Scenario> scenariosPrototypes = getListScenariosPrototypes();
         validateScenarios(scenariosPrototypes);
-        return getScenarioFlux(scenariosPrototypes);
+        Flux<Scenario> scenariosFlux = getScenarioFlux(scenariosPrototypes);
+        scenariosFlux.subscribe(handler::onItemReceived);
     }
+
+//    @Override
+//    public Flux<Scenario> execute() {
+//        List<Scenario> scenariosPrototypes = getListScenariosPrototypes();
+//        validateScenarios(scenariosPrototypes);
+//        return getScenarioFlux(scenariosPrototypes);
+//    }
 
     /**
      * Check the list of ProxyConfigHolder entities.

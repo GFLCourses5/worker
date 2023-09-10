@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Start ExecutionService in parallel multi-threaded mode.
@@ -60,13 +59,9 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     public void execute() {
         threadPoolExecutor = beanConfig.threadPoolExecutor();
 
-        //threadPoolExecutor.execute(threadFactory.createTaskWorker(scenarioSourceListener, SCENARIO_QUEUE));
+        threadPoolExecutor.execute(threadFactory.createTaskWorker(scenarioSourceListener, SCENARIO_QUEUE));
 
-        //threadPoolExecutor.execute(threadFactory.createTaskWorker(proxySourcesClient, PROXY_QUEUE));
-
-        threadPoolExecutor.execute(new TaskScenario(scenarioSourceListener, SCENARIO_QUEUE));
-
-        threadPoolExecutor.execute(new TaskProxy(proxySourcesClient, PROXY_QUEUE));
+        threadPoolExecutor.execute(threadFactory.createTaskWorker(proxySourcesClient, PROXY_QUEUE));
 
         executeScenarioAndProxy();
     }
