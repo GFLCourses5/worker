@@ -20,7 +20,7 @@ import static executor.service.config.properties.PropertiesConstants.PROXY_NETWO
 /**
  * Class for reading properties as JSON from properties file.
  *
- * @author Oleksandr Tuleninov, Nikita Hurmaza
+ * @author Oleksandr Tuleninov, Nikita Hurmaza, Yurii Kotsiuba.
  * @version 01
  */
 public class ProxySourcesClientImpl implements ProxySourcesClient {
