@@ -7,6 +7,7 @@ import executor.service.model.ProxyNetworkConfig;
 import executor.service.model.ThreadPoolConfig;
 import executor.service.service.Provider;
 
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +36,7 @@ public class BeanConfig {
     /**
      * Create a ThreadPoolExecutor bean from properties file.
      * */
-    public ThreadPoolExecutor threadPoolExecutor() {
+    public ExecutorService threadPoolExecutor() {
         ThreadPoolConfig threadPoolConfig = threadPoolConfig();
         int MAXIMUM_POOL_SIZE = 5;
         return new ThreadPoolExecutor(
