@@ -28,4 +28,6 @@ public final class PropertiesConstants {
 
     public static final String PROXY_CREDENTIAL = "proxy-credential.json";
     public static final String PROXY_NETWORK = "proxy-network.json";
+    public static final String PROXY_NETWORK_DEFAULT = "proxy-network-default.json";
+    public static final String PROXY_CREDENTIALS_DEFAULT = "proxy-credentials-default.json";
 }

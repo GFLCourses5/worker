@@ -1,5 +1,6 @@
 package executor.service.service.parallel;
 
+import executor.service.config.bean.BeanConfig;
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
@@ -38,7 +39,7 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     private ThreadPoolConfig threadPoolConfig;
     private ExecutorService threadPoolExecutor;
     private ThreadFactory threadFactory;
-    private ProxyConfigHolder defaultProxy;
+    private BeanConfig beanConfig;
     private ProxyValidator proxyValidator;
 
     public ParallelFlowExecutorServiceImpl() {
@@ -50,7 +51,7 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
                                            PropertiesConfig propertiesConfig,
                                            ThreadPoolConfig threadPoolConfig,
                                            ThreadFactory threadFactory,
-                                           ProxyConfigHolder defaultProxy,
+                                           BeanConfig beanConfig,
                                            ProxyValidator proxyValidator) {
         this.service = service;
         this.scenarioSourceListener = scenarioSourceListener;
@@ -58,7 +59,7 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
         this.propertiesConfig = propertiesConfig;
         this.threadPoolConfig = threadPoolConfig;
         this.threadFactory = threadFactory;
-        this.defaultProxy = defaultProxy;
+        this.beanConfig = beanConfig;
         this.proxyValidator = proxyValidator;
     }
 
@@ -106,6 +107,7 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
      */
     private void executeParallel() throws InterruptedException {
         Scenario scenario;
+        ProxyConfigHolder defaultProxy = beanConfig.proxyConfigHolderDefault();
         ProxyConfigHolder proxy;
         while (FLAG) {
             scenario = SCENARIO_QUEUE.take();
