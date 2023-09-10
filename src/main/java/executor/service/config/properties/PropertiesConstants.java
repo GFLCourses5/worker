@@ -20,6 +20,6 @@ public final class PropertiesConstants {
     public static final Integer PROXY_VALIDATOR_CONNECTION_TIMEOUT = Integer.getInteger("connection.timeout");
 
 
-    public static final String PROXY_CREDENTIALS = "proxy-credentials.json";
-    public static final String PROXY_NETWORK_CONFIG = "proxy-network.json";
+    public static final String PROXY_CREDENTIAL = "proxy-credential.json";
+    public static final String PROXY_NETWORK = "proxy-network.json";
 }

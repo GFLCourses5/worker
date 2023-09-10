@@ -3,6 +3,7 @@ package executor.service.service.impl;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;
 import executor.service.model.ProxyNetworkConfig;
+import executor.service.service.ItemHandler;
 import executor.service.service.Provider;
 import executor.service.service.ProxySourcesClient;
 import org.slf4j.Logger;
@@ -14,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static executor.service.config.properties.PropertiesConstants.PROXY_CREDENTIALS;
-import static executor.service.config.properties.PropertiesConstants.PROXY_NETWORK_CONFIG;
+import static executor.service.config.properties.PropertiesConstants.PROXY_CREDENTIAL;
+import static executor.service.config.properties.PropertiesConstants.PROXY_NETWORK;
 
 /**
  * Class for reading properties as JSON from properties file.
@@ -23,7 +24,7 @@ import static executor.service.config.properties.PropertiesConstants.PROXY_NETWO
  * @author Oleksandr Tuleninov, Nikita Hurmaza, Yurii Kotsiuba.
  * @version 01
  */
-public class ProxySourcesClientImpl implements ProxySourcesClient {
+public class ProxySourcesClientImpl<T> implements ProxySourcesClient<T> {
 
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
     public static final int DELAY = 1;
@@ -34,19 +35,12 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
         this.jsonReader = jsonReader;
     }
 
-    /**
-     * Get list with ProxyConfigHolder entities continuously.
-     *
-     * @return list with ProxyConfigHolder entities
-     */
     @Override
-    public Flux<ProxyConfigHolder> getProxies() {
-        var proxies = getListProxiesPrototype();
-        validateProxies(proxies);
-        return Flux.fromIterable(proxies)
-                .log()
-                .delayElements(Duration.ofSeconds(DELAY))
-                .repeat();
+    public void execute(T handler) {
+        List<ProxyConfigHolder> proxyConfigHoldersPrototypes = getListProxiesPrototypes();
+        validateProxies(proxyConfigHoldersPrototypes);
+        Flux<ProxyConfigHolder> proxiesFlux = getProxyFlux(proxyConfigHoldersPrototypes);
+        proxiesFlux.subscribe(((ItemHandler<ProxyConfigHolder>)handler)::onItemReceived);
     }
 
     /**
@@ -55,10 +49,21 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
      * @param proxies list of ProxyConfigHolder entitie
      */
     private void validateProxies(List<ProxyConfigHolder> proxies) {
-        if (proxies == null || proxies.isEmpty()) {
-            log.error("List proxies cannot be null or empty");
-            throw new IllegalArgumentException("List cannot be null or empty");
+        if(proxies == null || proxies.isEmpty()) {
+            log.error("Bad proxies list");
         }
+    }
+
+    /**
+     * Get Flux with ProxyConfigHolder entities continuously.
+     *
+     * @return list with ProxyConfigHolder entities
+     */
+    private Flux<ProxyConfigHolder> getProxyFlux(List<ProxyConfigHolder> proxies) {
+        return Flux.fromIterable(proxies)
+                .log()
+                .delayElements(Duration.ofSeconds(DELAY))
+                .repeat();
     }
 
     /**
@@ -66,9 +71,9 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
      *
      * @return list with ProxyConfigHolder entities
      */
-    private List<ProxyConfigHolder> getListProxiesPrototype() {
-        var proxyNetworkConfigs = jsonReader.provideData(PROXY_NETWORK_CONFIG, ProxyNetworkConfig.class);
-        var proxyCredentials = jsonReader.provideData(PROXY_CREDENTIALS, ProxyCredentials.class);
+    private List<ProxyConfigHolder> getListProxiesPrototypes() {
+        var proxyNetworkConfigs = jsonReader.provideData(PROXY_NETWORK, ProxyNetworkConfig.class);
+        var proxyCredentials = jsonReader.provideData(PROXY_CREDENTIAL, ProxyCredentials.class);
 
         int numberOfIterations = Math.min(
                 Objects.requireNonNull(proxyNetworkConfigs).size(),
