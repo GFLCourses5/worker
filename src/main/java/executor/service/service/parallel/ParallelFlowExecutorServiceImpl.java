@@ -65,16 +65,19 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     /**
      * Start ScenarioSourceListener, ProxySourcesClient, ExecutionService
      * in parallel multi-threaded mode.
-     *
      */
     @Override
     public void execute() {
         configureThreadPoolConfig(propertiesConfig, threadPoolConfig);
         threadPoolExecutor = createThreadPoolExecutor(threadPoolConfig);
 
-        threadPoolExecutor.execute(threadFactory.createTaskWorker(scenarioSourceListener, SCENARIO_QUEUE));
+        //threadPoolExecutor.execute(threadFactory.createTaskWorker(scenarioSourceListener, SCENARIO_QUEUE));
 
-        threadPoolExecutor.execute(threadFactory.createTaskWorker(proxySourcesClient, PROXY_QUEUE));
+        //threadPoolExecutor.execute(threadFactory.createTaskWorker(proxySourcesClient, PROXY_QUEUE));
+
+        threadPoolExecutor.execute(new TaskScenario(scenarioSourceListener, SCENARIO_QUEUE));
+
+        threadPoolExecutor.execute(new TaskProxy(proxySourcesClient, PROXY_QUEUE));
 
         executeScenarioAndProxy();
     }

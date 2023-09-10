@@ -1,7 +1,13 @@
 package executor.service.service;
 
-public interface ProxySourcesClient<T> {
+import executor.service.model.ProxyConfigHolder;
+import reactor.core.publisher.Flux;
 
-    void execute(T handler);
+import java.util.List;
+
+public interface ProxySourcesClient {
+
+    //void execute(ProxyHandler handler);
+    Flux<ProxyConfigHolder> execute();
 
 }

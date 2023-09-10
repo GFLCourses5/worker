@@ -1,7 +1,11 @@
 package executor.service.service;
 
-public interface ScenarioSourceListener<T> {
+import executor.service.model.Scenario;
+import reactor.core.publisher.Flux;
 
-    void execute(T handler);
+public interface ScenarioSourceListener {
+
+    //void execute(ScenarioHandler handler);
+    Flux<Scenario> execute();
 
 }

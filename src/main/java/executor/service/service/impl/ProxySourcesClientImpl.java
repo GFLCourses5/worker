@@ -3,8 +3,8 @@ package executor.service.service.impl;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;
 import executor.service.model.ProxyNetworkConfig;
-import executor.service.service.ItemHandler;
 import executor.service.service.Provider;
+import executor.service.service.ProxyHandler;
 import executor.service.service.ProxySourcesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import static executor.service.config.properties.PropertiesConstants.PROXY_NETWO
  * @author Oleksandr Tuleninov, Nikita Hurmaza, Yurii Kotsiuba.
  * @version 01
  */
-public class ProxySourcesClientImpl<T> implements ProxySourcesClient<T> {
+public class ProxySourcesClientImpl implements ProxySourcesClient {
 
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
     public static final int DELAY = 1;
@@ -38,12 +38,19 @@ public class ProxySourcesClientImpl<T> implements ProxySourcesClient<T> {
         this.jsonReader = jsonReader;
     }
 
+//    @Override
+//    public void execute(ProxyHandler handler) {
+//        List<ProxyConfigHolder> proxyConfigHoldersPrototypes = getListProxiesPrototypes();
+//        validateProxies(proxyConfigHoldersPrototypes);
+//        Flux<ProxyConfigHolder> proxiesFlux = getProxyFlux(proxyConfigHoldersPrototypes);
+//        proxiesFlux.subscribe(handler::onItemReceived);
+//    }
+
     @Override
-    public void execute(T handler) {
+    public Flux<ProxyConfigHolder> execute() {
         List<ProxyConfigHolder> proxyConfigHoldersPrototypes = getListProxiesPrototypes();
         validateProxies(proxyConfigHoldersPrototypes);
-        Flux<ProxyConfigHolder> proxiesFlux = getProxyFlux(proxyConfigHoldersPrototypes);
-        proxiesFlux.subscribe(((ItemHandler<ProxyConfigHolder>)handler)::onItemReceived);
+        return getProxyFlux(proxyConfigHoldersPrototypes);
     }
 
     /**
