@@ -6,18 +6,9 @@ import executor.service.model.WebDriverConfig;
 import executor.service.service.ExecutionService;
 import executor.service.service.ScenarioExecutor;
 import executor.service.service.WebDriverInitializer;
-<<<<<<< HEAD
-import executor.service.service.parallel.ParallelFlowExecutorServiceImpl;
-import org.openqa.selenium.WebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.BlockingQueue;
-
-import static executor.service.config.properties.PropertiesConstants.*;
-=======
 import org.openqa.selenium.WebDriver;
->>>>>>> execution-service
+
 
 /**
  * The facade for execute ScenarioExecutor.
