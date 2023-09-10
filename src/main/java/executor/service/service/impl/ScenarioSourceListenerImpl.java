@@ -83,12 +83,11 @@ public class ScenarioSourceListenerImpl<T> implements ScenarioSourceListener<T> 
 
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("scenarios.json")) {
             ObjectMapper objectMapper = new ObjectMapper();
-            JavaType javaType = objectMapper.getTypeFactory().constructType(List.class);
+            JavaType javaType = objectMapper.getTypeFactory().constructType(List.class, Scenario.class);
             return objectMapper.readValue(inputStream, javaType);
         } catch (IOException e) {
             log.error("Exception with parsing {} from resources file in the JSONReader.class.", "scenarios.json", e);
             return null;
         }
-
     }
 }
