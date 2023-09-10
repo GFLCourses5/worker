@@ -2,6 +2,7 @@ package executor.service.service.impl;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
+import executor.service.service.Provider;
 import executor.service.service.ScenarioSourceListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
