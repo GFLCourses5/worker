@@ -6,8 +6,11 @@ import executor.service.model.Scenario;
 import executor.service.model.ThreadPoolConfig;
 import executor.service.service.ParallelFlowExecutorService;
 import executor.service.service.ProxySourcesClient;
+import executor.service.service.ProxyValidator;
 import executor.service.service.ScenarioSourceListener;
 import executor.service.service.impl.ExecutionServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.*;
 
@@ -21,8 +24,11 @@ import static executor.service.config.properties.PropertiesConstants.*;
  */
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
+    private static final Logger log = LoggerFactory.getLogger(ParallelFlowExecutorServiceImpl.class);
+
     private static final BlockingQueue<Scenario> SCENARIO_QUEUE = new LinkedBlockingDeque<>();
     private static final BlockingQueue<ProxyConfigHolder> PROXY_QUEUE = new LinkedBlockingDeque<>();
+    private static boolean FLAG = true;
 
     private ExecutionServiceImpl service;
     private ScenarioSourceListener scenarioSourceListener;
@@ -30,6 +36,9 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     private PropertiesConfig propertiesConfig;
     private ThreadPoolConfig threadPoolConfig;
     private ExecutorService threadPoolExecutor;
+    private ThreadFactory threadFactory;
+    private ProxyConfigHolder defaultProxy;
+    private ProxyValidator proxyValidator;
 
     public ParallelFlowExecutorServiceImpl() {
     }
@@ -38,13 +47,18 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
                                            ScenarioSourceListener scenarioSourceListener,
                                            ProxySourcesClient proxySourcesClient,
                                            PropertiesConfig propertiesConfig,
-                                           ThreadPoolConfig threadPoolConfig) {
+                                           ThreadPoolConfig threadPoolConfig,
+                                           ThreadFactory threadFactory,
+                                           ProxyConfigHolder defaultProxy,
+                                           ProxyValidator proxyValidator) {
         this.service = service;
         this.scenarioSourceListener = scenarioSourceListener;
         this.proxySourcesClient = proxySourcesClient;
         this.propertiesConfig = propertiesConfig;
         this.threadPoolConfig = threadPoolConfig;
-
+        this.threadFactory = threadFactory;
+        this.defaultProxy = defaultProxy;
+        this.proxyValidator = proxyValidator;
     }
 
     /**
@@ -57,20 +71,44 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
         configureThreadPoolConfig(propertiesConfig, threadPoolConfig);
         threadPoolExecutor = createThreadPoolExecutor(threadPoolConfig);
 
-        threadPoolExecutor.execute(new TaskWorker<>(scenarioSourceListener.getScenarios(), SCENARIO_QUEUE));
+        threadPoolExecutor.execute(threadFactory.createTaskWorker(scenarioSourceListener, SCENARIO_QUEUE));
 
-        threadPoolExecutor.execute(new TaskWorker<>(proxySourcesClient.getProxies(), PROXY_QUEUE));
+        threadPoolExecutor.execute(threadFactory.createTaskWorker(proxySourcesClient, PROXY_QUEUE));
 
-        threadPoolExecutor.execute(new ExecutionWorker(service, SCENARIO_QUEUE, PROXY_QUEUE));
+        executeScenarioAndProxy();
     }
 
     /**
      * Initiates an orderly shutdown in which previously submitted tasks are executed,
      * but no new tasks will be accepted.
-     * */
+     */
     @Override
     public void shutdown() {
+        FLAG = false;
         threadPoolExecutor.shutdown();
+    }
+
+    private void executeScenarioAndProxy() {
+        try {
+            executeParallel();
+        } catch (InterruptedException e) {
+            log.error("Thread was interrupted in ParallelFlowExecutorServiceImpl.class", e);
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /**
+     * Execute the scenario and proxy in parallel mode.
+     */
+    private void executeParallel() throws InterruptedException {
+        Scenario scenario;
+        ProxyConfigHolder proxy;
+        while (FLAG) {
+            scenario = SCENARIO_QUEUE.take();
+            proxy = PROXY_QUEUE.poll();
+            if (proxy != null && proxyValidator.isValid(proxy)) defaultProxy = proxy;
+            threadPoolExecutor.execute(threadFactory.createExecutionWorker(service, scenario, defaultProxy));
+        }
     }
 
     /**
