@@ -1,12 +1,10 @@
 package executor.service.config.bean;
 
 import executor.service.config.properties.PropertiesConfig;
-import executor.service.model.ProxyConfigHolder;
-import executor.service.model.ProxyCredentials;
-import executor.service.model.ProxyNetworkConfig;
-import executor.service.model.ThreadPoolConfig;
+import executor.service.model.*;
 import executor.service.service.Provider;
 
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -66,5 +64,18 @@ public class BeanConfig {
         var proxyCredentials = jsonReader.provideData(PROXY_CREDENTIALS_DEFAULT, ProxyCredentials.class);
 
         return new ProxyConfigHolder(proxyNetworkConfigs.get(0), proxyCredentials.get(0));
+    }
+
+    /**
+     * Create a default WebDriverConfig bean from properties file.
+     * */
+    public WebDriverConfig webDriverConfig() {
+        var properties = propertiesConfig.getProperties(WEB_DRIVER);
+        var webDriverExecutable = properties.getProperty(WEBDRIVER_EXECUTABLE);
+        var userAgent = properties.getProperty(USER_AGENT);
+        var pageLoadTimeout = Long.parseLong(properties.getProperty(PAGE_LOAD_TIMEOUT));
+        var implicitlyWait = Long.parseLong(properties.getProperty(IMPLICITLY_WAIT));
+
+        return new WebDriverConfig(webDriverExecutable, userAgent, pageLoadTimeout, implicitlyWait);
     }
 }
