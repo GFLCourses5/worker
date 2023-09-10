@@ -3,8 +3,8 @@ package executor.service.service;
 import executor.service.model.Scenario;
 import reactor.core.publisher.Flux;
 
-public interface ScenarioSourceListener {
+public interface ScenarioSourceListener<T> {
 
-    Flux<Scenario> getScenarios();
+    void execute(T handler);
 
 }
