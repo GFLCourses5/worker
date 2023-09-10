@@ -18,6 +18,8 @@ import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.List;
 
+import static executor.service.config.properties.PropertiesConstants.SCENARIOS;
+
 /**
  * Class for application`s constants.
  *
@@ -45,13 +47,6 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
         Flux<Scenario> scenariosFlux = getScenarioFlux(scenariosPrototypes);
         scenariosFlux.subscribe(handler::onItemReceived);
     }
-
-//    @Override
-//    public Flux<Scenario> execute() {
-//        List<Scenario> scenariosPrototypes = getListScenariosPrototypes();
-//        validateScenarios(scenariosPrototypes);
-//        return getScenarioFlux(scenariosPrototypes);
-//    }
 
     /**
      * Check the list of ProxyConfigHolder entities.
@@ -82,29 +77,15 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
      * @return list with Scenario entities
      */
     private List<Scenario> getListScenariosPrototypes() {
-        //return jsonReader.provideData(SCENARIOS, Scenario.class);
-
-//        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("scenarios.json")) {
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            JavaType javaType = objectMapper.getTypeFactory().constructType(List.class, Scenario.class);
-//            return objectMapper.readValue(inputStream, javaType);
-//        } catch (IOException e) {
-//            log.error("Exception with parsing {} from resources file in the JSONReader.class.", "scenarios.json", e);
-//            return null;
-//        }
-
         List<Scenario> scenarios = null;
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("scenarios.json");
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(SCENARIOS);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            scenarios = parseScenariosFromJson(reader);
+            Type listType = new TypeToken<List<Scenario>>() {}.getType();
+            scenarios = new Gson().fromJson(reader, listType);
+            return scenarios;
         } catch (IOException e) {
             log.error("Cannot read file {}. Reason: {}", "scenarios.json", e.getMessage(), e);
         }
         return scenarios;
-    }
-
-    private List<Scenario> parseScenariosFromJson(BufferedReader reader) {
-        Type listType = new TypeToken<List<Scenario>>() {}.getType();
-        return new Gson().fromJson(reader, listType);
     }
 }

@@ -46,13 +46,6 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
         proxiesFlux.subscribe(handler::onItemReceived);
     }
 
-//    @Override
-//    public Flux<ProxyConfigHolder> execute() {
-//        List<ProxyConfigHolder> proxyConfigHoldersPrototypes = getListProxiesPrototypes();
-//        validateProxies(proxyConfigHoldersPrototypes);
-//        return getProxyFlux(proxyConfigHoldersPrototypes);
-//    }
-
     /**
      * Check the list of ProxyConfigHolder entities.
      *
