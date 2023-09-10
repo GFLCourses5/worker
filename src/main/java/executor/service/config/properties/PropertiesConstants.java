@@ -21,7 +21,7 @@ public final class PropertiesConstants {
     public static final String SCENARIOS = "scenarios.json";
 
     public static final String WEB_DRIVER = "web-driver.properties";
-    public static final String WEB_DRIVER_EXECUTABLE = "webDriver-executable";
+    public static final String WEBDRIVER_EXECUTABLE = "webDriver-executable";
     public static final String USER_AGENT = "user-agent";
     public static final String PAGE_LOAD_TIMEOUT = "page-load-timeout";
     public static final String IMPLICITLY_WAIT = "implicitly-wait";
@@ -30,9 +30,4 @@ public final class PropertiesConstants {
     public static final String PROXY_NETWORK = "proxy-network.json";
     public static final String PROXY_NETWORK_DEFAULT = "proxy-network-default.json";
     public static final String PROXY_CREDENTIALS_DEFAULT = "proxy-credentials-default.json";
-    public static final String WEB_DRIVER = "web-driver.properties";
-    public static final String WEBDRIVER_EXECUTABLE = "webDriver-executable";
-    public static final String USER_AGENT = "user-agent";
-    public static final String PAGE_LOAD_TIMEOUT = "page-load-timeout";
-    public static final String IMPLICITLY_WAIT = "implicitly-wait";
 }

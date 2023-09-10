@@ -1,5 +1,6 @@
 package executor.service.service.impl;
 
+import executor.service.config.bean.BeanConfig;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.model.WebDriverConfig;
@@ -19,15 +20,15 @@ import org.openqa.selenium.WebDriver;
 public class ExecutionServiceImpl implements ExecutionService {
 
     private ScenarioExecutor scenarioExecutor;
-    private WebDriverConfig webDriverConfig;
+    private BeanConfig beanConfig;
 
     public ExecutionServiceImpl() {
     }
 
     public ExecutionServiceImpl(ScenarioExecutor scenarioExecutor,
-                                WebDriverConfig webDriverConfig) {
+                                BeanConfig beanConfig) {
         this.scenarioExecutor = scenarioExecutor;
-        this.webDriverConfig = webDriverConfig;
+        this.beanConfig = beanConfig;
     }
 
     /**
@@ -38,7 +39,7 @@ public class ExecutionServiceImpl implements ExecutionService {
      */
     @Override
     public void execute(Scenario scenario, ProxyConfigHolder proxy) {
-        WebDriver webDriver = getWebDriverPrototype(webDriverConfig, proxy);
+        WebDriver webDriver = getWebDriverPrototype(beanConfig.webDriverConfig(), proxy);
         if (webDriver == null) return;
 
         scenarioExecutor.execute(scenario, webDriver);
