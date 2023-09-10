@@ -1,7 +1,7 @@
 package executor.service.service.impl;
 
-import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
+import executor.service.service.ItemHandler;
 import executor.service.service.Provider;
 import executor.service.service.ScenarioSourceListener;
 import org.slf4j.Logger;
@@ -34,8 +34,8 @@ public class ScenarioSourceListenerImpl<T> implements ScenarioSourceListener<T> 
     public void execute(T handler) {
         List<Scenario> scenariosPrototypes = getListProxiesPrototypes();
         validateScenarios(scenariosPrototypes);
-        Flux<ProxyConfigHolder> proxiesFlux = getScenarioFlux(scenariosPrototypes);
-        proxiesFlux.subscribe(((ItemHandler<ProxyConfigHolder>)handler)::onItemReceived);
+        Flux<Scenario> scenariosFlux = getScenarioFlux(scenariosPrototypes);
+        scenariosFlux.subscribe(((ItemHandler<Scenario>)handler)::onItemReceived);
     }
 
     /**
@@ -67,6 +67,6 @@ public class ScenarioSourceListenerImpl<T> implements ScenarioSourceListener<T> 
      * @return list with Scenario entities
      */
     private List<Scenario> getListProxiesPrototypes() {
-        return jsonReader.provideData(SCENARIOS, ScenarioSourceListener.class);
+        return jsonReader.provideData(SCENARIOS, Scenario.class);
     }
 }
