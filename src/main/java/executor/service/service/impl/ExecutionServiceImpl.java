@@ -18,8 +18,11 @@ import org.openqa.selenium.WebDriver;
  */
 public class ExecutionServiceImpl implements ExecutionService {
 
-    private final ScenarioExecutor scenarioExecutor;
-    private final WebDriverConfig webDriverConfig;
+    private ScenarioExecutor scenarioExecutor;
+    private WebDriverConfig webDriverConfig;
+
+    public ExecutionServiceImpl() {
+    }
 
     public ExecutionServiceImpl(ScenarioExecutor scenarioExecutor,
                                 WebDriverConfig webDriverConfig) {

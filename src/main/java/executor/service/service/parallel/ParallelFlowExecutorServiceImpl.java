@@ -72,7 +72,7 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
         configureThreadPoolConfig(propertiesConfig, threadPoolConfig);
         threadPoolExecutor = createThreadPoolExecutor(threadPoolConfig);
 
-        threadPoolExecutor.execute(threadFactory.createTaskWorker(scenarioSourceListener, SCENARIO_QUEUE));
+        //threadPoolExecutor.execute(threadFactory.createTaskWorker(scenarioSourceListener, SCENARIO_QUEUE));
 
         threadPoolExecutor.execute(threadFactory.createTaskWorker(proxySourcesClient, PROXY_QUEUE));
 

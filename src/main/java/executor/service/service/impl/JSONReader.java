@@ -1,5 +1,6 @@
 package executor.service.service.impl;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import executor.service.service.Provider;
 import org.slf4j.Logger;
@@ -39,5 +40,15 @@ public class JSONReader implements Provider {
             log.error("Exception with parsing {} from resources file in the JSONReader.class.", fileName, e);
             return null;
         }
+
+//        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName)) {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            //JavaType javaType = objectMapper.getTypeFactory().constructType(List.class);
+//            JavaType javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, valueType);
+//            return objectMapper.readValue(inputStream, javaType);
+//        } catch (IOException e) {
+//            log.error("Exception with parsing {} from resources file in the JSONReader.class.", fileName, e);
+//            return null;
+//        }
     }
 }

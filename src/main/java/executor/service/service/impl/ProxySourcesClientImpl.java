@@ -29,7 +29,10 @@ public class ProxySourcesClientImpl<T> implements ProxySourcesClient<T> {
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
     public static final int DELAY = 1;
 
-    private final Provider jsonReader;
+    private Provider jsonReader;
+
+    public ProxySourcesClientImpl() {
+    }
 
     public ProxySourcesClientImpl(Provider jsonReader) {
         this.jsonReader = jsonReader;
@@ -72,8 +75,8 @@ public class ProxySourcesClientImpl<T> implements ProxySourcesClient<T> {
      * @return list with ProxyConfigHolder entities
      */
     private List<ProxyConfigHolder> getListProxiesPrototypes() {
-        var proxyNetworkConfigs = jsonReader.provideData(PROXY_NETWORK, ProxyNetworkConfig.class);
-        var proxyCredentials = jsonReader.provideData(PROXY_CREDENTIAL, ProxyCredentials.class);
+        List<ProxyNetworkConfig> proxyNetworkConfigs = jsonReader.provideData(PROXY_NETWORK, ProxyNetworkConfig.class);
+        List<ProxyCredentials> proxyCredentials = jsonReader.provideData(PROXY_CREDENTIAL, ProxyCredentials.class);
 
         int numberOfIterations = Math.min(
                 Objects.requireNonNull(proxyNetworkConfigs).size(),
@@ -81,7 +84,7 @@ public class ProxySourcesClientImpl<T> implements ProxySourcesClient<T> {
 
         List<ProxyConfigHolder> proxies = new ArrayList<>();
         for (int i = 0; i < numberOfIterations; i++) {
-            var proxy = createProxyConfigHolderPrototype(proxyNetworkConfigs, proxyCredentials, i);
+            ProxyConfigHolder proxy = createProxyConfigHolderPrototype(proxyNetworkConfigs, proxyCredentials, i);
             proxies.add(proxy);
         }
 

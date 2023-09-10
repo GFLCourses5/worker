@@ -1,5 +1,9 @@
 package executor.service.service.impl;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import executor.service.model.Scenario;
 import executor.service.service.ItemHandler;
 import executor.service.service.Provider;
@@ -8,6 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.List;
 
@@ -21,10 +30,13 @@ import static executor.service.config.properties.PropertiesConstants.SCENARIOS;
  * */
 public class ScenarioSourceListenerImpl<T> implements ScenarioSourceListener<T> {
 
-    private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);
+    private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListenerImpl.class);
     public static final int DELAY = 1;
 
-    private final Provider jsonReader;
+    private Provider jsonReader;
+
+    public ScenarioSourceListenerImpl() {
+    }
 
     public ScenarioSourceListenerImpl(Provider jsonReader) {
         this.jsonReader = jsonReader;
@@ -32,7 +44,7 @@ public class ScenarioSourceListenerImpl<T> implements ScenarioSourceListener<T> 
 
     @Override
     public void execute(T handler) {
-        List<Scenario> scenariosPrototypes = getListProxiesPrototypes();
+        List<Scenario> scenariosPrototypes = getListScenariosPrototypes();
         validateScenarios(scenariosPrototypes);
         Flux<Scenario> scenariosFlux = getScenarioFlux(scenariosPrototypes);
         scenariosFlux.subscribe(((ItemHandler<Scenario>)handler)::onItemReceived);
@@ -66,7 +78,17 @@ public class ScenarioSourceListenerImpl<T> implements ScenarioSourceListener<T> 
      *
      * @return list with Scenario entities
      */
-    private List<Scenario> getListProxiesPrototypes() {
-        return jsonReader.provideData(SCENARIOS, Scenario.class);
+    private List<Scenario> getListScenariosPrototypes() {
+        //return jsonReader.provideData(SCENARIOS, Scenario.class);
+
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("scenarios.json")) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JavaType javaType = objectMapper.getTypeFactory().constructType(List.class);
+            return objectMapper.readValue(inputStream, javaType);
+        } catch (IOException e) {
+            log.error("Exception with parsing {} from resources file in the JSONReader.class.", "scenarios.json", e);
+            return null;
+        }
+
     }
 }
