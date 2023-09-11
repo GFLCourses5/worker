@@ -55,7 +55,7 @@ public class Scenario {
     }
 
     @Override
-    public String toString() {
+    public java.lang.String toString() {
         return "Scenario{" +
                 "name='" + name + '\'' +
                 ", site='" + site + '\'' +

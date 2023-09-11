@@ -3,22 +3,22 @@ package executor.service.model;
 import java.util.Objects;
 
 public class Step {
-    private StepTypes action;
+    private String action;
     private String value;
 
     public Step() {
     }
 
-    public Step(StepTypes action, String value) {
+    public Step(String action, String value) {
         this.action = action;
         this.value = value;
     }
 
-    public StepTypes getAction() {
+    public String getAction() {
         return action;
     }
 
-    public void setAction(StepTypes action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
@@ -35,19 +35,11 @@ public class Step {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Step step = (Step) o;
-        return action.equals(step.action) && value.equals(step.value);
+        return Objects.equals(action, step.action) && Objects.equals(value, step.value);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(action, value);
-    }
-
-    @Override
-    public String toString() {
-        return "Step{" +
-            "action='" + action + '\'' +
-            ", value='" + value + '\'' +
-            '}';
     }
 }

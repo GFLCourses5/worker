@@ -2,16 +2,17 @@ package executor.service.service.impl;
 
 import executor.service.exceptions.StepExecutionException;
 import executor.service.model.Step;
-import executor.service.model.StepTypes;
+import executor.service.model.StepAction;
 import executor.service.service.StepExecutionSleep;
-import java.util.Random;
 import org.openqa.selenium.WebDriver;
+
+import java.util.Random;
 
 public class StepExecutionSleepImpl implements StepExecutionSleep {
 
   @Override
   public String getStepAction() {
-    return StepTypes.SLEEP.getName();
+    return StepAction.SLEEP.getName();
   }
 
   @Override
@@ -24,9 +25,9 @@ public class StepExecutionSleepImpl implements StepExecutionSleep {
 
   }
 
-  private int getRandom(String value) {
+  private int getRandom(java.lang.String value) {
 
-    String values[] = value.split(":");
+    java.lang.String values[] = value.split(":");
     Random random = new Random();
     int min = Integer.parseInt(values[0]);
     int max = Integer.parseInt(values[values.length - 1]);

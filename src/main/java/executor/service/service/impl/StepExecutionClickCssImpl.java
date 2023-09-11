@@ -1,7 +1,7 @@
 package executor.service.service.impl;
 
 import executor.service.model.Step;
-import executor.service.model.StepTypes;
+import executor.service.model.StepAction;
 import executor.service.service.StepExecutionClickCss;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +11,7 @@ public class StepExecutionClickCssImpl implements StepExecutionClickCss {
 
   @Override
   public String getStepAction() {
-    return StepTypes.CLICK_CSS.getName();
+    return StepAction.CLICK_CSS.getName();
   }
 
   @Override

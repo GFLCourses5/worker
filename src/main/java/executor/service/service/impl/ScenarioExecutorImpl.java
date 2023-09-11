@@ -34,7 +34,7 @@ public class ScenarioExecutorImpl implements ScenarioExecutor {
     @Override
     public void execute(Scenario scenario, WebDriver webDriver) {
         for (Step step : scenario.getSteps()) {
-            String action = step.getAction().getName();
+            String action = step.getAction();
             switch (action) {
                 case "clickCss" -> stepExecutionClickCss.step(webDriver, step);
                 case "sleep" -> stepExecutionClickXpath.step(webDriver, step);
