@@ -1,4 +1,4 @@
-package executor.service.config.bean;
+package executor.service.config.di.bean;
 
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.*;
