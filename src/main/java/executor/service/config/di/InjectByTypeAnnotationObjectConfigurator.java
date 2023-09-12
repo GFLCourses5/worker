@@ -53,3 +53,4 @@ public class InjectByTypeAnnotationObjectConfigurator implements ObjectConfigura
         return false;
     }
 }
+

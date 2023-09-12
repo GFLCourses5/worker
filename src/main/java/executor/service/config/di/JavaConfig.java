@@ -32,3 +32,4 @@ public class JavaConfig implements Config {
         return scanner;
     }
 }
+
