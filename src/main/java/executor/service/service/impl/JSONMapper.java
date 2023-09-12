@@ -10,18 +10,18 @@ import java.io.InputStream;
 import java.util.List;
 
 /**
- * Class for reading properties as JSON from properties file.
+ * Class for mapping properties as JSON from properties file.
  *
  * @author Oleksandr Tuleninov
  * @version 01
  */
-public class JSONReader implements Provider {
+public class JSONMapper implements Provider {
 
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
 
     @Override
     public <T> List<T> provideData(String resource, Class<T> valueType) {
-        return readJsonFromPropertiesFile(resource, valueType);
+        return mapJsonFromPropertiesFile(resource, valueType);
     }
 
     /**
@@ -30,13 +30,13 @@ public class JSONReader implements Provider {
      * @param fileName properties file name
      * @return if reading successful - List<T> or if exception - null
      */
-    private <T> List<T> readJsonFromPropertiesFile(String fileName, Class<T> valueType) {
+    private <T> List<T> mapJsonFromPropertiesFile(String fileName, Class<T> valueType) {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName)) {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(inputStream,
                     objectMapper.getTypeFactory().constructCollectionType(List.class, valueType));
         } catch (IOException e) {
-            log.error("Exception with parsing {} from resources file in the JSONReader.class.", fileName, e);
+            log.error("Exception with parsing {} from resources file in the JSONMapper.class.", fileName, e);
             return null;
         }
     }

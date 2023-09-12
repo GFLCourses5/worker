@@ -1,8 +1,11 @@
 package executor.service.service;
 
-import executor.service.model.ProxyConfigHolder;
-import reactor.core.publisher.Flux;
-
+/**
+ * Class for reading properties as JSON from properties file.
+ *
+ * @author Oleksandr Tuleninov
+ * @version 01
+ */
 public interface ProxySourcesClient<T> {
 
     void execute(T handler);
