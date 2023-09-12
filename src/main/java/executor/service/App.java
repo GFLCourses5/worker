@@ -13,7 +13,7 @@ public class App {
         ApplicationContext context = FactoryForDI.run(
                 getPackageName(),
                 new HashMap<>(Map.of(ParallelFlowExecutorService.class, ParallelFlowExecutorServiceImpl.class)));
-        ParallelFlowExecutorServiceImpl service = context.getObject(ParallelFlowExecutorServiceImpl.class);
+        ParallelFlowExecutorService service = context.getObject(ParallelFlowExecutorService.class);
         service.execute();
     }
 
