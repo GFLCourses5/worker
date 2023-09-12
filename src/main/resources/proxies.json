@@ -1,0 +1,22 @@
+[
+  {
+    "proxyNetworkConfig": {
+      "hostname": "185.199.229.156",
+      "port": 7492
+    },
+    "proxyCredentials": {
+      "username": "heixktts",
+      "password": "5ljkoauiuicw"
+    }
+  },
+  {
+    "proxyNetworkConfig": {
+      "hostname": "185.199.229.15",
+      "port": 7492
+    },
+    "proxyCredentials": {
+      "username": "heixktts",
+      "password": "5ljkoauiuicw"
+    }
+  }
+]

@@ -2,67 +2,45 @@ package executor.service.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.ProxyCredentials;
-import executor.service.model.ProxyNetworkConfig;
 import executor.service.service.ProxySourcesClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static executor.service.config.properties.PropertiesConstants.PROXY_CREDENTIALS;
-import static executor.service.config.properties.PropertiesConstants.PROXY_NETWORK_CONFIG;
 
 public class ProxySourcesClientImpl implements ProxySourcesClient {
-
+    private final ProxyValidator proxyValidator;
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    public ProxySourcesClientImpl(ProxyValidator proxyValidator) {
+        this.proxyValidator = proxyValidator;
+    }
 
     @Override
     public List<ProxyConfigHolder> getProxies() {
-        return getProxyConfigHoldersPrototype();
-    }
-
-    private List<ProxyConfigHolder> getProxyConfigHoldersPrototype() {
-        List<ProxyCredentials> proxyCredentials = readProxyCredentialsFromJson();
-        List<ProxyNetworkConfig> proxyNetworkConfigs = readProxyNetworkConfigFromJson();
-
-        int numberOfIterations = Math.min(
-                Objects.requireNonNull(proxyCredentials).size(),
-                Objects.requireNonNull(proxyNetworkConfigs).size());
-
-        List<ProxyConfigHolder> proxyConfigHolders = new ArrayList<>();
-        for (int i = 0; i < numberOfIterations; i++) {
-            ProxyConfigHolder proxyConfigHolder = new ProxyConfigHolder();
-            proxyConfigHolder.setProxyCredentials(proxyCredentials.get(i));
-            proxyConfigHolder.setProxyNetworkConfig(proxyNetworkConfigs.get(i));
-            proxyConfigHolders.add(proxyConfigHolder);
-        }
-
-        return proxyConfigHolders;
-    }
-
-    private List<ProxyCredentials> readProxyCredentialsFromJson() {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROXY_CREDENTIALS)) {
-            return new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
+        File file = new File(PropertiesConstants.PROXIES);
+        List<ProxyConfigHolder> proxies = new ArrayList<>();
+        try (InputStream inputStream = new FileInputStream(file)) {
+            List<ProxyConfigHolder> input = mapper.readValue(inputStream, new TypeReference<>() {});
+            for (ProxyConfigHolder proxy : input) {
+                if (proxyValidator.validate(proxy)) {
+                    proxies.add(proxy);
+                }
+            }
+            //file.delete();
+            return proxies;
         } catch (IOException e) {
             log.info("""
                     Exception with parsing proxy-credentials.json from resources file in the ProxySourcesClientImpl.class.
-                    """);
-            return null;
-        }
-    }
-
-    private List<ProxyNetworkConfig> readProxyNetworkConfigFromJson() {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(PROXY_NETWORK_CONFIG)) {
-            return new ObjectMapper().readValue(inputStream, new TypeReference<>() {});
-        } catch (IOException e) {
-            log.info("""
-                    Exception with parsing proxy-network.json from resources file in the ProxySourcesClientImpl.class.
                     """);
             return null;
         }
