@@ -2,7 +2,6 @@ package executor.service;
 
 import executor.service.config.di.ApplicationContext;
 import executor.service.config.di.FactoryForDI;
-import executor.service.service.ParallelFlowExecutorService;
 import executor.service.service.parallel.ParallelFlowExecutorServiceImpl;
 
 import java.util.HashMap;
