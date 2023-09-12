@@ -1,6 +1,6 @@
 package executor.service;
 
-import executor.service.config.di.Application;
+import executor.service.config.di.FactoryForDI;
 import executor.service.config.di.ApplicationContext;
 
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Map;
 public class App {
 
     public static void main( String[] args ) {
-        ApplicationContext context = Application.run(
+        ApplicationContext context = FactoryForDI.run(
                 getPackageName(),
                 new HashMap<>(Map.of(ParalleFlowExecutorService.class, ParalleFlowExecutorServiceImpl.class)));
         ParalleFlowExecutorService service = context.getObject(ParalleFlowExecutorService.class);
