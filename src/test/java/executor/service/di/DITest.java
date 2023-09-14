@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DITest {
 
-    private ApplicationContext context;
+    private final ApplicationContext context;
 
     {
         context = FactoryForDI.run(
