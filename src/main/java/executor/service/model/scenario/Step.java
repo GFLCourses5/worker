@@ -1,5 +1,6 @@
 package executor.service.model.scenario;
 
+import executor.service.model.StepTypes;
 import java.util.Objects;
 
 public class Step {
