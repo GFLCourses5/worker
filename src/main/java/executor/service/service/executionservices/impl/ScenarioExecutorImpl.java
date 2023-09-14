@@ -1,6 +1,8 @@
-package executor.service.service.impl;
+package executor.service.service.executionservices.impl;
 
-import executor.service.model.Scenario;
+
+import executor.service.model.scenario.Scenario;
+import executor.service.service.executionservices.ScenarioExecutor;
 import org.openqa.selenium.WebDriver;
 
 public class ScenarioExecutorImpl implements ScenarioExecutor {
