@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
 
-    public static final int DELAY = 1;
+    private static final long DELAY = 1000;
     private final ScenarioProvider provider;
 
     private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);
