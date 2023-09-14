@@ -1,6 +1,6 @@
 package executor.service.service.sources.impl;
 
-import executor.service.handler.ProxyHandler;
+import executor.service.service.sources.ProxyHandler;
 import executor.service.model.proxy.ProxyConfigHolder;
 import executor.service.service.sources.ProxyProvider;
 import executor.service.service.sources.ScenarioSourceListener.ProxySourcesClient;
