@@ -1,18 +1,23 @@
 package executor.service.service;
 
-import org.openqa.selenium.WebDriver;
+/**
+ * Start ExecutionService in parallel multi-threaded mode.
+ *
+ * @author Oleksandr Tuleninov
+ * @version 01
+ */
+public interface ParallelFlowExecutorService {
 
-public class ParallelFlowExecutorService {
+    /**
+     * Start ScenarioSourceListener, ProxySourcesClient, ExecutionService
+     * in parallel multi-threaded mode.
+     */
+    void execute();
 
-    private  WebDriver webDriver;
-    private  ExecutionService executionService;
+    /**
+     * Initiates an orderly shutdown in which previously submitted tasks are executed,
+     * but no new tasks will be accepted.
+     */
+    void shutdown();
 
-    public ParallelFlowExecutorService(WebDriver webDriver, ExecutionService executionService) {
-        this.webDriver = webDriver;
-        this.executionService = executionService;
-    }
-
-    public void run() {
-
-    }
 }
