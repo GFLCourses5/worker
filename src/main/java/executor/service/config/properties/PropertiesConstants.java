@@ -25,4 +25,7 @@ public final class PropertiesConstants {
     public static final String USER_AGENT = "user-agent";
     public static final String PAGE_LOAD_TIMEOUT = "page-load-timeout";
     public static final String IMPLICITLY_WAIT = "implicitly-wait";
+    public static final String PROXY_NETWORK_DEFAULT = "proxy-network-default.json";
+    public static final String PROXY_CREDENTIALS_DEFAULT = "proxy-credentials-default.json";
+
 }
