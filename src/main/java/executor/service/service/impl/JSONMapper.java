@@ -1,7 +1,7 @@
 package executor.service.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import executor.service.service.parallel.Provider;
+import executor.service.service.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package executor.service.service.parallel;
+package executor.service.service;
 
 import java.util.List;
 

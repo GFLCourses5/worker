@@ -2,7 +2,7 @@ package executor.service.config.bean;
 
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.*;
-import executor.service.service.parallel.Provider;
+import executor.service.service.Provider;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;

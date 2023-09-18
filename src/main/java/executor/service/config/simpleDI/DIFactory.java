@@ -8,7 +8,7 @@ import executor.service.model.WebDriverConfig;
 import executor.service.service.*;
 import executor.service.service.impl.*;
 import executor.service.service.parallel.ParallelFlowExecutorServiceImpl;
-import executor.service.service.parallel.Provider;
+import executor.service.service.Provider;
 import executor.service.service.parallel.TasksFactoryImpl;
 
 import java.util.ArrayList;
