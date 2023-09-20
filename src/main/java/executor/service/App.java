@@ -1,14 +1,13 @@
 package executor.service;
 
-import executor.service.service.impl.DIFactory;
-import executor.service.service.ParallelFlowExecutorService;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class App {
 
     public static void main( String[] args ) {
-        DIFactory diFactory = new DIFactory();
-        ParallelFlowExecutorService service = diFactory.createObject(ParallelFlowExecutorService.class);
-        service.execute();
+        SpringApplication.run(App.class, args);
     }
 
 }
