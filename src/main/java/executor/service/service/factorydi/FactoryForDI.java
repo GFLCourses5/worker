@@ -1,6 +1,15 @@
-package executor.service.service;
+package executor.service.service.factorydi;
 
-import executor.service.service.impl.*;
+import executor.service.service.executionservice.ExecutionService;
+import executor.service.service.paralleflow.ParalleFlowExecutorService;
+import executor.service.service.proxy.ProxySourcesClient;
+import executor.service.service.proxy.ProxySourcesClientImpl;
+import executor.service.service.scenario.ScenarioExecutor;
+import executor.service.service.scenario.ScenarioExecutorImpl;
+import executor.service.service.scenario.ScenarioSourceListener;
+import executor.service.service.scenario.ScenarioSourceListenerImpl;
+import executor.service.service.stepexections.*;
+import executor.service.service.webdriver.WebDriverInitializer;
 
 public class FactoryForDI {
     private final WebDriverInitializer webDriverInitializer;
@@ -19,7 +28,7 @@ public class FactoryForDI {
         proxySourcesClient = new ProxySourcesClientImpl();
         scenarioSourceListener = new ScenarioSourceListenerImpl();
         paralleFlowExecutorService = new ParalleFlowExecutorService(null,null);
-        executionService = new ExecutionServiceImpl();
+        executionService = null;
         scenarioExecutor = new ScenarioExecutorImpl();
         stepExecutionSleep = new StepExecutionSleepImpl();
         stepExecutionClickCss = new StepExecutionClickCssImpl();

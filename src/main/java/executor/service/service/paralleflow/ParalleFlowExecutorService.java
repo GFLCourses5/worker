@@ -1,6 +1,7 @@
-package executor.service.service;
+package executor.service.service.paralleflow;
 
-import executor.service.model.Scenario;
+import executor.service.model.scenario.Scenario;
+import executor.service.service.executionservice.ExecutionService;
 import org.openqa.selenium.WebDriver;
 
 public class ParalleFlowExecutorService {

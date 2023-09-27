@@ -1,7 +1,6 @@
-package executor.service.service.impl;
+package executor.service.service.stepexections;
 
-import executor.service.model.Step;
-import executor.service.service.StepExecutionClickXpath;
+import executor.service.model.scenario.Step;
 import org.openqa.selenium.WebDriver;
 
 public class StepExecutionClickXpathImpl implements StepExecutionClickXpath {
