@@ -27,5 +27,7 @@ public final class PropertiesConstants {
     public static final String IMPLICITLY_WAIT = "implicitly-wait";
     public static final String PROXY_NETWORK_DEFAULT = "proxy-network-default.json";
     public static final String PROXY_CREDENTIALS_DEFAULT = "proxy-credentials-default.json";
+    public static final String PROXY_NETWORKS = "proxy-networks.json";
+    public static final String PROXY_CREDENTIALS = "proxy-credentials.json";
 
 }
