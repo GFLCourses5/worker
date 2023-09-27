@@ -1,4 +1,4 @@
-package executor.service.model;
+package executor.service.model.config;
 
 import executor.service.model.config.WebDriverConfig;
 import org.junit.jupiter.api.AfterEach;
