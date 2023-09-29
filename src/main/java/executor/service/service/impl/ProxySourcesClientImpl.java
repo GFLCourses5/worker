@@ -1,9 +1,9 @@
 package executor.service.service.impl;
 
-import executor.service.handler.ProxyHandler;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;
 import executor.service.model.ProxyNetworkConfig;
+import executor.service.service.ItemHandler;
 import executor.service.service.Provider;
 import executor.service.service.ProxySourcesClient;
 import executor.service.service.ProxyValidator;
@@ -26,20 +26,24 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
 
     private final Provider jsonReader;
     private final ProxyValidator proxyValidator;
+    private final ProxyConfigHolder defaultProxy;
 
-    public ProxySourcesClientImpl(Provider jsonReader, ProxyValidator proxyValidator) {
+    public ProxySourcesClientImpl(Provider jsonReader,
+                                  ProxyValidator proxyValidator,
+                                  ProxyConfigHolder defaultProxy) {
         this.jsonReader = jsonReader;
         this.proxyValidator = proxyValidator;
+        this.defaultProxy = defaultProxy;
     }
 
     @Override
-    public void execute(ProxyHandler handler) {
-        List<ProxyConfigHolder> proxyConfigHoldersPrototypes = getListProxiesPrototypes();
-        validateProxies(proxyConfigHoldersPrototypes);
-        Flux<ProxyConfigHolder> proxiesFlux = getProxyFlux(proxyConfigHoldersPrototypes);
+    public void execute(ItemHandler handler) {
+        List<ProxyConfigHolder> proxyConfigHolders = getListProxies();
+        List<ProxyConfigHolder> proxies = validateProxies(proxyConfigHolders);
+        Flux<ProxyConfigHolder> proxiesFlux = getProxyFlux(proxies);
         proxiesFlux.subscribe(proxy -> {
             if (proxyValidator.isValid(proxy)) {
-                handler.onProxyReceived(proxy);
+                handler.onItemReceived(proxy);
             }
         });
     }
@@ -49,10 +53,12 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
      *
      * @param proxies list of ProxyConfigHolder entitie
      */
-    private void validateProxies(List<ProxyConfigHolder> proxies) {
+    private List<ProxyConfigHolder> validateProxies(List<ProxyConfigHolder> proxies) {
         if (proxies == null || proxies.isEmpty()) {
             log.error("Bad proxies list");
+            proxies.add(defaultProxy);
         }
+        return proxies;
     }
 
     /**
@@ -72,7 +78,7 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
      *
      * @return list with ProxyConfigHolder entities
      */
-    private List<ProxyConfigHolder> getListProxiesPrototypes() {
+    private List<ProxyConfigHolder> getListProxies() {
         List<ProxyNetworkConfig> proxyNetworkConfigs = jsonReader.provideData(PROXY_NETWORKS, ProxyNetworkConfig.class);
         List<ProxyCredentials> proxyCredentials = jsonReader.provideData(PROXY_CREDENTIALS, ProxyCredentials.class);
 

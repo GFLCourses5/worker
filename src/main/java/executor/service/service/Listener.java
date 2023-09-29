@@ -1,6 +1,6 @@
 package executor.service.service;
 
-public interface ScenarioSourceListener extends Listener {
+public interface Listener {
 
     void execute(ItemHandler handler);
 

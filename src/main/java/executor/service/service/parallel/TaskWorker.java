@@ -1,7 +1,7 @@
 package executor.service.service.parallel;
 
-import executor.service.handler.ProxyHandler;
-import executor.service.handler.ScenarioHandler;
+import executor.service.service.ItemHandler;
+import executor.service.service.Listener;
 import executor.service.service.ProxySourcesClient;
 import executor.service.service.ScenarioSourceListener;
 
@@ -16,16 +16,16 @@ import java.util.function.Consumer;
  * @author Oleksandr Tuleninov, Yurii Kotsiuba.
  * @version 01
  * */
-public class TaskWorker<T> implements Callable<T> {
+public class TaskWorker<T> implements Callable<BlockingQueue<T>> {
 
-    private final T listener;
+    private final Listener listener;
 
-    public TaskWorker(T listener) {
+    public TaskWorker(Listener listener) {
         this.listener = listener;
     }
 
     @Override
-    public T call() {
+    public BlockingQueue<T> call() {
         BlockingQueue<T> queue = new LinkedBlockingDeque<>();
         Consumer<T> itemHandlerConsumer = items -> {
             try {
@@ -36,18 +36,15 @@ public class TaskWorker<T> implements Callable<T> {
         };
 
         if (listener instanceof ScenarioSourceListener) {
-            ((ScenarioSourceListener) listener).execute(createScenarioHandler(itemHandlerConsumer));
+            listener.execute(createHandler(itemHandlerConsumer));
         } else if (listener instanceof ProxySourcesClient) {
-            ((ProxySourcesClient) listener).execute(createProxyHandler(itemHandlerConsumer));
+            listener.execute(createHandler(itemHandlerConsumer));
         }
-        return (T) queue;
+
+        return queue;
     }
 
-    private ScenarioHandler createScenarioHandler(Consumer<T> consumer) {
-        return item -> consumer.accept((T) item);
-    }
-
-    private ProxyHandler createProxyHandler(Consumer<T> consumer) {
-        return item -> consumer.accept((T) item);
+    private ItemHandler<T> createHandler(Consumer<T> consumer) {
+        return consumer::accept;
     }
 }

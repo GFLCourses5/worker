@@ -1,7 +1,7 @@
 package executor.service.service.impl;
 
-import executor.service.handler.ScenarioHandler;
 import executor.service.model.Scenario;
+import executor.service.service.ItemHandler;
 import executor.service.service.ScenarioProvider;
 import executor.service.service.ScenarioSourceListener;
 import org.slf4j.Logger;
@@ -23,11 +23,11 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
     }
 
     @Override
-    public void execute(ScenarioHandler handler) {
+    public void execute(ItemHandler handler) {
         List<Scenario> scenarios = provider.readScenarios();
         validateScenarios(scenarios);
         Flux<Scenario> scenariosFlux = getScenarioFlux(scenarios);
-        scenariosFlux.subscribe(handler::onScenarioReceived);
+        scenariosFlux.subscribe(handler::onItemReceived);
     }
 
     /**

@@ -3,8 +3,10 @@ package executor.service.service.parallel;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.service.ExecutionService;
+import executor.service.service.Listener;
 import executor.service.service.TasksFactory;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 
 /**
@@ -16,8 +18,8 @@ import java.util.concurrent.Callable;
 public class TasksFactoryImpl<T> implements TasksFactory<T> {
 
     @Override
-    public Callable<T> createTaskWorker(T listener) {
-        return new TaskWorker<>(listener);
+    public Callable<BlockingQueue<T>> createTaskWorker(Listener listener) {
+        return new TaskWorker<T>(listener);
     }
 
     @Override

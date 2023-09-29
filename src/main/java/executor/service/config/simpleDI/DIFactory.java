@@ -42,11 +42,10 @@ public class DIFactory implements ObjectFactory {
                 ScenarioProvider scenarioProvider = new JSONFileScenarioProvider();
                 ScenarioSourceListener scenarioSourceListener = new ScenarioSourceListenerImpl(scenarioProvider);
                 ProxyValidator proxyValidator = new ProxyValidatorImpl();
-                ProxySourcesClient proxySourcesClient = new ProxySourcesClientImpl(provider, proxyValidator);
+                ProxySourcesClient proxySourcesClient = new ProxySourcesClientImpl(provider, proxyValidator, defaultProxy);
                 TasksFactory tasksFactory = new TasksFactoryImpl();
                 ParallelFlowExecutorService parallel = new ParallelFlowExecutorServiceImpl(
-                        threadPoolExecutor, executionService, scenarioSourceListener, proxySourcesClient,
-                        tasksFactory, defaultProxy, proxyValidator);
+                        threadPoolExecutor, executionService, scenarioSourceListener, proxySourcesClient, tasksFactory);
 
                 Object[] objectsToCache = {
                         propertiesConfig, provider, beanConfig, threadPoolExecutor, webDriverConfig, defaultProxy,
