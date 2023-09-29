@@ -1,6 +1,7 @@
 package executor.service.service.impl;
 
 import com.google.common.base.Strings;
+import executor.service.config.properties.PropertiesConfig;
 import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.WebDriverConfig;
@@ -11,9 +12,15 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.File;
 import java.time.Duration;
-
+import java.util.Properties;
 
 public class WebDriverInitializerImpl implements WebDriverInitializer {
+    private final Properties properties;
+
+    public WebDriverInitializerImpl(PropertiesConfig propertiesConfig) {
+        this.properties = propertiesConfig.getProperties("web-driver.properties");
+    }
+
     @Override
     public WebDriver getInstance(WebDriverConfig webDriverConfig, ProxyConfigHolder proxyConfigHolder) {
         String host = proxyConfigHolder.getProxyNetworkConfig().getHostname();
@@ -43,8 +50,8 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
     private ChromeOptions configureChromeOptions(WebDriverConfig webDriverConfig) {
         ChromeOptions chromeOptions = new ChromeOptions();
 
-        chromeOptions.setBinary(PropertiesConstants.CHROME_EXECUTABLE);
-        chromeOptions.setBrowserVersion(PropertiesConstants.CHROME_VERSION);
+        chromeOptions.setBinary(properties.getProperty(PropertiesConstants.CHROME_EXECUTABLE));
+        chromeOptions.setBrowserVersion(properties.getProperty(PropertiesConstants.CHROME_VERSION));
         chromeOptions.addArguments("--remote-allow-origins=*");
         chromeOptions.addArguments("user-agent=" + webDriverConfig.getUserAgent());
         chromeOptions.setImplicitWaitTimeout(Duration.ofMillis(webDriverConfig.getImplicitlyWait()));

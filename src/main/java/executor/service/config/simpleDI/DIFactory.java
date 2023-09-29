@@ -38,10 +38,11 @@ public class DIFactory implements ObjectFactory {
                         stepExecutionClickCss,
                         stepExecutionSleep,
                         stepExecutionClickXpath);
-                ExecutionService executionService = new ExecutionServiceImpl(scenarioExecutor, webDriverConfig);
+                WebDriverInitializer webDriverInitializer = new WebDriverInitializerImpl(propertiesConfig);
+                ExecutionService executionService = new ExecutionServiceImpl(scenarioExecutor, webDriverConfig, webDriverInitializer);
                 ScenarioProvider scenarioProvider = new JSONFileScenarioProvider();
                 ScenarioSourceListener scenarioSourceListener = new ScenarioSourceListenerImpl(scenarioProvider);
-                ProxyValidator proxyValidator = new ProxyValidatorImpl();
+                ProxyValidator proxyValidator = new ProxyValidatorImpl(propertiesConfig);
                 ProxySourcesClient proxySourcesClient = new ProxySourcesClientImpl(proxyProvider, proxyValidator, defaultProxy);
                 TasksFactory tasksFactory = new TasksFactoryImpl();
                 ParallelFlowExecutorService parallel = new ParallelFlowExecutorServiceImpl(

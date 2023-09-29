@@ -18,11 +18,13 @@ public class ExecutionServiceImpl implements ExecutionService {
 
     private final ScenarioExecutor scenarioExecutor;
     private final WebDriverConfig webDriverConfig;
+    private final WebDriverInitializer webDriverInitializer;
 
     public ExecutionServiceImpl(ScenarioExecutor scenarioExecutor,
-                                WebDriverConfig webDriverConfig) {
+                                WebDriverConfig webDriverConfig, WebDriverInitializer webDriverInitializer) {
         this.scenarioExecutor = scenarioExecutor;
         this.webDriverConfig = webDriverConfig;
+        this.webDriverInitializer = webDriverInitializer;
     }
 
     /**
@@ -45,7 +47,6 @@ public class ExecutionServiceImpl implements ExecutionService {
      * @param proxyConfigHolder the ProxyConfigHolder entity
      */
     private WebDriver getWebDriverPrototype(WebDriverConfig webDriverConfig, ProxyConfigHolder proxyConfigHolder) {
-        WebDriverInitializer webDriverInitializer = new WebDriverInitializerImpl();
         return webDriverInitializer.getInstance(webDriverConfig, proxyConfigHolder);
     }
 }
