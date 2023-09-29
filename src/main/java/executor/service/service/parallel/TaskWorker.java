@@ -27,11 +27,7 @@ public class TaskWorker<T> implements Callable<ItemQueue<T>> {
         ItemQueue<T> queue = new ItemQueue<>();
         Consumer<T> itemHandlerConsumer = queue::putItem;
 
-        if (listener instanceof ScenarioSourceListener) {
-            listener.execute(createHandler(itemHandlerConsumer));
-        } else if (listener instanceof ProxySourcesClient) {
-            listener.execute(createHandler(itemHandlerConsumer));
-        }
+        listener.execute(createHandler(itemHandlerConsumer));
 
         return queue;
     }
