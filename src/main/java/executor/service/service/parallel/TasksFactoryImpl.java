@@ -6,7 +6,6 @@ import executor.service.service.ExecutionService;
 import executor.service.service.Listener;
 import executor.service.service.TasksFactory;
 
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 
 /**
@@ -18,8 +17,8 @@ import java.util.concurrent.Callable;
 public class TasksFactoryImpl<T> implements TasksFactory<T> {
 
     @Override
-    public Callable<BlockingQueue<T>> createTaskWorker(Listener listener) {
-        return new TaskWorker<T>(listener);
+    public Callable<ItemQueue<T>> createTaskWorker(Listener listener) {
+        return new TaskWorker<>(listener);
     }
 
     @Override

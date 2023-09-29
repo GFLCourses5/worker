@@ -5,9 +5,7 @@ import executor.service.service.Listener;
 import executor.service.service.ProxySourcesClient;
 import executor.service.service.ScenarioSourceListener;
 
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.function.Consumer;
 
 /**
@@ -15,8 +13,8 @@ import java.util.function.Consumer;
  *
  * @author Oleksandr Tuleninov, Yurii Kotsiuba.
  * @version 01
- * */
-public class TaskWorker<T> implements Callable<BlockingQueue<T>> {
+ */
+public class TaskWorker<T> implements Callable<ItemQueue<T>> {
 
     private final Listener listener;
 
@@ -25,15 +23,9 @@ public class TaskWorker<T> implements Callable<BlockingQueue<T>> {
     }
 
     @Override
-    public BlockingQueue<T> call() {
-        BlockingQueue<T> queue = new LinkedBlockingDeque<>();
-        Consumer<T> itemHandlerConsumer = items -> {
-            try {
-                queue.put(items);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        };
+    public ItemQueue<T> call() {
+        ItemQueue<T> queue = new ItemQueue<>();
+        Consumer<T> itemHandlerConsumer = queue::putItem;
 
         if (listener instanceof ScenarioSourceListener) {
             listener.execute(createHandler(itemHandlerConsumer));

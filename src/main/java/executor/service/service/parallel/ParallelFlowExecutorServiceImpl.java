@@ -6,7 +6,6 @@ import executor.service.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -46,10 +45,10 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
      */
     @Override
     public void execute() {
-        Future<BlockingQueue<Scenario>> futureScenarios
+        Future<ItemQueue<Scenario>> futureScenarios
                 = threadPoolExecutor.submit(tasksFactory.createTaskWorker(scenarioSourceListener));
 
-        Future<BlockingQueue<ProxyConfigHolder>> futureProxies
+        Future<ItemQueue<ProxyConfigHolder>> futureProxies
                 = threadPoolExecutor.submit(tasksFactory.createTaskWorker(proxySourcesClient));
 
         executeScenarioAndProxy(futureScenarios, futureProxies);
@@ -65,8 +64,8 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
         threadPoolExecutor.shutdown();
     }
 
-    private void executeScenarioAndProxy(Future<BlockingQueue<Scenario>> futureScenarios,
-                                         Future<BlockingQueue<ProxyConfigHolder>> futureProxies) {
+    private void executeScenarioAndProxy(Future<ItemQueue<Scenario>> futureScenarios,
+                                         Future<ItemQueue<ProxyConfigHolder>> futureProxies) {
         try {
             executeParallel(futureScenarios, futureProxies);
         } catch (InterruptedException | ExecutionException e) {
@@ -81,16 +80,16 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
      * @param futureScenarios queue with scenarios
      * @param futureProxies queue with proxies
      */
-    private void executeParallel(Future<BlockingQueue<Scenario>> futureScenarios,
-                                 Future<BlockingQueue<ProxyConfigHolder>> futureProxies)
+    private void executeParallel(Future<ItemQueue<Scenario>> futureScenarios,
+                                 Future<ItemQueue<ProxyConfigHolder>> futureProxies)
             throws InterruptedException, ExecutionException {
-        BlockingQueue<Scenario> scenarios = futureScenarios.get();
-        BlockingQueue<ProxyConfigHolder> proxies = futureProxies.get();
+        ItemQueue<Scenario> scenarios = futureScenarios.get();
+        ItemQueue<ProxyConfigHolder> proxies = futureProxies.get();
         Scenario scenario;
         ProxyConfigHolder proxy;
         while (FLAG) {
-            scenario = scenarios.take();
-            proxy = proxies.take();
+            scenario = scenarios.getItem();
+            proxy = proxies.getItem();
             threadPoolExecutor.execute(tasksFactory.createExecutionWorker(service, scenario, proxy));
         }
     }
