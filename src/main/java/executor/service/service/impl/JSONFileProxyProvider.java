@@ -12,21 +12,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JSONFileProxyProvider implements ProxyProvider {
 
     private static final Logger log = LoggerFactory.getLogger(ProxyProvider.class);
-    private static final String FILE_NAME = "/proxy.json";
 
     @Override
-    public List<ProxyConfigHolder> readProxy() {
-        List<ProxyConfigHolder> proxies = null;
-        try (InputStream inputStream = getClass().getResourceAsStream(FILE_NAME);
+    public List<ProxyConfigHolder> readProxy(String fileName) {
+        List<ProxyConfigHolder> proxies = new ArrayList<>();
+        try (InputStream inputStream = getClass().getResourceAsStream(fileName);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             proxies = parseScenariosFromJson(reader);
         } catch (IOException e) {
-            log.error("Cannot read file {}. Reason: {}", FILE_NAME, e.getMessage(), e);
+            log.error("Cannot read file {}. Reason: {}", fileName, e.getMessage(), e);
         }
         return proxies;
     }

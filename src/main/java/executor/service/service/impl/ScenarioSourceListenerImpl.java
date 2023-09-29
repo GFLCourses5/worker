@@ -37,7 +37,7 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
      */
     private void validateScenarios(List<Scenario> scenarios) {
         if (scenarios == null || scenarios.isEmpty()) {
-            log.error("Bad scenarios list");
+            log.error("The scenarios list is bad.");
         }
     }
 

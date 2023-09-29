@@ -1,9 +1,12 @@
 package executor.service.config.bean;
 
 import executor.service.config.properties.PropertiesConfig;
-import executor.service.model.*;
-import executor.service.service.Provider;
+import executor.service.model.ProxyConfigHolder;
+import executor.service.model.ThreadPoolConfig;
+import executor.service.model.WebDriverConfig;
+import executor.service.service.ProxyProvider;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -20,12 +23,12 @@ import static executor.service.config.properties.PropertiesConstants.*;
 public class BeanConfig {
 
     private final PropertiesConfig propertiesConfig;
-    private final Provider jsonReader;
+    private final ProxyProvider provider;
 
 
-    public BeanConfig(PropertiesConfig propertiesConfig, Provider jsonReader) {
+    public BeanConfig(PropertiesConfig propertiesConfig, ProxyProvider provider) {
         this.propertiesConfig = propertiesConfig;
-        this.jsonReader = jsonReader;
+        this.provider = provider;
     }
 
     /**
@@ -57,10 +60,9 @@ public class BeanConfig {
      * Create a default ProxyConfigHolder bean from properties file.
      * */
     public ProxyConfigHolder proxyConfigHolderDefault() {
-        var proxyNetworkConfigs = jsonReader.provideData(PROXY_NETWORK_DEFAULT, ProxyNetworkConfig.class);
-        var proxyCredentials = jsonReader.provideData(PROXY_CREDENTIALS_DEFAULT, ProxyCredentials.class);
+        List<ProxyConfigHolder> proxies = provider.readProxy(PROXY_DEFAULT);
 
-        return new ProxyConfigHolder(proxyNetworkConfigs.get(0), proxyCredentials.get(0));
+        return proxies.get(0);
     }
 
     /**

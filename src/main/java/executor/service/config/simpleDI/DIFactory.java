@@ -26,8 +26,8 @@ public class DIFactory implements ObjectFactory {
 
             if (object == null) {
                 PropertiesConfig propertiesConfig = new PropertiesConfig();
-                Provider provider = new JSONMapper();
-                BeanConfig beanConfig = new BeanConfig(propertiesConfig, provider);
+                ProxyProvider proxyProvider = new JSONFileProxyProvider();
+                BeanConfig beanConfig = new BeanConfig(propertiesConfig, proxyProvider);
                 ExecutorService threadPoolExecutor = beanConfig.threadPoolExecutor();
                 WebDriverConfig webDriverConfig = beanConfig.webDriverConfig();
                 ProxyConfigHolder defaultProxy = beanConfig.proxyConfigHolderDefault();
@@ -42,13 +42,13 @@ public class DIFactory implements ObjectFactory {
                 ScenarioProvider scenarioProvider = new JSONFileScenarioProvider();
                 ScenarioSourceListener scenarioSourceListener = new ScenarioSourceListenerImpl(scenarioProvider);
                 ProxyValidator proxyValidator = new ProxyValidatorImpl();
-                ProxySourcesClient proxySourcesClient = new ProxySourcesClientImpl(provider, proxyValidator, defaultProxy);
+                ProxySourcesClient proxySourcesClient = new ProxySourcesClientImpl(proxyProvider, proxyValidator, defaultProxy);
                 TasksFactory tasksFactory = new TasksFactoryImpl();
                 ParallelFlowExecutorService parallel = new ParallelFlowExecutorServiceImpl(
                         threadPoolExecutor, executionService, scenarioSourceListener, proxySourcesClient, tasksFactory);
 
                 Object[] objectsToCache = {
-                        propertiesConfig, provider, beanConfig, threadPoolExecutor, webDriverConfig, defaultProxy,
+                        propertiesConfig, proxyProvider, beanConfig, threadPoolExecutor, webDriverConfig, defaultProxy,
                         stepExecutionClickCss, stepExecutionSleep, stepExecutionClickXpath, scenarioExecutor,
                         executionService, scenarioProvider, scenarioSourceListener, proxyValidator,
                         proxySourcesClient, tasksFactory, parallel

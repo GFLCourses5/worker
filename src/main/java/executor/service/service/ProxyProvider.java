@@ -5,5 +5,5 @@ import executor.service.model.ProxyConfigHolder;
 import java.util.List;
 
 public interface ProxyProvider {
-    List<ProxyConfigHolder> readProxy();
+    List<ProxyConfigHolder> readProxy(String fileName);
 }
