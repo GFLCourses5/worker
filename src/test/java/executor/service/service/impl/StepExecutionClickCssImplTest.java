@@ -2,6 +2,7 @@ package executor.service.service.impl;
 
 import executor.service.model.Step;
 import executor.service.model.StepTypes;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -12,6 +13,14 @@ import org.openqa.selenium.WebElement;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Test class for testing the functionality of the {@code StepExecutionClockCssImpl} class
+ * is an implementation of the {@link executor.service.service.StepExecutionClickCss}.
+ * This class contains unit tests to verify that {@code StepExecutionClickCssImp} is working correctly.
+ *
+ *  @author Alexander Antonenko
+ *  @version 01
+ * */
 class StepExecutionClickCssImplTest {
 
     private StepExecutionClickCssImpl clickCss;
@@ -19,6 +28,11 @@ class StepExecutionClickCssImplTest {
     @BeforeEach
     public void setUp() {
         clickCss = new StepExecutionClickCssImpl();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        clickCss = null;
     }
 
     @Test
