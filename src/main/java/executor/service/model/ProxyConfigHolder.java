@@ -1,8 +1,10 @@
 package executor.service.model;
 
+import executor.service.service.Item;
+
 import java.util.Objects;
 
-public class ProxyConfigHolder {
+public class ProxyConfigHolder implements Item {
 
     private ProxyNetworkConfig proxyNetworkConfig;
     private ProxyCredentials proxyCredentials;

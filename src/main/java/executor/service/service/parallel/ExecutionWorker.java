@@ -5,10 +5,16 @@ import executor.service.model.Scenario;
 import executor.service.service.ExecutionService;
 
 /**
- * Execution task.
+ * The {@code ExecutionWorker} class implements the {@link Runnable} interface
+ * and is responsible for executing a scenario using an {@link ExecutionService}
+ * with a specified scenario and proxy configuration.
+ * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
+ * @see executor.service.service.ExecutionService
+ * @see executor.service.model.Scenario
+ * @see executor.service.model.ProxyConfigHolder
  */
 public class ExecutionWorker implements Runnable {
 

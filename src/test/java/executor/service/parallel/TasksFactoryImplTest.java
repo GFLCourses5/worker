@@ -21,16 +21,20 @@ import static org.mockito.Mockito.mock;
  * is an implementation of the {@link TasksFactory}.
  * This class contains unit tests to verify that {@code TasksFactoryImpl} is working correctly.
  *
- *  @author Oleksandr Tuleninov
- *  @version 01
- * */
+ * @author Oleksandr Tuleninov
+ * @version 01
+ * @see executor.service.service.Listener
+ * @see executor.service.service.parallel.ItemQueue
+ * @see Callable
+ * @see Runnable
+ */
 public class TasksFactoryImplTest {
 
-    private TasksFactory<ScenarioSourceListener> tasksFactory;
+    private TasksFactory tasksFactory;
 
     @BeforeEach
     public void setUp() {
-        this.tasksFactory = new TasksFactoryImpl<>();
+        this.tasksFactory = new TasksFactoryImpl();
     }
 
     @AfterEach
@@ -40,7 +44,7 @@ public class TasksFactoryImplTest {
 
     @Test
     public void testCreateTaskWorker() {
-        Callable<ItemQueue<ScenarioSourceListener>> callable = tasksFactory.createTaskWorker(mock(ScenarioSourceListener.class));
+        Callable<ItemQueue> callable = tasksFactory.createTaskWorker(mock(ScenarioSourceListener.class));
 
         assertNotNull(callable);
     }

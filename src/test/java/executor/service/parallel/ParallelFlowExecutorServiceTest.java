@@ -26,9 +26,12 @@ import static org.mockito.Mockito.*;
  * is an implementation of the {@link ParallelFlowExecutorService}.
  * This class contains unit tests to verify that {@code ParallelFlowExecutorServiceImpl} is working correctly.
  *
- *  @author Oleksandr Tuleninov
- *  @version 01
- * */
+ * @author Oleksandr Tuleninov
+ * @version 01
+ * @see executor.service.service.ExecutionService
+ * @see executor.service.service.ScenarioSourceListener
+ * @see executor.service.service.ProxySourcesClient
+ */
 public class ParallelFlowExecutorServiceTest {
 
     private ExecutorService threadPoolExecutor;
@@ -69,21 +72,21 @@ public class ParallelFlowExecutorServiceTest {
         var scenario = new Scenario();
         var proxy = new ProxyConfigHolder();
 
-        ItemQueue<Scenario> scenarios = new ItemQueue<>();
+        ItemQueue scenarios = new ItemQueue();
         scenarios.putItem(scenario);
-        ItemQueue<ProxyConfigHolder> proxies = new ItemQueue<>();
+        ItemQueue proxies = new ItemQueue();
         proxies.putItem(proxy);
 
-        Future<ItemQueue<Scenario>> futureScenarios = mock(Future.class);
-        Future<ItemQueue<ProxyConfigHolder>> futureProxies = mock(Future.class);
+        Future<ItemQueue> futureScenarios = mock(Future.class);
+        Future<ItemQueue> futureProxies = mock(Future.class);
 
         AtomicReference<Runnable> executionWorker = new AtomicReference<>(mock(Runnable.class));
 
-        Callable<ItemQueue<Scenario>> callableScenario = mock(Callable.class);
+        Callable<ItemQueue> callableScenario = mock(Callable.class);
         when(callableScenario.call()).thenReturn(scenarios);
         when(tasksFactory.createTaskWorker(scenarioSourceListener)).thenReturn(callableScenario);
 
-        Callable<ItemQueue<ProxyConfigHolder>> callableProxy = mock(Callable.class);
+        Callable<ItemQueue> callableProxy = mock(Callable.class);
         when(callableProxy.call()).thenReturn(proxies);
         when(tasksFactory.createTaskWorker(proxySourcesClient)).thenReturn(callableProxy);
 

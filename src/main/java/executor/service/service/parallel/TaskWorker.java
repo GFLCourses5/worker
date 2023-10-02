@@ -1,20 +1,26 @@
 package executor.service.service.parallel;
 
+import executor.service.service.Item;
 import executor.service.service.ItemHandler;
 import executor.service.service.Listener;
-import executor.service.service.ProxySourcesClient;
-import executor.service.service.ScenarioSourceListener;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
 /**
- * Worker task.
+ * The {@code TaskWorker} class is a generic implementation
+ * of the {@link Callable} interface,
+ * responsible for creating task workers
+ * that produce items and add them to a specified queue.
+ * <p>
  *
- * @author Oleksandr Tuleninov, Yurii Kotsiuba.
+ * @author Oleksandr Tuleninov
  * @version 01
+ * @see executor.service.service.Listener
+ * @see executor.service.service.parallel.ItemQueue
+ * @see Consumer
  */
-public class TaskWorker<T> implements Callable<ItemQueue<T>> {
+public class TaskWorker implements Callable<ItemQueue> {
 
     private final Listener listener;
 
@@ -23,16 +29,16 @@ public class TaskWorker<T> implements Callable<ItemQueue<T>> {
     }
 
     @Override
-    public ItemQueue<T> call() {
-        ItemQueue<T> queue = new ItemQueue<>();
-        Consumer<T> itemHandlerConsumer = queue::putItem;
+    public ItemQueue call() {
+        ItemQueue queue = new ItemQueue();
+        Consumer<Item> itemHandlerConsumer = queue::putItem;
 
         listener.execute(createHandler(itemHandlerConsumer));
 
         return queue;
     }
 
-    private ItemHandler<T> createHandler(Consumer<T> consumer) {
+    private ItemHandler<Item> createHandler(Consumer<Item> consumer) {
         return consumer::accept;
     }
 }

@@ -11,10 +11,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 /**
- * Start ExecutionService in parallel multi-threaded mode.
+ * The {@code ParallelFlowExecutorServiceImpl} class implements the {@link ParallelFlowExecutorService} interface
+ * to execute ScenarioSourceListener, ProxySourcesClient, and ExecutionService in parallel multithreading mode.
+ * It manages the execution of these services by utilizing an {@link ExecutorService} and {@link TasksFactory}.
+ * This class also provides a method to gracefully shut down the executor service.
+ * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
+ * @see executor.service.service.ExecutionService
+ * @see executor.service.service.ScenarioSourceListener
+ * @see executor.service.service.ProxySourcesClient
  */
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
@@ -40,15 +47,15 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     }
 
     /**
-     * Start ScenarioSourceListener, ProxySourcesClient, ExecutionService
+     * Starts the ScenarioSourceListener, ProxySourcesClient, and ExecutionService
      * in parallel multithreading mode.
      */
     @Override
     public void execute() {
-        Future<ItemQueue<Scenario>> futureScenarios
+        Future<ItemQueue> futureScenarios
                 = threadPoolExecutor.submit(tasksFactory.createTaskWorker(scenarioSourceListener));
 
-        Future<ItemQueue<ProxyConfigHolder>> futureProxies
+        Future<ItemQueue> futureProxies
                 = threadPoolExecutor.submit(tasksFactory.createTaskWorker(proxySourcesClient));
 
         executeScenarioAndProxy(futureScenarios, futureProxies);
@@ -64,8 +71,8 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
         threadPoolExecutor.shutdown();
     }
 
-    private void executeScenarioAndProxy(Future<ItemQueue<Scenario>> futureScenarios,
-                                         Future<ItemQueue<ProxyConfigHolder>> futureProxies) {
+    private void executeScenarioAndProxy(Future<ItemQueue> futureScenarios,
+                                         Future<ItemQueue> futureProxies) {
         try {
             executeParallel(futureScenarios, futureProxies);
         } catch (InterruptedException | ExecutionException e) {
@@ -78,18 +85,18 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
      * Execute the scenario and proxy in parallel mode.
      *
      * @param futureScenarios queue with scenarios
-     * @param futureProxies queue with proxies
+     * @param futureProxies   queue with proxies
      */
-    private void executeParallel(Future<ItemQueue<Scenario>> futureScenarios,
-                                 Future<ItemQueue<ProxyConfigHolder>> futureProxies)
+    private void executeParallel(Future<ItemQueue> futureScenarios,
+                                 Future<ItemQueue> futureProxies)
             throws InterruptedException, ExecutionException {
-        ItemQueue<Scenario> scenarios = futureScenarios.get();
-        ItemQueue<ProxyConfigHolder> proxies = futureProxies.get();
+        ItemQueue scenarios = futureScenarios.get();
+        ItemQueue proxies = futureProxies.get();
         Scenario scenario;
         ProxyConfigHolder proxy;
         while (FLAG) {
-            scenario = scenarios.getItem();
-            proxy = proxies.getItem();
+            scenario = (Scenario) scenarios.getItem();
+            proxy = (ProxyConfigHolder) proxies.getItem();
             threadPoolExecutor.execute(tasksFactory.createExecutionWorker(service, scenario, proxy));
         }
     }

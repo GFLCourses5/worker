@@ -9,16 +9,23 @@ import executor.service.service.TasksFactory;
 import java.util.concurrent.Callable;
 
 /**
- * Callable, Runnable Factory.
+ * The {@code TasksFactoryImpl} class is an implementation
+ * of the {@link TasksFactory} interface.
+ * It provides methods for creating task and execution workers.
+ * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
+ * @see executor.service.service.Listener
+ * @see executor.service.service.ExecutionService
+ * @see executor.service.model.Scenario
+ * @see executor.service.model.ProxyConfigHolder
  */
-public class TasksFactoryImpl<T> implements TasksFactory<T> {
+public class TasksFactoryImpl implements TasksFactory {
 
     @Override
-    public Callable<ItemQueue<T>> createTaskWorker(Listener listener) {
-        return new TaskWorker<>(listener);
+    public Callable<ItemQueue> createTaskWorker(Listener listener) {
+        return new TaskWorker(listener);
     }
 
     @Override

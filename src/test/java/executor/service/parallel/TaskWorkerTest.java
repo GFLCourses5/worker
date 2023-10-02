@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.Callable;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -18,20 +19,23 @@ import static org.mockito.Mockito.*;
  * is an implementation of the {@link Callable}.
  * This class contains unit tests to verify that {@code TaskWorker} is working correctly.
  *
- *  @author Oleksandr Tuleninov
- *  @version 01
- * */
+ * @author Oleksandr Tuleninov
+ * @version 01
+ * @see executor.service.service.Listener
+ * @see executor.service.service.parallel.TaskWorker
+ * @see executor.service.service.ItemHandler
+ */
 public class TaskWorkerTest {
 
     private Listener listener;
-    private TaskWorker<Object> scenarioTaskWorker;
-    private TaskWorker<Object> proxyTaskWorker;
+    private TaskWorker scenarioTaskWorker;
+    private TaskWorker proxyTaskWorker;
 
     @BeforeEach
     public void setUp() {
         this.listener = mock(Listener.class);
-        this.scenarioTaskWorker = new TaskWorker<>(listener);
-        this.proxyTaskWorker = new TaskWorker<>(listener);
+        this.scenarioTaskWorker = new TaskWorker(listener);
+        this.proxyTaskWorker = new TaskWorker(listener);
     }
 
     @AfterEach
@@ -49,7 +53,7 @@ public class TaskWorkerTest {
 
         verify(listener, times(1)).execute(any(ItemHandler.class));
 
-        assertTrue(result instanceof ItemQueue<?>);
+        assertNotNull(result);
     }
 
     @Test
@@ -60,6 +64,6 @@ public class TaskWorkerTest {
 
         verify(listener, times(1)).execute(any(ItemHandler.class));
 
-        assertTrue(result instanceof ItemQueue);
+        assertNotNull(result);
     }
 }

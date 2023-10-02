@@ -14,10 +14,14 @@ import static org.mockito.Mockito.*;
  * Test class for testing the functionality of the {@code ExecutionWorker} class
  * is an implementation of the {@link Runnable}.
  * This class contains unit tests to verify that {@code ExecutionWorker} is working correctly.
+ * <p>
  *
- *  @author Oleksandr Tuleninov
- *  @version 01
- * */
+ * @author Oleksandr Tuleninov
+ * @version 01
+ * @see executor.service.service.ExecutionService
+ * @see executor.service.model.Scenario
+ * @see executor.service.model.ProxyConfigHolder
+ */
 public class ExecutionWorkerTest {
 
     private ExecutionService service;
