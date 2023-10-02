@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 
 public class StepTest {
 
-    private static final String DEFAULT_ACTION = StepTypes.SLEEP.getName();
+    private static final StepTypes DEFAULT_ACTION = StepTypes.SLEEP;
     private static final String DEFAULT_VALUE = "Default value";
-    private static final String ANOTHER_ACTION = StepTypes.SLEEP.getName();;
+    private static final StepTypes ANOTHER_ACTION = StepTypes.CLICK_CSS;;
     private static final String ANOTHER_VALUE = "Another value";
 
     @Test
@@ -31,7 +31,7 @@ public class StepTest {
     public void testSetters() {
         Step step = new Step();
 
-        step.setAction(StepTypes.valueOf(DEFAULT_ACTION));
+        step.setAction(DEFAULT_ACTION);
         step.setValue(DEFAULT_VALUE);
 
 
@@ -72,10 +72,10 @@ public class StepTest {
     }
 
     private Step prepareStep() {
-        return new Step(StepTypes.valueOf(DEFAULT_ACTION), DEFAULT_VALUE);
+        return new Step(DEFAULT_ACTION, DEFAULT_VALUE);
     }
 
     private Step prepareAnotherStep() {
-        return new Step(StepTypes.valueOf(ANOTHER_ACTION), ANOTHER_VALUE);
+        return new Step(ANOTHER_ACTION, ANOTHER_VALUE);
     }
 }
