@@ -1,6 +1,5 @@
 package executor.service.config.simpleDI;
 
-
 import executor.service.config.bean.BeanConfig;
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ProxyConfigHolder;
@@ -14,51 +13,63 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Factory for creating objects with dependency injection.
+ *
+ * This class is intended for creating objects of various classes while considering their dependencies.
+ * It utilizes caching to avoid creating the same objects multiple times.
+ *
+ * Example usage:
+ * <pre>
+ * DIFactory factory = new DIFactory();
+ * ParallelFlowExecutorService parallelExecutor = factory.createObject(ParallelFlowExecutorService.class);
+ * // Now you have an instance of ParallelFlowExecutorService with properly configured dependencies.
+ * </pre>
+ *
+ * @author Dima Silenko, Oleksandr Tuleninov.
+ * @version Version of your application (if necessary).
+ */
 public class DIFactory implements ObjectFactory {
 
-    private static final Map<Class<?>, Object> cache = new HashMap<>();
+    private final Map<Class<?>, Object> cache = new HashMap<>();
+    private final ExecutorService threadPoolExecutor;
+    private final ExecutionService executionService;
+    private final ScenarioSourceListener scenarioSourceListener;
+    private final ProxySourcesClient proxySourcesClient;
+    private final TasksFactory tasksFactory;
+
+    public DIFactory() {
+        PropertiesConfig propertiesConfig = new PropertiesConfig();
+        ProxyProvider proxyProvider = new JSONFileProxyProvider();
+        BeanConfig beanConfig = new BeanConfig(propertiesConfig, proxyProvider);
+        this.threadPoolExecutor = beanConfig.threadPoolExecutor();
+        WebDriverConfig webDriverConfig = beanConfig.webDriverConfig();
+        ProxyConfigHolder defaultProxy = beanConfig.proxyConfigHolderDefault();
+        StepExecutionClickCss stepExecutionClickCss = new StepExecutionClickCssImpl();
+        StepExecutionSleep stepExecutionSleep = new StepExecutionSleepImpl();
+        StepExecutionClickXpath stepExecutionClickXpath = new StepExecutionClickXpathImpl();
+        ScenarioExecutor scenarioExecutor = new ScenarioExecutorImpl(
+                stepExecutionClickCss,
+                stepExecutionSleep,
+                stepExecutionClickXpath);
+        this.executionService = new ExecutionServiceImpl(scenarioExecutor, webDriverConfig, new WebDriverInitializerImpl(propertiesConfig));
+        ScenarioProvider scenarioProvider = new JSONFileScenarioProvider();
+        this.scenarioSourceListener = new ScenarioSourceListenerImpl(scenarioProvider);
+        ProxyValidator proxyValidator = new ProxyValidatorImpl(propertiesConfig);
+        this.proxySourcesClient = new ProxySourcesClientImpl(proxyProvider, proxyValidator, defaultProxy);
+        this.tasksFactory = new TasksFactoryImpl();
+    }
 
     @Override
     public <T> T createObject(Class<T> clazz) {
-
         if (ParallelFlowExecutorService.class.isAssignableFrom(clazz)) {
             Object object = cache.get(clazz);
 
             if (object == null) {
-                PropertiesConfig propertiesConfig = new PropertiesConfig();
-                ProxyProvider proxyProvider = new JSONFileProxyProvider();
-                BeanConfig beanConfig = new BeanConfig(propertiesConfig, proxyProvider);
-                ExecutorService threadPoolExecutor = beanConfig.threadPoolExecutor();
-                WebDriverConfig webDriverConfig = beanConfig.webDriverConfig();
-                ProxyConfigHolder defaultProxy = beanConfig.proxyConfigHolderDefault();
-                StepExecutionClickCss stepExecutionClickCss = new StepExecutionClickCssImpl();
-                StepExecutionSleep stepExecutionSleep = new StepExecutionSleepImpl();
-                StepExecutionClickXpath stepExecutionClickXpath = new StepExecutionClickXpathImpl();
-                ScenarioExecutor scenarioExecutor = new ScenarioExecutorImpl(
-                        stepExecutionClickCss,
-                        stepExecutionSleep,
-                        stepExecutionClickXpath);
-                WebDriverInitializer webDriverInitializer = new WebDriverInitializerImpl(propertiesConfig);
-                ExecutionService executionService = new ExecutionServiceImpl(scenarioExecutor, webDriverConfig, webDriverInitializer);
-                ScenarioProvider scenarioProvider = new JSONFileScenarioProvider();
-                ScenarioSourceListener scenarioSourceListener = new ScenarioSourceListenerImpl(scenarioProvider);
-                ProxyValidator proxyValidator = new ProxyValidatorImpl(propertiesConfig);
-                ProxySourcesClient proxySourcesClient = new ProxySourcesClientImpl(proxyProvider, proxyValidator, defaultProxy);
-                TasksFactory tasksFactory = new TasksFactoryImpl();
                 ParallelFlowExecutorService parallel = new ParallelFlowExecutorServiceImpl(
                         threadPoolExecutor, executionService, scenarioSourceListener, proxySourcesClient, tasksFactory);
 
-                Object[] objectsToCache = {
-                        propertiesConfig, proxyProvider, beanConfig, threadPoolExecutor, webDriverConfig, defaultProxy,
-                        stepExecutionClickCss, stepExecutionSleep, stepExecutionClickXpath, scenarioExecutor,
-                        executionService, scenarioProvider, scenarioSourceListener, proxyValidator,
-                        proxySourcesClient, tasksFactory, parallel
-                };
-
-                for (Object obj : objectsToCache) {
-                    cache.put(obj.getClass(), obj);
-                }
-
+                cache.put(clazz, parallel);
                 return clazz.cast(parallel);
             }
             return clazz.cast(object);
