@@ -1,8 +1,7 @@
-package executor.service.config.simpleDI;
+package executor.service.service.simpleDI;
 
 import executor.service.config.bean.BeanConfig;
 import executor.service.config.properties.PropertiesConfig;
-import executor.service.model.ProxyConfigHolder;
 import executor.service.model.WebDriverConfig;
 import executor.service.service.*;
 import executor.service.service.impl.*;
@@ -27,7 +26,7 @@ import java.util.concurrent.ExecutorService;
  * </pre>
  *
  * @author Dima Silenko, Oleksandr Tuleninov.
- * @version Version of your application (if necessary).
+ * @version 01
  */
 public class DIFactory implements ObjectFactory {
 
@@ -44,7 +43,6 @@ public class DIFactory implements ObjectFactory {
         BeanConfig beanConfig = new BeanConfig(propertiesConfig, proxyProvider);
         this.threadPoolExecutor = beanConfig.threadPoolExecutor();
         WebDriverConfig webDriverConfig = beanConfig.webDriverConfig();
-        ProxyConfigHolder defaultProxy = beanConfig.proxyConfigHolderDefault();
         StepExecutionClickCss stepExecutionClickCss = new StepExecutionClickCssImpl();
         StepExecutionSleep stepExecutionSleep = new StepExecutionSleepImpl();
         StepExecutionClickXpath stepExecutionClickXpath = new StepExecutionClickXpathImpl();
@@ -56,7 +54,7 @@ public class DIFactory implements ObjectFactory {
         ScenarioProvider scenarioProvider = new JSONFileScenarioProvider();
         this.scenarioSourceListener = new ScenarioSourceListenerImpl(scenarioProvider);
         ProxyValidator proxyValidator = new ProxyValidatorImpl(propertiesConfig);
-        this.proxySourcesClient = new ProxySourcesClientImpl(proxyProvider, proxyValidator, defaultProxy);
+        this.proxySourcesClient = new ProxySourcesClientImpl(proxyProvider, proxyValidator);
         this.tasksFactory = new TasksFactoryImpl();
     }
 
