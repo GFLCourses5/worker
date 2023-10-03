@@ -17,7 +17,7 @@ public class StepExecutionFabricImpl implements StepExecutionFabric {
 
     @Override
     public StepExecution getStepExecutor(String stepAction) {
-        return stepExecutions.stream().filter(s -> s.getNameStepAction().compareTo(StepAction.valueOf(stepAction).getName()) == 0)
+        return stepExecutions.stream().filter(s -> s.getNameStepAction().compareTo(stepAction) == 0)
                 .findFirst().orElseThrow(() -> new StepExecutionException("Unsupported type execution!"));
     }
 
