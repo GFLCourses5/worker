@@ -1,12 +1,10 @@
 package executor.service.config.bean;
 
 import executor.service.config.properties.PropertiesConfig;
-import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ThreadPoolConfig;
 import executor.service.model.WebDriverConfig;
 import executor.service.service.ProxyProvider;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -54,15 +52,6 @@ public class BeanConfig {
         var keepAliveTime = Long.parseLong(properties.getProperty(KEEP_ALIVE_TIME));
 
         return new ThreadPoolConfig(corePoolSize, keepAliveTime);
-    }
-
-    /**
-     * Create a default ProxyConfigHolder bean from properties file.
-     * */
-    public ProxyConfigHolder proxyConfigHolderDefault() {
-        List<ProxyConfigHolder> proxies = provider.readProxy(PROXY_DEFAULT);
-
-        return proxies.get(0);
     }
 
     /**

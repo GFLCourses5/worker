@@ -18,14 +18,11 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
 
     private final ProxyProvider provider;
     private final ProxyValidator proxyValidator;
-    private final ProxyConfigHolder defaultProxy;
 
     public ProxySourcesClientImpl(ProxyProvider provider,
-                                  ProxyValidator proxyValidator,
-                                  ProxyConfigHolder defaultProxy) {
+                                  ProxyValidator proxyValidator) {
         this.provider = provider;
         this.proxyValidator = proxyValidator;
-        this.defaultProxy = defaultProxy;
     }
 
     @Override
