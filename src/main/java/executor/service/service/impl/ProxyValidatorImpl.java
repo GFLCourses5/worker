@@ -15,18 +15,29 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
+/**
+ * The {@code ProxyValidatorImpl} class is responsible for checking the proxy functionality
+ * by sending http request to specified url and awaiting a http response code 200
+ *
+ * @author Oleksii Bondarenko
+ * @version 0.2
+ */
+
 public class ProxyValidatorImpl implements ProxyValidator {
     private final Properties properties;
+    private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
 
     public ProxyValidatorImpl(PropertiesConfig propertiesConfig) {
         this.properties = propertiesConfig.getProperties(PropertiesConstants.PROXY_VALIDATOR_PROPERTIES);
     }
 
     public Boolean isValid(ProxyConfigHolder proxyConfigHolder) {
-        int responseCode = 0;
+        int responseCode;
 
         try {
             CredentialsProvider credentialsProvider = getCredentialsProvider(proxyConfigHolder);
@@ -40,7 +51,9 @@ public class ProxyValidatorImpl implements ProxyValidator {
             response.close();
             httpClient.close();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            log.error("Proxy [" + proxyConfigHolder.getProxyNetworkConfig().getHostname() + ":" +
+                    proxyConfigHolder.getProxyNetworkConfig().getPort() + "] is not valid");
+            return false;
         }
         return responseCode == HttpStatus.SC_OK;
     }
@@ -68,3 +81,4 @@ public class ProxyValidatorImpl implements ProxyValidator {
                 .build();
     }
 }
+
