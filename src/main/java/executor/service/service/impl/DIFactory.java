@@ -1,12 +1,12 @@
-package executor.service.service.simpleDI;
+package executor.service.service.impl;
 
 import executor.service.config.bean.BeanConfig;
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.WebDriverConfig;
 import executor.service.service.*;
-import executor.service.service.impl.*;
 import executor.service.service.parallel.ParallelFlowExecutorServiceImpl;
 import executor.service.service.parallel.TasksFactoryImpl;
+import executor.service.service.ObjectFactory;
 
 import java.util.HashMap;
 import java.util.Map;

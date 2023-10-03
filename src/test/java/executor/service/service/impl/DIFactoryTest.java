@@ -1,7 +1,6 @@
-package executor.service.config.simpleDI;
+package executor.service.service.impl;
 
 import executor.service.service.ParallelFlowExecutorService;
-import executor.service.service.simpleDI.DIFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

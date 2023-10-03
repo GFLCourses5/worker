@@ -1,6 +1,6 @@
 package executor.service;
 
-import executor.service.service.simpleDI.DIFactory;
+import executor.service.service.impl.DIFactory;
 import executor.service.service.ParallelFlowExecutorService;
 
 public class App {

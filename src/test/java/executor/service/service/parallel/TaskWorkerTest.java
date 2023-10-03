@@ -1,4 +1,4 @@
-package executor.service.parallel;
+package executor.service.service.parallel;
 
 import executor.service.service.ItemHandler;
 import executor.service.service.Listener;

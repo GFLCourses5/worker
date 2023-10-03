@@ -1,4 +1,4 @@
-package executor.service.service.simpleDI;
+package executor.service.service;
 
 public interface ObjectFactory {
 
