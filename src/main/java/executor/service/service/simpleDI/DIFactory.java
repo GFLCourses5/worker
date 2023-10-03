@@ -52,9 +52,9 @@ public class DIFactory implements ObjectFactory {
                 stepExecutionClickXpath);
         this.executionService = new ExecutionServiceImpl(scenarioExecutor, webDriverConfig, new WebDriverInitializerImpl(propertiesConfig));
         ScenarioProvider scenarioProvider = new JSONFileScenarioProvider();
-        this.scenarioSourceListener = new ScenarioSourceListenerImpl(scenarioProvider);
+        this.scenarioSourceListener = new ScenarioSourceListenerImpl(scenarioProvider, propertiesConfig);
         ProxyValidator proxyValidator = new ProxyValidatorImpl(propertiesConfig);
-        this.proxySourcesClient = new ProxySourcesClientImpl(proxyProvider, proxyValidator);
+        this.proxySourcesClient = new ProxySourcesClientImpl(proxyProvider, proxyValidator, propertiesConfig);
         this.tasksFactory = new TasksFactoryImpl();
     }
 

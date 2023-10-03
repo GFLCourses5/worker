@@ -1,8 +1,8 @@
 package executor.service.service.impl;
 
+import executor.service.config.properties.PropertiesConfig;
 import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.ProxyNetworkConfig;
 import executor.service.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,19 +10,19 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Properties;
 
 public class ProxySourcesClientImpl implements ProxySourcesClient {
-
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
-    public static final int DELAY = 1;
-
     private final ProxyProvider provider;
     private final ProxyValidator proxyValidator;
+    private final Properties properties;
 
     public ProxySourcesClientImpl(ProxyProvider provider,
-                                  ProxyValidator proxyValidator) {
+                                  ProxyValidator proxyValidator, PropertiesConfig propertiesConfig) {
         this.provider = provider;
         this.proxyValidator = proxyValidator;
+        this.properties = propertiesConfig.getProperties(PropertiesConstants.SOURCES_PROPERTIES);
     }
 
     @Override
@@ -57,7 +57,11 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
     private Flux<ProxyConfigHolder> getProxyFlux(List<ProxyConfigHolder> proxies) {
         return Flux.fromIterable(proxies)
                 .log()
-                .delayElements(Duration.ofSeconds(DELAY))
+                .delayElements(Duration.ofSeconds(getDelay()))
                 .repeat();
+    }
+
+    private Long getDelay() {
+        return Long.parseLong(properties.getProperty(PropertiesConstants.DELAY_SECONDS));
     }
 }

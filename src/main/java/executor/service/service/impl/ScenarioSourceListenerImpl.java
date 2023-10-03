@@ -1,5 +1,7 @@
 package executor.service.service.impl;
 
+import executor.service.config.properties.PropertiesConfig;
+import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.Scenario;
 import executor.service.service.ItemHandler;
 import executor.service.service.ScenarioProvider;
@@ -10,16 +12,17 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Properties;
 
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
-
-    private static final long DELAY = 1;
     private final ScenarioProvider provider;
-
+    private final Properties properties;
     private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);
 
-    public ScenarioSourceListenerImpl(ScenarioProvider provider) {
+    public ScenarioSourceListenerImpl(ScenarioProvider provider, PropertiesConfig propertiesConfig) {
         this.provider = provider;
+        this.properties = propertiesConfig.getProperties(PropertiesConstants.SOURCES_PROPERTIES);
+        System.out.println();
     }
 
     @Override
@@ -49,7 +52,11 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
     private Flux<Scenario> getScenarioFlux(List<Scenario> scenarios) {
         return Flux.fromIterable(scenarios)
                 .log()
-                .delayElements(Duration.ofSeconds(DELAY))
+                .delayElements(Duration.ofSeconds(getDelay()))
                 .repeat();
+    }
+
+    private Long getDelay() {
+        return Long.parseLong(properties.getProperty(PropertiesConstants.DELAY_SECONDS));
     }
 }

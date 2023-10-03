@@ -26,5 +26,7 @@ public final class PropertiesConstants {
     public static final String PAGE_LOAD_TIMEOUT = "page-load-timeout";
     public static final String IMPLICITLY_WAIT = "implicitly-wait";
     public static final String PROXIES = "/proxies.json";
+    public static final String SOURCES_PROPERTIES = "sources.properties";
+    public static final String DELAY_SECONDS = "delay.seconds";
 
 }
