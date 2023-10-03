@@ -1,9 +1,11 @@
 package executor.service.model;
 
-import java.util.Objects;
-import java.util.List;
+import executor.service.service.Item;
 
-public class Scenario {
+import java.util.List;
+import java.util.Objects;
+
+public class Scenario implements Item {
     private String name;
     private String site;
     private List<Step> steps;

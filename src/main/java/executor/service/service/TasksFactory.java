@@ -7,14 +7,23 @@ import executor.service.service.parallel.ItemQueue;
 import java.util.concurrent.Callable;
 
 /**
- * Callable, Runnable Factory.
+ * The {@code TasksFactory} interface defines methods
+ * for creating task and execution workers.
+ * Task workers are responsible for reading data from json files,
+ * execution workers handle the execution
+ * of specific tasks.
+ * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
+ * @see executor.service.service.Listener
+ * @see executor.service.service.ExecutionService
+ * @see executor.service.model.Scenario
+ * @see executor.service.model.ProxyConfigHolder
  */
-public interface TasksFactory<T> {
+public interface TasksFactory {
 
-    Callable<ItemQueue<T>> createTaskWorker(Listener listener);
+    Callable<ItemQueue> createTaskWorker(Listener listener);
 
     Runnable createExecutionWorker(ExecutionService service,
                                    Scenario scenario,

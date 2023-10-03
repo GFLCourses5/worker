@@ -1,16 +1,21 @@
 package executor.service.service;
 
 /**
- * Start ExecutionService in parallel multi-threaded mode.
+ * The {@code ParallelFlowExecutorService} interface defines methods for managing parallel execution
+ * of ScenarioSourceListener, ProxySourcesClient, and ExecutionService.
+ * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
+ * @see executor.service.service.ExecutionService
+ * @see executor.service.service.ScenarioSourceListener
+ * @see executor.service.service.ProxySourcesClient
  */
 public interface ParallelFlowExecutorService {
 
     /**
-     * Start ScenarioSourceListener, ProxySourcesClient, ExecutionService
-     * in parallel multi-threaded mode.
+     * Starts the ScenarioSourceListener, ProxySourcesClient, and ExecutionService
+     * in parallel multithreading mode.
      */
     void execute();
 

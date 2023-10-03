@@ -1,23 +1,28 @@
 package executor.service.service.parallel;
 
+import executor.service.service.Item;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Custom BlockingQueue<>().
+ * The {@code ItemQueue} class is a generic class representing a custom blocking queue
+ * for storing and retrieving items of a specified type.
+ * <p>
  *
- * @author Oleksandr Tuleninov.
+ * @author Oleksandr Tuleninov
  * @version 01
- * */
-public class ItemQueue<T> {
+ * @see LinkedBlockingQueue
+ */
+public class ItemQueue {
 
-    private final BlockingQueue<T> queue;
+    private final BlockingQueue<Item> queue;
 
     public ItemQueue() {
         this.queue = new LinkedBlockingQueue<>();
     }
 
-    public void putItem(T item) {
+    public void putItem(Item item) {
         try {
             queue.put(item);
         } catch (InterruptedException e) {
@@ -25,9 +30,9 @@ public class ItemQueue<T> {
         }
     }
 
-    public <T> T getItem() {
+    public Item getItem() {
         try {
-            return (T) queue.take();
+            return queue.take();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
