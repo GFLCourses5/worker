@@ -27,13 +27,14 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
     private final ProxyProvider provider;
     private final ProxyValidator proxyValidator;
-    private final Properties properties;
+    private final PropertiesConfig propertiesConfig;
 
     public ProxySourcesClientImpl(ProxyProvider provider,
-                                  ProxyValidator proxyValidator, PropertiesConfig propertiesConfig) {
+                                  ProxyValidator proxyValidator,
+                                  PropertiesConfig propertiesConfig) {
         this.provider = provider;
         this.proxyValidator = proxyValidator;
-        this.properties = propertiesConfig.getProperties(PropertiesConstants.SOURCES_PROPERTIES);
+        this.propertiesConfig = propertiesConfig;
     }
 
     /**
@@ -82,6 +83,7 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
     }
 
     private Long getDelay() {
-        return Long.parseLong(properties.getProperty(PropertiesConstants.DELAY_SECONDS));
+        Properties properties = propertiesConfig.getProperties(PropertiesConstants.SOURCES_PROPERTIES);
+        return Long.parseLong(properties.getProperty(PropertiesConstants.DELAY_PROXY_SECONDS));
     }
 }

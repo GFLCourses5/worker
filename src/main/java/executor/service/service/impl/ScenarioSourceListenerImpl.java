@@ -27,13 +27,13 @@ import java.util.Properties;
  */
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
     private final ScenarioProvider provider;
-    private final Properties properties;
+    private final PropertiesConfig propertiesConfig;
     private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);
 
-    public ScenarioSourceListenerImpl(ScenarioProvider provider, PropertiesConfig propertiesConfig) {
+    public ScenarioSourceListenerImpl(ScenarioProvider provider,
+                                      PropertiesConfig propertiesConfig) {
         this.provider = provider;
-        this.properties = propertiesConfig.getProperties(PropertiesConstants.SOURCES_PROPERTIES);
-        System.out.println();
+        this.propertiesConfig = propertiesConfig;
     }
 
     /**
@@ -75,6 +75,7 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
     }
 
     private Long getDelay() {
-        return Long.parseLong(properties.getProperty(PropertiesConstants.DELAY_SECONDS));
+        Properties properties = propertiesConfig.getProperties(PropertiesConstants.SOURCES_PROPERTIES);
+        return Long.parseLong(properties.getProperty(PropertiesConstants.DELAY_SCENARIO_SECONDS));
     }
 }
