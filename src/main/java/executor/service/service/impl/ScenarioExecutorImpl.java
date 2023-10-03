@@ -45,6 +45,7 @@ public class ScenarioExecutorImpl implements ScenarioExecutor {
                 default -> log.error("Invalid step action: " + action);
             }
         }
+        log.info("Scenario: " + scenario.getName() + " is finished.");
 
         webDriver.close();
     }
