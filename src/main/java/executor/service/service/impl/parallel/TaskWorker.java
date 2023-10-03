@@ -1,4 +1,4 @@
-package executor.service.service.parallel;
+package executor.service.service.impl.parallel;
 
 import executor.service.service.Item;
 import executor.service.service.ItemHandler;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  * @author Oleksandr Tuleninov
  * @version 01
  * @see executor.service.service.Listener
- * @see executor.service.service.parallel.ItemQueue
+ * @see ItemQueue
  * @see Consumer
  */
 public class TaskWorker implements Callable<ItemQueue> {

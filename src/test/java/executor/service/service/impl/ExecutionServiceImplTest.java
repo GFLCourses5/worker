@@ -6,6 +6,7 @@ import executor.service.model.WebDriverConfig;
 import executor.service.service.ExecutionService;
 import executor.service.service.ScenarioExecutor;
 import executor.service.service.WebDriverInitializer;
+import executor.service.service.impl.webDriver.WebDriverInitializerImpl;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 

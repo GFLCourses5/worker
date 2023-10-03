@@ -1,8 +1,7 @@
-package executor.service.service.impl;
+package executor.service.service.impl.stepExecution;
 
 import executor.service.model.Step;
 import executor.service.model.StepTypes;
-import executor.service.service.impl.StepExecutionClickXpathImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;

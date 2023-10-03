@@ -1,9 +1,7 @@
-package executor.service.service.parallel;
+package executor.service.service.impl.parallel;
 
 import executor.service.service.ItemHandler;
 import executor.service.service.Listener;
-import executor.service.service.parallel.ItemQueue;
-import executor.service.service.parallel.TaskWorker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.Callable;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -22,7 +19,7 @@ import static org.mockito.Mockito.*;
  * @author Oleksandr Tuleninov
  * @version 01
  * @see executor.service.service.Listener
- * @see executor.service.service.parallel.TaskWorker
+ * @see TaskWorker
  * @see executor.service.service.ItemHandler
  */
 public class TaskWorkerTest {

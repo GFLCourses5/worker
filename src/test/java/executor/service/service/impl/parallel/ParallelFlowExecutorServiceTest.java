@@ -1,4 +1,4 @@
-package executor.service.service.parallel;
+package executor.service.service.impl.parallel;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
@@ -7,8 +7,6 @@ import executor.service.service.ProxySourcesClient;
 import executor.service.service.ScenarioSourceListener;
 import executor.service.service.TasksFactory;
 import executor.service.service.impl.ExecutionServiceImpl;
-import executor.service.service.parallel.ItemQueue;
-import executor.service.service.parallel.ParallelFlowExecutorServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

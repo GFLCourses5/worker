@@ -1,4 +1,4 @@
-package executor.service.service.parallel;
+package executor.service.service.impl.parallel;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;

@@ -1,4 +1,4 @@
-package executor.service.service.impl;
+package executor.service.service.impl.webDriver;
 
 import com.google.common.base.Strings;
 import executor.service.config.properties.PropertiesConfig;
@@ -62,7 +62,7 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
         chromeOptions.addArguments("user-agent=" + webDriverConfig.getUserAgent());
         chromeOptions.setImplicitWaitTimeout(Duration.ofMillis(webDriverConfig.getImplicitlyWait()));
         chromeOptions.setPageLoadTimeout(Duration.ofMillis(webDriverConfig.getPageLoadTimeout()));
-        System.setProperty("webdriver.chrome.driver", webDriverConfig.getWebDriverExecutable());
+        System.setProperty("webDriver.chrome.driver", webDriverConfig.getWebDriverExecutable());
 
         return chromeOptions;
     }

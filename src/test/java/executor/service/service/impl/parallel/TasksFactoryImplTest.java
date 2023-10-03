@@ -1,12 +1,10 @@
-package executor.service.service.parallel;
+package executor.service.service.impl.parallel;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.service.ExecutionService;
 import executor.service.service.ScenarioSourceListener;
 import executor.service.service.TasksFactory;
-import executor.service.service.parallel.ItemQueue;
-import executor.service.service.parallel.TasksFactoryImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +22,7 @@ import static org.mockito.Mockito.mock;
  * @author Oleksandr Tuleninov
  * @version 01
  * @see executor.service.service.Listener
- * @see executor.service.service.parallel.ItemQueue
+ * @see ItemQueue
  * @see Callable
  * @see Runnable
  */

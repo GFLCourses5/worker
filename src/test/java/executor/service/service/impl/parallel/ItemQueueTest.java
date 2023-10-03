@@ -1,7 +1,6 @@
-package executor.service.service.parallel;
+package executor.service.service.impl.parallel;
 
 import executor.service.model.Scenario;
-import executor.service.service.parallel.ItemQueue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

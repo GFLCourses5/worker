@@ -1,4 +1,4 @@
-package executor.service.service.impl;
+package executor.service.service.impl.webDriver;
 
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.config.properties.PropertiesConstants;
@@ -14,10 +14,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-
 import java.util.Properties;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /**
  * Class for testing the functionality of the {@code WebDriverInitializerImpl}.
