@@ -6,6 +6,13 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * The {@code ChromeProxyPlugin} is a utility class for creating proxy plugin for Google Chrome browser.
+ * Used by {@code WebDriverInitializerImpl} class
+ *
+ * @author Oleksii Bondarenko
+ * @version 01
+ */
 public class ChromeProxyPlugin {
     public static File generate(String host, int port, String username, String password) {
         String manifestJson = generateManifestJson();
@@ -60,9 +67,9 @@ public class ChromeProxyPlugin {
             bypassList: ["localhost"]
           }
         };
-    
+
         chrome.proxy.settings.set({value: config, scope: "regular"}, function() {});
-    
+
         function callbackFn(details) {
           return {
             authCredentials: {
@@ -71,7 +78,7 @@ public class ChromeProxyPlugin {
             }
           };
         }
-    
+
         chrome.webRequest.onAuthRequired.addListener(
           callbackFn,
           {urls: ["<all_urls>"]},
@@ -86,3 +93,4 @@ public class ChromeProxyPlugin {
         zipStream.closeEntry();
     }
 }
+

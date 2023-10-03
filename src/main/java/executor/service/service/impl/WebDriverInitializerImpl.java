@@ -14,11 +14,17 @@ import java.io.File;
 import java.time.Duration;
 import java.util.Properties;
 
+/**
+ * The {@code WebDriverInitializerImpl} class is a factory that produces WebDriver instances.
+ *
+ * @author Oleksii Bondarenko
+ * @version 0.3
+ */
 public class WebDriverInitializerImpl implements WebDriverInitializer {
     private final Properties properties;
 
     public WebDriverInitializerImpl(PropertiesConfig propertiesConfig) {
-        this.properties = propertiesConfig.getProperties("web-driver.properties");
+        this.properties = propertiesConfig.getProperties(PropertiesConstants.WEB_DRIVER);
     }
 
     @Override
@@ -61,3 +67,4 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
         return chromeOptions;
     }
 }
+
