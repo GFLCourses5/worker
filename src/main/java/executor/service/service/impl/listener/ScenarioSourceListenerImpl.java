@@ -14,21 +14,25 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
+import static executor.service.config.properties.PropertiesConstants.*;
+
 /**
  * The {@code ScenarioSourceListenerImpl} class implements the {@link ScenarioSourceListener} interface
  * that reads scenarios from a {@link ScenarioProvider}
  * and emits them as a {@link Flux} stream with a specified delay.
  * <p>
  *
- * @author Yurii Kotsiuba, Oleksandr Tuleninov, Oleksii Bondarenko
+ * @author Yurii Kotsiuba, Oleksandr Tuleninov, Oleksii Bondarenko, Kostia Hromovii
  * @version 01
  * @see executor.service.service.ScenarioProvider
  * @see executor.service.config.properties.PropertiesConfig
  */
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
+
+    private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);
+
     private final ScenarioProvider provider;
     private final PropertiesConfig propertiesConfig;
-    private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);
 
     public ScenarioSourceListenerImpl(ScenarioProvider provider,
                                       PropertiesConfig propertiesConfig) {
@@ -44,7 +48,7 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
      */
     @Override
     public void execute(ItemHandler handler) {
-        List<Scenario> scenarios = provider.readScenarios();
+        List<Scenario> scenarios = provider.readScenarios(FILE_NAME_SCENARIOS);
         validateScenarios(scenarios);
         Flux<Scenario> scenariosFlux = getScenarioFlux(scenarios);
         scenariosFlux.subscribe(handler::onItemReceived);
@@ -75,7 +79,7 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
     }
 
     private Long getDelay() {
-        Properties properties = propertiesConfig.getProperties(PropertiesConstants.SOURCES_PROPERTIES);
-        return Long.parseLong(properties.getProperty(PropertiesConstants.DELAY_SCENARIO_SECONDS));
+        Properties properties = propertiesConfig.getProperties(SOURCES_PROPERTIES);
+        return Long.parseLong(properties.getProperty(DELAY_SCENARIO_SECONDS));
     }
 }
