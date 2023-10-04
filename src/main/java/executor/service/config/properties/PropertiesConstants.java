@@ -1,11 +1,14 @@
 package executor.service.config.properties;
 
 /**
- * Application`s constants.
+ * Constants class containing property keys used in the application for configuration purposes.
+ * This class defines constants for properties related to thread pool, proxy validation, WebDriver configuration,
+ * user agent, timeouts, and file paths.
+ * <p>
  *
- * @author Oleksandr Tuleninov
+ * @author Oleksandr Tuleninov.
  * @version 01
- * */
+ */
 public final class PropertiesConstants {
 
     private PropertiesConstants() {
@@ -25,10 +28,9 @@ public final class PropertiesConstants {
     public static final String USER_AGENT = "user-agent";
     public static final String PAGE_LOAD_TIMEOUT = "page-load-timeout";
     public static final String IMPLICITLY_WAIT = "implicitly-wait";
+    public static final String FILE_NAME_SCENARIOS = "/scenarios.json";
     public static final String PROXIES = "/proxies.json";
     public static final String SOURCES_PROPERTIES = "source-listeners.properties";
     public static final String DELAY_PROXY_SECONDS = "delay.proxy.seconds";
     public static final String DELAY_SCENARIO_SECONDS = "delay.scenario.seconds";
-
-
 }
