@@ -12,16 +12,18 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
+import static executor.service.config.properties.PropertiesConstants.*;
+
 /**
  * The {@code ProxySourcesClientImpl} class implements the {@link ProxySourcesClient} interface
  * that reads scenarios from a {@link ScenarioProvider}
  * and emits them as a {@link Flux} stream with a specified delay.
  * <p>
  *
- * @author Oleksandr Tuleninov, NikitaHurmaza, Yurii Kotsiuba, Oleksii Bondarenko
+ * @author Oleksandr Tuleninov, NikitaHurmaza, Yurii Kotsiuba, Oleksii Bondarenko, Dima Silenko
  * @version 01
- * @see executor.service.service.ScenarioProvider
- * @see executor.service.config.properties.PropertiesConfig
+ * @see ScenarioProvider
+ * @see PropertiesConfig
  */
 public class ProxySourcesClientImpl implements ProxySourcesClient {
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
@@ -45,7 +47,7 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
      */
     @Override
     public void execute(ItemHandler handler) {
-        List<ProxyConfigHolder> proxyConfigHolders = provider.readProxy(PropertiesConstants.PROXIES);
+        List<ProxyConfigHolder> proxyConfigHolders = provider.readProxy(FILE_NAME_PROXIES);
         List<ProxyConfigHolder> proxies = validateProxies(proxyConfigHolders);
         Flux<ProxyConfigHolder> proxiesFlux = getProxyFlux(proxies);
         proxiesFlux.subscribe(proxy -> {
@@ -83,7 +85,7 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
     }
 
     private Long getDelay() {
-        Properties properties = propertiesConfig.getProperties(PropertiesConstants.SOURCES_PROPERTIES);
-        return Long.parseLong(properties.getProperty(PropertiesConstants.DELAY_PROXY_SECONDS));
+        Properties properties = propertiesConfig.getProperties(SOURCES_PROPERTIES);
+        return Long.parseLong(properties.getProperty(DELAY_PROXY_SECONDS));
     }
 }
