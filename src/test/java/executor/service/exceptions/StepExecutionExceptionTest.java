@@ -4,8 +4,16 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+/**
+ * Test class for testing the functionality of the {@code StepExecutionException}.
+ * This class contains unit tests to verify that {@code StepExecutionException} is working correctly.
+ *
+ * @author Alexander Antonenko
+ * @version 01
+ */
 class StepExecutionExceptionTest {
 
     private static final String TEST_MESSAGE = "Test message";
@@ -44,7 +52,7 @@ class StepExecutionExceptionTest {
     }
 
     @Test
-    public void testCauseConstructor() {;
+    public void testCauseConstructor() {
         stepExecutionException = new StepExecutionException(TEST_CAUSE);
         assertEquals(TEST_CAUSE, stepExecutionException.getCause());
     }
