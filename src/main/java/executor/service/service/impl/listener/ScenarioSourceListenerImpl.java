@@ -1,13 +1,13 @@
 package executor.service.service.impl.listener;
 
 import executor.service.config.properties.PropertiesConfig;
-import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.Scenario;
 import executor.service.service.ItemHandler;
 import executor.service.service.ScenarioProvider;
 import executor.service.service.ScenarioSourceListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
@@ -27,6 +27,7 @@ import static executor.service.config.properties.PropertiesConstants.*;
  * @see executor.service.service.ScenarioProvider
  * @see executor.service.config.properties.PropertiesConfig
  */
+@Service
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
 
     private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);

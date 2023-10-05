@@ -6,6 +6,7 @@ import executor.service.model.Scenario;
 import executor.service.service.ScenarioProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.util.List;
  * @see executor.service.service.ScenarioProvider
  * @see executor.service.config.properties.PropertiesConfig
  */
+@Service
 public class JSONFileScenarioProvider implements ScenarioProvider {
 
     private static final Logger log = LoggerFactory.getLogger(ScenarioProvider.class);

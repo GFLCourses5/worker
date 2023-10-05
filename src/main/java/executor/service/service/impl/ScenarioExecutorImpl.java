@@ -9,6 +9,7 @@ import executor.service.service.StepExecutionSleep;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * Selects a StepExecution for each Step and runs it..
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
  *  @author Oleksandr Tuleninov
  *  @version 01
  * */
+@Service
 public class ScenarioExecutorImpl implements ScenarioExecutor {
 
     private static final Logger log = LoggerFactory.getLogger(ScenarioExecutorImpl.class);

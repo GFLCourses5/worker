@@ -1,24 +1,39 @@
 package executor.service.service.impl.stepExecution;
 
-import executor.service.exceptions.StepExecutionException;
 import executor.service.model.Step;
 import executor.service.model.StepTypes;
 import executor.service.service.StepExecutionSleep;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+/**
+ * The {@code StepExecutionSleepImpl} class implements the {@link StepExecutionSleep} interface
+ * for executing a step that involves pausing the execution for a specified duration.
+ * <p>
+ *
+ * @author Anton Sokolsky
+ * @version 01
+ * @see executor.service.model.StepTypes
+ */
+@Service
 public class StepExecutionSleepImpl implements StepExecutionSleep {
 
-  @Override
-  public String getStepAction() {
-    return StepTypes.SLEEP.getName();
-  }
+    private static final Logger log = LoggerFactory.getLogger(StepExecutionSleepImpl.class);
 
-  @Override
-  public void step(WebDriver webDriver, Step step) {
-    try {
-      Thread.sleep(Integer.valueOf(step.getValue()) * 1000);
-    } catch (InterruptedException e) {
-      throw new StepExecutionException(e);
+    @Override
+    public String getStepAction() {
+        return StepTypes.SLEEP.getName();
     }
-  }
+
+    @Override
+    public void step(WebDriver webDriver, Step step) {
+        String value = step.getValue();
+        try {
+            Thread.sleep(Long.parseLong(value) * 1000);
+        } catch (InterruptedException e) {
+            log.error("Invalid step value: " + value);
+        }
+    }
 }

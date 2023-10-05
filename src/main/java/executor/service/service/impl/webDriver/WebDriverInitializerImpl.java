@@ -9,6 +9,7 @@ import executor.service.service.WebDriverInitializer;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.Duration;
@@ -20,6 +21,7 @@ import java.util.Properties;
  * @author Oleksii Bondarenko
  * @version 0.3
  */
+@Service
 public class WebDriverInitializerImpl implements WebDriverInitializer {
     private final Properties properties;
 
@@ -62,9 +64,7 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
         chromeOptions.addArguments("user-agent=" + webDriverConfig.getUserAgent());
         chromeOptions.setImplicitWaitTimeout(Duration.ofMillis(webDriverConfig.getImplicitlyWait()));
         chromeOptions.setPageLoadTimeout(Duration.ofMillis(webDriverConfig.getPageLoadTimeout()));
-        System.setProperty("webDriver.chrome.driver", webDriverConfig.getWebDriverExecutable());
-
+        System.setProperty("webdriver.chrome.driver", webDriverConfig.getWebDriverExecutable());
         return chromeOptions;
     }
 }
-

@@ -2,6 +2,7 @@ package executor.service.config.properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,8 +15,8 @@ import java.util.Properties;
  *  @author Oleksandr Tuleninov
  *  @version 01
  * */
+@Component
 public class PropertiesConfig {
-
 
     private static final Logger log = LoggerFactory.getLogger(PropertiesConfig.class);
 

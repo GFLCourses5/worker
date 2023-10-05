@@ -17,6 +17,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.Properties;
 
@@ -27,7 +28,7 @@ import java.util.Properties;
  * @author Oleksii Bondarenko
  * @version 0.2
  */
-
+@Service
 public class ProxyValidatorImpl implements ProxyValidator {
     private final Properties properties;
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
@@ -81,4 +82,3 @@ public class ProxyValidatorImpl implements ProxyValidator {
                 .build();
     }
 }
-

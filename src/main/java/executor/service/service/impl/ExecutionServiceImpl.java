@@ -6,14 +6,24 @@ import executor.service.model.WebDriverConfig;
 import executor.service.service.ExecutionService;
 import executor.service.service.ScenarioExecutor;
 import executor.service.service.WebDriverInitializer;
+import executor.service.service.impl.webDriver.WebDriverInitializerImpl;
 import org.openqa.selenium.WebDriver;
+import org.springframework.stereotype.Service;
 
 /**
- * The facade for execute ScenarioExecutor.
+ * The {@code ExecutionServiceImpl} class implements the {@link ExecutionService} interface and
+ * is responsible for executing scenarios using a WebDriver.
+ * It utilizes a {@link ScenarioExecutor} to perform the execution and relies on {@link WebDriverConfig} and
+ * {@link WebDriverInitializer} for configuring and initializing WebDriver instances.
+ * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
+ * @see executor.service.service.ScenarioExecutor
+ * @see executor.service.model.WebDriverConfig
+ * @see executor.service.service.WebDriverInitializer
  */
+@Service
 public class ExecutionServiceImpl implements ExecutionService {
 
     private final ScenarioExecutor scenarioExecutor;
@@ -21,32 +31,33 @@ public class ExecutionServiceImpl implements ExecutionService {
     private final WebDriverInitializer webDriverInitializer;
 
     public ExecutionServiceImpl(ScenarioExecutor scenarioExecutor,
-                                WebDriverConfig webDriverConfig, WebDriverInitializer webDriverInitializer) {
+                                WebDriverConfig webDriverConfig,
+                                WebDriverInitializer webDriverInitializer) {
         this.scenarioExecutor = scenarioExecutor;
         this.webDriverConfig = webDriverConfig;
         this.webDriverInitializer = webDriverInitializer;
     }
 
     /**
-     * Execute ScenarioExecutor.
+     * Executes a scenario using the provided WebDriver and optional proxy configuration.
      *
      * @param scenario the scenario
      * @param proxy    the proxy
      */
     @Override
     public void execute(Scenario scenario, ProxyConfigHolder proxy) {
-        WebDriver webDriver = getWebDriverPrototype(webDriverConfig, proxy);
+        WebDriver webDriver = getWebDriver(webDriverConfig, proxy);
 
         scenarioExecutor.execute(scenario, webDriver);
     }
 
     /**
-     * Get WebDriver as Prototype.
+     * Retrieves a WebDriver instance as a prototype.
      *
      * @param webDriverConfig   the WebDriverConfig entity
      * @param proxyConfigHolder the ProxyConfigHolder entity
      */
-    private WebDriver getWebDriverPrototype(WebDriverConfig webDriverConfig, ProxyConfigHolder proxyConfigHolder) {
+    private WebDriver getWebDriver(WebDriverConfig webDriverConfig, ProxyConfigHolder proxyConfigHolder) {
         return webDriverInitializer.getInstance(webDriverConfig, proxyConfigHolder);
     }
 }

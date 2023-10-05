@@ -3,7 +3,8 @@ package executor.service.config.bean;
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ThreadPoolConfig;
 import executor.service.model.WebDriverConfig;
-import executor.service.service.ProxyProvider;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -18,26 +19,26 @@ import static executor.service.config.properties.PropertiesConstants.*;
  *  @author Oleksandr Tuleninov
  *  @version 01
  * */
+@Configuration
 public class BeanConfig {
 
     private final PropertiesConfig propertiesConfig;
-    private final ProxyProvider provider;
 
-
-    public BeanConfig(PropertiesConfig propertiesConfig, ProxyProvider provider) {
+    public BeanConfig(PropertiesConfig propertiesConfig) {
         this.propertiesConfig = propertiesConfig;
-        this.provider = provider;
     }
 
     /**
      * Create a ThreadPoolExecutor bean from properties file.
      * */
+    @Bean
     public ExecutorService threadPoolExecutor() {
         ThreadPoolConfig threadPoolConfig = threadPoolConfig();
-        int MAXIMUM_POOL_SIZE = 5;
+        var properties = propertiesConfig.getProperties(THREAD_POOL_PROPERTIES);
+        int size = Integer.parseInt(properties.getProperty(MAXIMUM_POOL_SIZE));
         return new ThreadPoolExecutor(
                 threadPoolConfig.getCorePoolSize(),
-                MAXIMUM_POOL_SIZE,
+                size,
                 threadPoolConfig.getKeepAliveTime(),
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>());
@@ -57,6 +58,7 @@ public class BeanConfig {
     /**
      * Create a default WebDriverConfig bean from properties file.
      * */
+    @Bean
     public WebDriverConfig webDriverConfig() {
         var properties = propertiesConfig.getProperties(WEB_DRIVER);
         var webDriverExecutable = properties.getProperty(WEB_DRIVER_EXECUTABLE);

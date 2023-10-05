@@ -5,6 +5,7 @@ import executor.service.model.Scenario;
 import executor.service.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -23,6 +24,7 @@ import java.util.concurrent.Future;
  * @see executor.service.service.ScenarioSourceListener
  * @see executor.service.service.ProxySourcesClient
  */
+@Service
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
     private static final Logger log = LoggerFactory.getLogger(ParallelFlowExecutorServiceImpl.class);

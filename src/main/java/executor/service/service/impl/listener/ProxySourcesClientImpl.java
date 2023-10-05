@@ -1,11 +1,11 @@
 package executor.service.service.impl.listener;
 
 import executor.service.config.properties.PropertiesConfig;
-import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
@@ -25,6 +25,7 @@ import static executor.service.config.properties.PropertiesConstants.*;
  * @see ScenarioProvider
  * @see PropertiesConfig
  */
+@Service
 public class ProxySourcesClientImpl implements ProxySourcesClient {
     private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
     private final ProxyProvider provider;

@@ -5,6 +5,7 @@ import executor.service.model.Scenario;
 import executor.service.service.ExecutionService;
 import executor.service.service.Listener;
 import executor.service.service.TasksFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Callable;
 
@@ -21,6 +22,7 @@ import java.util.concurrent.Callable;
  * @see executor.service.model.Scenario
  * @see executor.service.model.ProxyConfigHolder
  */
+@Service
 public class TasksFactoryImpl implements TasksFactory {
 
     @Override

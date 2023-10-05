@@ -6,6 +6,7 @@ import executor.service.model.ProxyConfigHolder;
 import executor.service.service.ProxyProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import java.util.List;
  * @see ProxyProvider
  * @see executor.service.config.properties.PropertiesConfig
  */
+@Service
 public class JSONFileProxyProvider implements ProxyProvider {
 
     private static final Logger log = LoggerFactory.getLogger(JSONFileProxyProvider.class);
