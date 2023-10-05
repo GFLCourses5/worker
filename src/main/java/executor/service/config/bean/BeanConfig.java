@@ -23,9 +23,12 @@ import static executor.service.config.properties.PropertiesConstants.*;
 public class BeanConfig {
 
     private final PropertiesConfig propertiesConfig;
+    private final ProxyProvider provider;
 
-    public BeanConfig(PropertiesConfig propertiesConfig) {
+
+    public BeanConfig(PropertiesConfig propertiesConfig, ProxyProvider provider) {
         this.propertiesConfig = propertiesConfig;
+        this.provider = provider;
     }
 
     /**
