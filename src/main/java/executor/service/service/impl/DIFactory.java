@@ -42,7 +42,7 @@ public class DIFactory implements ObjectFactory {
     public DIFactory() {
         PropertiesConfig propertiesConfig = new PropertiesConfig();
         ProxyProvider proxyProvider = new JSONFileProxyProvider();
-        BeanConfig beanConfig = new BeanConfig(propertiesConfig, proxyProvider);
+        BeanConfig beanConfig = new BeanConfig(propertiesConfig);
         this.threadPoolExecutor = beanConfig.threadPoolExecutor();
         WebDriverConfig webDriverConfig = beanConfig.webDriverConfig();
         StepExecutionClickCss stepExecutionClickCss = new StepExecutionClickCssImpl();

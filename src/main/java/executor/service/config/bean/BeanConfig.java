@@ -3,7 +3,6 @@ package executor.service.config.bean;
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ThreadPoolConfig;
 import executor.service.model.WebDriverConfig;
-import executor.service.service.ProxyProvider;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -21,12 +20,9 @@ import static executor.service.config.properties.PropertiesConstants.*;
 public class BeanConfig {
 
     private final PropertiesConfig propertiesConfig;
-    private final ProxyProvider provider;
 
-
-    public BeanConfig(PropertiesConfig propertiesConfig, ProxyProvider provider) {
+    public BeanConfig(PropertiesConfig propertiesConfig) {
         this.propertiesConfig = propertiesConfig;
-        this.provider = provider;
     }
 
     /**
@@ -34,10 +30,11 @@ public class BeanConfig {
      * */
     public ExecutorService threadPoolExecutor() {
         ThreadPoolConfig threadPoolConfig = threadPoolConfig();
-        int MAXIMUM_POOL_SIZE = 5;
+        var properties = propertiesConfig.getProperties(THREAD_POOL_PROPERTIES);
+        int size = Integer.parseInt(properties.getProperty(MAXIMUM_POOL_SIZE));
         return new ThreadPoolExecutor(
                 threadPoolConfig.getCorePoolSize(),
-                MAXIMUM_POOL_SIZE,
+                size,
                 threadPoolConfig.getKeepAliveTime(),
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>());
