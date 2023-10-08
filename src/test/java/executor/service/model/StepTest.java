@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 
 public class StepTest {
 
-    private static final StepTypes DEFAULT_ACTION = StepTypes.SLEEP;
+    private static final String DEFAULT_ACTION = "sleep";
     private static final String DEFAULT_VALUE = "Default value";
-    private static final StepTypes ANOTHER_ACTION = StepTypes.CLICK_CSS;;
+    private static final String ANOTHER_ACTION = "clickCss";
     private static final String ANOTHER_VALUE = "Another value";
 
     @Test

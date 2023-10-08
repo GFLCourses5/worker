@@ -2,7 +2,6 @@ package executor.service.service.impl;
 
 import executor.service.model.Scenario;
 import executor.service.model.Step;
-import executor.service.model.StepTypes;
 import executor.service.service.ScenarioExecutor;
 import executor.service.service.StepExecutionClickCss;
 import executor.service.service.StepExecutionClickXpath;
@@ -55,8 +54,8 @@ public class ScenarioExecutorImplTest {
         "test scenario 1",
         "http://info.cern.ch",
         Arrays.asList(
-            new Step(StepTypes.CLICK_CSS, "body > ul > li:nth-child(1) > a"),
-            new Step(StepTypes.SLEEP, "5000:15000"),
-            new Step(StepTypes.CLICK_XPATH, "/html/body/p")));
+            new Step("clickCss", "body > ul > li:nth-child(1) > a"),
+            new Step("sleep", "5000:15000"),
+            new Step("clickXpath", "/html/body/p")));
   }
 }

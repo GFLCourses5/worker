@@ -3,22 +3,22 @@ package executor.service.model;
 import java.util.Objects;
 
 public class Step {
-    private StepTypes action;
+    private String action;
     private String value;
 
     public Step() {
     }
 
-    public Step(StepTypes action, String value) {
+    public Step(String action, String value) {
         this.action = action;
         this.value = value;
     }
 
-    public StepTypes getAction() {
+    public String getAction() {
         return action;
     }
 
-    public void setAction(StepTypes action) {
+    public void setAction(String action) {
         this.action = action;
     }
 

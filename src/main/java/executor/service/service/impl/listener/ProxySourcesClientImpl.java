@@ -1,7 +1,6 @@
 package executor.service.service.impl.listener;
 
 import executor.service.config.properties.PropertiesConfig;
-import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.service.*;
 import org.slf4j.Logger;
@@ -79,7 +78,6 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
      */
     private Flux<ProxyConfigHolder> getProxyFlux(List<ProxyConfigHolder> proxies) {
         return Flux.fromIterable(proxies)
-                .log()
                 .delayElements(Duration.ofSeconds(getDelay()))
                 .repeat();
     }

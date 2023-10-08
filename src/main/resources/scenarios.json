@@ -1,36 +1,36 @@
 [
-{
-  "name": "test scenario 1",
-  "site": "http://info.cern.ch",
-  "steps" : [
-    {
-      "action": "CLICK_CSS",
-      "value": "body > ul > li:nth-child(1) > a"
-    },
-    {
-      "action": "SLEEP",
-      "value": "5"
-    },
-    {
-      "action": "CLICK_XPATH",
-      "value": "/html/body/p"
-    }
-  ]
-},
+  {
+    "name": "test scenario 1",
+    "site": "https://info.cern.ch",
+    "steps": [
+      {
+        "action": "clickCss",
+        "value": "body > ul > li:nth-child(1) > a"
+      },
+      {
+        "action": "sleep",
+        "value": "5"
+      },
+      {
+        "action": "clickXpath",
+        "value": "/html/body/p"
+      }
+    ]
+  },
   {
     "name": "Google Search",
     "site": "https://www.google.com",
     "steps": [
       {
-        "action": "CLICK_CSS",
+        "action": "clickCss",
         "value": "#hplogo"
       },
       {
-        "action": "SLEEP",
+        "action": "sleep",
         "value": "3"
       },
       {
-        "action": "CLICK_XPATH",
+        "action": "clickXpath",
         "value": "//input[@name='q']"
       }
     ]
@@ -40,15 +40,15 @@
     "site": "https://www.amazon.com",
     "steps": [
       {
-        "action": "CLICK_XPATH",
+        "action": "clickXpath",
         "value": "//a[@id='nav-hamburger-menu']"
       },
       {
-        "action": "SLEEP",
+        "action": "sleep",
         "value": "2"
       },
       {
-        "action": "CLICK_CSS",
+        "action": "clickCss",
         "value": ".nav-logo-base"
       }
     ]
@@ -58,15 +58,15 @@
     "site": "https://www.wikipedia.org",
     "steps": [
       {
-        "action": "CLICK_CSS",
+        "action": "clickCss",
         "value": "#searchInput"
       },
       {
-        "action": "SLEEP",
+        "action": "sleep",
         "value": "4"
       },
       {
-        "action": "CLICK_XPATH",
+        "action": "clickXpath",
         "value": "//button[@type='submit']"
       }
     ]
@@ -76,15 +76,15 @@
     "site": "https://www.youtube.com",
     "steps": [
       {
-        "action": "CLICK_CSS",
+        "action": "clickCss",
         "value": "a[href='/trending']"
       },
       {
-        "action": "SLEEP",
+        "action": "sleep",
         "value": "2"
       },
       {
-        "action": "CLICK_XPATH",
+        "action": "clickXpath",
         "value": "//input[@id='search']"
       }
     ]

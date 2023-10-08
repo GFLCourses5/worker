@@ -1,7 +1,6 @@
 package executor.service.service.impl.listener;
 
 import executor.service.config.properties.PropertiesConfig;
-import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.Scenario;
 import executor.service.service.ItemHandler;
 import executor.service.service.ScenarioProvider;
@@ -73,7 +72,6 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
      */
     private Flux<Scenario> getScenarioFlux(List<Scenario> scenarios) {
         return Flux.fromIterable(scenarios)
-                .log()
                 .delayElements(Duration.ofSeconds(getDelay()))
                 .repeat();
     }
