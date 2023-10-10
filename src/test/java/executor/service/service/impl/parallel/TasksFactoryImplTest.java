@@ -3,6 +3,7 @@ package executor.service.service.impl.parallel;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.service.ExecutionService;
+import executor.service.service.ProxySourceClient;
 import executor.service.service.ScenarioSourceListener;
 import executor.service.service.TasksFactory;
 import org.junit.jupiter.api.AfterEach;
@@ -21,8 +22,9 @@ import static org.mockito.Mockito.mock;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see executor.service.service.Listener
- * @see ItemQueue
+ * @see ScenarioTaskWorker
+ * @see ProxyTaskWorker
+ * @see Scenario
  * @see Callable
  * @see Runnable
  */
@@ -32,7 +34,9 @@ public class TasksFactoryImplTest {
 
     @BeforeEach
     public void setUp() {
-        this.tasksFactory = new TasksFactoryImpl();
+        ScenarioTaskWorker scenarioTaskWorker = mock(ScenarioTaskWorker.class);
+        ProxyTaskWorker proxyTaskWorker = mock(ProxyTaskWorker.class);
+        this.tasksFactory = new TasksFactoryImpl(scenarioTaskWorker, proxyTaskWorker);
     }
 
     @AfterEach
@@ -42,7 +46,7 @@ public class TasksFactoryImplTest {
 
     @Test
     public void testCreateTaskWorker() {
-        Callable<ItemQueue> callable = tasksFactory.createTaskWorker(mock(ScenarioSourceListener.class));
+        Callable<Scenario> callable = tasksFactory.createScenarioTaskWorker();
 
         assertNotNull(callable);
     }
@@ -50,7 +54,7 @@ public class TasksFactoryImplTest {
     @Test
     public void testCreateExecutionWorker() {
         var executionService = mock(ExecutionService.class);
-        var scenario = mock(Scenario.class);
+        var scenario = mock(executor.service.model.Scenario.class);
         var proxy = mock(ProxyConfigHolder.class);
 
         Runnable runnable = tasksFactory.createExecutionWorker(executionService, scenario, proxy);

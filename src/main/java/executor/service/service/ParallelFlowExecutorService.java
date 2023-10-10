@@ -2,14 +2,11 @@ package executor.service.service;
 
 /**
  * The {@code ParallelFlowExecutorService} interface defines methods for managing parallel execution
- * of ScenarioSourceListener, ProxySourcesClient, and ExecutionService.
+ * of getting scenario, getting proxy and ExecutionService.
  * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see executor.service.service.ExecutionService
- * @see executor.service.service.ScenarioSourceListener
- * @see executor.service.service.ProxySourcesClient
  */
 public interface ParallelFlowExecutorService {
 

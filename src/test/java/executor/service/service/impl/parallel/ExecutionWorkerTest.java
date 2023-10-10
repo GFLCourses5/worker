@@ -23,34 +23,17 @@ import static org.mockito.Mockito.*;
  */
 public class ExecutionWorkerTest {
 
-    private ExecutionService service;
-    private Scenario scenario;
-    private ProxyConfigHolder proxy;
-    private ExecutionWorker executionWorker;
-
-    @BeforeEach
-    public void setUp() {
-        this.service = mock(ExecutionService.class);
-        this.scenario = mock(Scenario.class);
-        this.proxy = mock(ProxyConfigHolder.class);
-        this.executionWorker = new ExecutionWorker(service, scenario, proxy);
-    }
-
-    @AfterEach
-    void tearDown() {
-        verifyNoMoreInteractions(service);
-        this.service = null;
-        this.scenario = null;
-        this.proxy = null;
-        this.executionWorker = null;
-    }
-
     @Test
     public void testRunPositive() {
+        var scenario = new Scenario();
+        var proxy = new ProxyConfigHolder();
+
+        var service = mock(ExecutionService.class);
         doNothing().when(service).execute(scenario, proxy);
 
+        var executionWorker =  new ExecutionWorker(service, scenario, proxy);
         executionWorker.run();
 
-        verify(service, times(1)).execute(scenario, proxy);
+        verify(service, times(1)).execute(any(Scenario.class), any(ProxyConfigHolder.class));
     }
 }

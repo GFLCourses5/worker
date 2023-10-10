@@ -29,8 +29,10 @@ import java.util.Properties;
  */
 
 public class ProxyValidatorImpl implements ProxyValidator {
+
+    private static final Logger log = LoggerFactory.getLogger(ProxyValidatorImpl.class);
+
     private final Properties properties;
-    private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
 
     public ProxyValidatorImpl(PropertiesConfig propertiesConfig) {
         this.properties = propertiesConfig.getProperties(PropertiesConstants.PROXY_VALIDATOR_PROPERTIES);
