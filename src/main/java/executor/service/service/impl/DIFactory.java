@@ -1,12 +1,11 @@
 package executor.service.service.impl;
 
-import executor.service.config.bean.ThreadPoolExecutor;
-import executor.service.config.bean.WebDriverConfigObject;
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.WebDriverConfig;
 import executor.service.service.*;
 import executor.service.service.impl.listener.*;
-import executor.service.service.impl.parallel.*;
+import executor.service.service.impl.parallel.ParallelFlowExecutorServiceImpl;
+import executor.service.service.impl.parallel.TasksFactoryImpl;
 import executor.service.service.impl.stepExecution.StepExecutionClickCssImpl;
 import executor.service.service.impl.stepExecution.StepExecutionClickXpathImpl;
 import executor.service.service.impl.stepExecution.StepExecutionSleepImpl;
@@ -36,7 +35,7 @@ public class DIFactory implements ObjectFactory {
 
     private final Map<Class<?>, Object> cache = new HashMap<>();
 
-    public DIFactory() {
+    private DIFactory() {
         if (instance != null) {
             throw new IllegalStateException("Singleton instance already exists. Use getInstance() method.");
         }
@@ -56,37 +55,81 @@ public class DIFactory implements ObjectFactory {
 
     @Override
     public <T> T createObject(Class<T> clazz) {
-        PropertiesConfig propertiesConfig = new PropertiesConfig();
-        ProxyProvider proxyProvider = new JSONFileProxyProvider();
-        WebDriverConfig webDriverConfig = new WebDriverConfigObject(propertiesConfig).webDriverConfig();
-        StepExecutionClickCss stepExecutionClickCss = new StepExecutionClickCssImpl();
-        StepExecutionSleep stepExecutionSleep = new StepExecutionSleepImpl();
-        StepExecutionClickXpath stepExecutionClickXpath = new StepExecutionClickXpathImpl();
-        ScenarioExecutor scenarioExecutor = new ScenarioExecutorImpl(stepExecutionClickCss,stepExecutionSleep,stepExecutionClickXpath);
-        ScenarioProvider scenarioProvider = new JSONFileScenarioProvider();
-        ScenarioSourceListener scenarioSourceListener = new ScenarioSourceListenerImpl(scenarioProvider, propertiesConfig);
-        ProxyValidator proxyValidator = new ProxyValidatorImpl(propertiesConfig);
-        ProxySourceClient proxySourceClient = new ProxySourceClientImpl(proxyProvider, proxyValidator, propertiesConfig);
-        ScenarioSourceQueue scenarioSourceQueue = new ScenarioSourceQueue();
-        ScenarioTaskWorker scenarioTaskWorker = new ScenarioTaskWorker(scenarioSourceListener, scenarioSourceQueue);
-        ProxySourceQueue proxySourceQueue = new ProxySourceQueue();
-        ProxyTaskWorker proxyTaskWorker = new ProxyTaskWorker(proxySourceClient, proxySourceQueue);
-        WebDriverInitializer webDriverInitializer = new WebDriverInitializerImpl(propertiesConfig);
-        ExecutorService threadPoolExecutor = new ThreadPoolExecutor(propertiesConfig).threadPoolExecutor();
-        ExecutionService executionService = new ExecutionServiceImpl(scenarioExecutor, webDriverConfig, webDriverInitializer);
-        TasksFactory tasksFactory = new TasksFactoryImpl(scenarioTaskWorker, proxyTaskWorker);
+        Object object = cache.get(clazz);
 
-        if (ParallelFlowExecutorService.class.isAssignableFrom(clazz)) {
-            Object object = cache.get(clazz);
+        if (object != null) {
+            return (T) object;
+        }
 
-            if (object == null) {
-                ParallelFlowExecutorService parallel = new ParallelFlowExecutorServiceImpl(
-                        threadPoolExecutor, executionService, tasksFactory);
+        if (clazz == PropertiesConfig.class) {
+            object = new PropertiesConfig();
+        } else if (clazz == ProxyProvider.class) {
+            object = new JSONFileProxyProvider();
+        } else if (clazz == WebDriverConfig.class) {
+            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
+            object = new WebDriverConfigObject(propertiesConfig).webDriverConfig();
+        } else if (clazz == StepExecutionClickCss.class) {
+            object = new StepExecutionClickCssImpl();
+        } else if (clazz == StepExecutionSleep.class) {
+            object = new StepExecutionSleepImpl();
+        } else if (clazz == StepExecutionClickXpath.class) {
+            object = new StepExecutionClickXpathImpl();
+        } else if (clazz == ScenarioExecutor.class) {
+            StepExecutionClickCss stepExecutionClickCss = createObject(StepExecutionClickCss.class);
+            StepExecutionSleep stepExecutionSleep = createObject(StepExecutionSleep.class);
+            StepExecutionClickXpath stepExecutionClickXpath = createObject(StepExecutionClickXpath.class);
+            object = new ScenarioExecutorImpl(stepExecutionClickCss, stepExecutionSleep, stepExecutionClickXpath);
+        } else if (clazz == ScenarioProvider.class) {
+            object = new JSONFileScenarioProvider();
+        } else if (clazz == ScenarioSourceListener.class) {
+            ScenarioProvider scenarioProvider = createObject(ScenarioProvider.class);
+            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
+            object = new ScenarioSourceListenerImpl(scenarioProvider, propertiesConfig);
+        } else if (clazz == ProxyValidator.class) {
+            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
+            object = new ProxyValidatorImpl(propertiesConfig);
+        } else if (clazz == ProxySourceClient.class) {
+            ProxyProvider proxyProvider = createObject(ProxyProvider.class);
+            ProxyValidator proxyValidator = createObject(ProxyValidator.class);
+            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
+            object = new ProxySourceClientImpl(proxyProvider, proxyValidator, propertiesConfig);
+        } else if (clazz == ScenarioSourceQueue.class) {
+            object = new ScenarioSourceQueue();
+        } else if (clazz == ScenarioTaskWorker.class) {
+            ScenarioSourceListener scenarioSourceListener = createObject(ScenarioSourceListener.class);
+            ScenarioSourceQueue scenarioSourceQueue = createObject(ScenarioSourceQueue.class);
+            object = new ScenarioTaskWorker(scenarioSourceListener, scenarioSourceQueue);
+        } else if (clazz == ProxySourceQueue.class) {
+            object = new ProxySourceQueue();
+        } else if (clazz == ProxyTaskWorker.class) {
+            ProxySourceClient proxySourceClient = createObject(ProxySourceClient.class);
+            ProxySourceQueue proxySourceQueue = createObject(ProxySourceQueue.class);
+            object = new ProxyTaskWorker(proxySourceClient, proxySourceQueue);
+        } else if (clazz == WebDriverInitializer.class) {
+            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
+            object = new WebDriverInitializerImpl(propertiesConfig);
+        } else if (clazz == ExecutorService.class) {
+            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
+            object = new ThreadPoolExecutor(propertiesConfig).threadPoolExecutor();
+        } else if (clazz == ExecutionService.class) {
+            ScenarioExecutor scenarioExecutor = createObject(ScenarioExecutor.class);
+            WebDriverConfig webDriverConfig = createObject(WebDriverConfig.class);
+            WebDriverInitializer webDriverInitializer = createObject(WebDriverInitializer.class);
+            object = new ExecutionServiceImpl(scenarioExecutor, webDriverConfig, webDriverInitializer);
+        } else if (clazz == TasksFactory.class) {
+            ScenarioTaskWorker scenarioTaskWorker = createObject(ScenarioTaskWorker.class);
+            ProxyTaskWorker proxyTaskWorker = createObject(ProxyTaskWorker.class);
+            object = new TasksFactoryImpl(scenarioTaskWorker, proxyTaskWorker);
+        } else if (clazz == ParallelFlowExecutorService.class) {
+            ExecutorService threadPoolExecutor = createObject(ExecutorService.class);
+            ExecutionService executionService = createObject(ExecutionService.class);
+            TasksFactory tasksFactory = createObject(TasksFactory.class);
+            object = new ParallelFlowExecutorServiceImpl(threadPoolExecutor, executionService, tasksFactory);
+        }
 
-                cache.put(clazz, parallel);
-                return clazz.cast(parallel);
-            }
-            return clazz.cast(object);
+        if (object != null) {
+            cache.put(clazz, object);
+            return (T) object;
         }
         return null;
     }
