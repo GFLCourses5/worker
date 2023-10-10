@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
 /**
  * Test class for testing the functionality of the {@code DIFactory} class
  * This class contains unit tests to verify that {@code DIFactory} is working correctly.
@@ -17,8 +16,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class DIFactoryTest {
 
     @Test
+    public void testDIFactorySingleton() {
+        DIFactory instance1 = DIFactory.getInstance();
+        DIFactory instance2 = DIFactory.getInstance();
+
+        assertEquals(instance1, instance2);
+    }
+
+    @Test
     public void testParallelFlowExecutorService() {
-        DIFactory diFactory = new DIFactory();
+        DIFactory diFactory = DIFactory.getInstance();
         var service1 = diFactory.createObject(ParallelFlowExecutorService.class);
         assertNotNull(service1);
 
