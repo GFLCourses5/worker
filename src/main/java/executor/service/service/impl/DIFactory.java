@@ -1,6 +1,6 @@
 package executor.service.service.impl;
 
-import executor.service.config.bean.ThreadPoolExecutor;
+import executor.service.config.bean.ThreadPoolExecutorObject;
 import executor.service.config.bean.WebDriverConfigObject;
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.WebDriverConfig;
@@ -12,7 +12,6 @@ import executor.service.service.impl.stepExecution.StepExecutionClickXpathImpl;
 import executor.service.service.impl.stepExecution.StepExecutionSleepImpl;
 import executor.service.service.impl.webDriver.WebDriverInitializerImpl;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -112,7 +111,7 @@ public class DIFactory implements ObjectFactory {
             object = new WebDriverInitializerImpl(propertiesConfig);
         } else if (clazz == ExecutorService.class) {
             PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
-            object = new ThreadPoolExecutor(propertiesConfig).threadPoolExecutor();
+            object = new ThreadPoolExecutorObject(propertiesConfig).threadPoolExecutor();
         } else if (clazz == ExecutionService.class) {
             ScenarioExecutor scenarioExecutor = createObject(ScenarioExecutor.class);
             WebDriverConfig webDriverConfig = createObject(WebDriverConfig.class);

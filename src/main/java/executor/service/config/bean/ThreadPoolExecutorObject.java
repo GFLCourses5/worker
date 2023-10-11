@@ -5,6 +5,7 @@ import executor.service.model.ThreadPoolConfig;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static executor.service.config.properties.PropertiesConstants.*;
@@ -20,11 +21,11 @@ import static executor.service.config.properties.PropertiesConstants.KEEP_ALIVE_
  * @see PropertiesConfig
  * @see ThreadPoolConfig
  */
-public class ThreadPoolExecutor {
+public class ThreadPoolExecutorObject {
 
     private final PropertiesConfig propertiesConfig;
 
-    public ThreadPoolExecutor(PropertiesConfig propertiesConfig) {
+    public ThreadPoolExecutorObject(PropertiesConfig propertiesConfig) {
         this.propertiesConfig = propertiesConfig;
     }
 
@@ -35,7 +36,7 @@ public class ThreadPoolExecutor {
         ThreadPoolConfig threadPoolConfig = threadPoolConfig();
         var properties = propertiesConfig.getProperties(THREAD_POOL_PROPERTIES);
         int size = Integer.parseInt(properties.getProperty(MAXIMUM_POOL_SIZE));
-        return new java.util.concurrent.ThreadPoolExecutor(
+        return new ThreadPoolExecutor(
                 threadPoolConfig.getCorePoolSize(),
                 size,
                 threadPoolConfig.getKeepAliveTime(),
