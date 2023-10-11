@@ -2,9 +2,6 @@ package executor.service.config.bean;
 
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ThreadPoolConfig;
-import executor.service.model.WebDriverConfig;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -12,26 +9,29 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import static executor.service.config.properties.PropertiesConstants.*;
+import static executor.service.config.properties.PropertiesConstants.KEEP_ALIVE_TIME;
 
 /**
- * Class for creating beans from properties file.
+ * The {@code ThreadPoolExecutor} class is responsible for creating an {@link ExecutorService}
+ * using the configuration properties provided by the {@link PropertiesConfig}.
+ * It allows for the dynamic creation of a thread pool executor based on specified properties.
  *
- *  @author Oleksandr Tuleninov
- *  @version 01
- * */
-@Configuration
-public class BeanConfig {
+ * @author Dima Silenko, Oleksandr Tuleninov.
+ * @version 01
+ * @see PropertiesConfig
+ * @see ThreadPoolConfig
+ */
+public class ThreadPoolExecutorObject {
 
     private final PropertiesConfig propertiesConfig;
 
-    public BeanConfig(PropertiesConfig propertiesConfig) {
+    public ThreadPoolExecutorObject(PropertiesConfig propertiesConfig) {
         this.propertiesConfig = propertiesConfig;
     }
 
     /**
      * Create a ThreadPoolExecutor bean from properties file.
      * */
-    @Bean
     public ExecutorService threadPoolExecutor() {
         ThreadPoolConfig threadPoolConfig = threadPoolConfig();
         var properties = propertiesConfig.getProperties(THREAD_POOL_PROPERTIES);
@@ -53,19 +53,5 @@ public class BeanConfig {
         var keepAliveTime = Long.parseLong(properties.getProperty(KEEP_ALIVE_TIME));
 
         return new ThreadPoolConfig(corePoolSize, keepAliveTime);
-    }
-
-    /**
-     * Create a default WebDriverConfig bean from properties file.
-     * */
-    @Bean
-    public WebDriverConfig webDriverConfig() {
-        var properties = propertiesConfig.getProperties(WEB_DRIVER);
-        var webDriverExecutable = properties.getProperty(WEB_DRIVER_EXECUTABLE);
-        var userAgent = properties.getProperty(USER_AGENT);
-        var pageLoadTimeout = Long.parseLong(properties.getProperty(PAGE_LOAD_TIMEOUT));
-        var implicitlyWait = Long.parseLong(properties.getProperty(IMPLICITLY_WAIT));
-
-        return new WebDriverConfig(webDriverExecutable, userAgent, pageLoadTimeout, implicitlyWait);
     }
 }

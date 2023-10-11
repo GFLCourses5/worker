@@ -1,12 +1,13 @@
 package executor.service.service.impl.stepExecution;
 
 import executor.service.model.Step;
-import executor.service.model.StepTypes;
 import executor.service.service.StepExecutionSleep;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * The {@code StepExecutionSleepImpl} class implements the {@link StepExecutionSleep} interface
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
  *
  * @author Anton Sokolsky
  * @version 01
- * @see executor.service.model.StepTypes
+ * @see executor.service.model.Step
  */
 @Service
 public class StepExecutionSleepImpl implements StepExecutionSleep {
@@ -24,16 +25,16 @@ public class StepExecutionSleepImpl implements StepExecutionSleep {
 
     @Override
     public String getStepAction() {
-        return StepTypes.SLEEP.getName();
+        return "sleep";
     }
 
     @Override
     public void step(WebDriver webDriver, Step step) {
         String value = step.getValue();
         try {
-            Thread.sleep(Long.parseLong(value) * 1000);
+            TimeUnit.SECONDS.sleep(Long.parseLong(value));
         } catch (InterruptedException e) {
-            log.error("Invalid step value: " + value);
+            log.error("Thread " + Thread.currentThread().getName() + " was interrupted in StepExecutionSleepImpl.class");
         }
     }
 }

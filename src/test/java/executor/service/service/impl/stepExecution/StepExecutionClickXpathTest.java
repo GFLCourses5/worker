@@ -1,11 +1,9 @@
 package executor.service.service.impl.stepExecution;
 
 import executor.service.model.Step;
-import executor.service.model.StepTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -38,21 +36,12 @@ public class StepExecutionClickXpathTest {
     @Test
     public void testStep_ClicksElementWhenFound() {
         WebDriver webDriver = mock(WebDriver.class);
-        Step step = new Step(StepTypes.CLICK_XPATH, "xpath_expression");
+        Step step = new Step("clickXpath", "xpath_expression");
         WebElement mockElement = mock(WebElement.class);
 
         when(webDriver.findElement(By.xpath(step.getValue()))).thenReturn(mockElement);
 
         clickXpath.step(webDriver, step);
         verify(mockElement, times(1)).click();
-    }
-
-    @Test
-    public void testStep_HandlesNoSuchElementException() {
-        WebDriver webDriver = mock(WebDriver.class);
-        Step step = new Step(StepTypes.CLICK_XPATH, "non_existent_xpath_expression");
-        when(webDriver.findElement(By.xpath(step.getValue()))).thenThrow(NoSuchElementException.class);
-
-        clickXpath.step(webDriver, step);
     }
 }

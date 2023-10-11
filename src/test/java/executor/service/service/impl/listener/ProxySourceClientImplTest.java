@@ -19,19 +19,19 @@ import static org.mockito.Mockito.*;
 
 /**
  * Test class for testing the functionality of the {@code ProxySourcesClientImpl} class
- * is an implementation of the {@link ProxySourcesClient}.
+ * is an implementation of the {@link ProxySourceClient}.
  * This class contains unit tests to verify that {@code ProxySourcesClientImpl} is working correctly.
  *
  * @author Dima Silenko, Yurii Kotsiuba.
  * @version 01
- * @see ProxySourcesClientImpl
+ * @see ProxySourceClientImpl
  * @see ProxyProvider
  * @see PropertiesConfig
  * @see ItemHandler
  */
-public class ProxySourcesClientImplTest {
+public class ProxySourceClientImplTest {
 
-    private ProxySourcesClientImpl listener;
+    private ProxySourceClientImpl listener;
     private ProxyProvider provider;
     private ProxyValidator proxyValidator;
     private Properties properties;
@@ -45,7 +45,7 @@ public class ProxySourcesClientImplTest {
         this.proxyValidator = mock(ProxyValidator.class);
         this.properties = mock(Properties.class);
         this.propertiesConfig = mock(PropertiesConfig.class);
-        this.listener = new ProxySourcesClientImpl(provider, proxyValidator, propertiesConfig);
+        this.listener = new ProxySourceClientImpl(provider, proxyValidator, propertiesConfig);
     }
 
     @AfterEach

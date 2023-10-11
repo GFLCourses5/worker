@@ -1,8 +1,6 @@
 package executor.service.service.impl.parallel;
 
 import executor.service.model.Scenario;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,28 +12,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author Oleksandr Tuleninov
  * @version 01
+ * @see ScenarioSourceQueue
+ * @see Scenario
  */
-public class ItemQueueTest {
-
-    private ItemQueue queue;
-
-    @BeforeEach
-    void setUp() {
-        queue = new ItemQueue();
-    }
-
-    @AfterEach
-    void tearDown() {
-        this.queue = null;
-    }
+public class ScenarioSourceQueueTest {
 
     @Test
-    void testPutItemAndGetItem() {
+    void testPutAndGetScenario() {
         var scenario = new Scenario();
-        queue.putItem(scenario);
 
-        var item = queue.getItem();
+        var queue = new ScenarioSourceQueue();
+        queue.putScenario(scenario);
 
-        assertEquals(scenario, item);
+        var result = queue.getScenario();
+
+        assertEquals(scenario, result);
     }
 }

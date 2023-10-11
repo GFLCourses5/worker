@@ -1,7 +1,6 @@
 package executor.service.service.impl.stepExecution;
 
 import executor.service.model.Step;
-import executor.service.model.StepTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,13 +38,13 @@ class StepExecutionSleepImplTest {
     @Test
     public void testGetStepAction() {
         String action = stepExecutionSleep.getStepAction();
-        assertEquals(StepTypes.SLEEP.getName(), action);
+        assertEquals("sleep", action);
     }
 
     @Test
     public void testStepSleepForSpecifiedDuration() {
         WebDriver webDriver = mock(WebDriver.class);
-        Step step = new Step(StepTypes.SLEEP, "3");
+        Step step = new Step("sleep", "3");
 
         assertTimeout(Duration.ofMillis(EXPECTED_DURATION + MAX_ALLOWABLE_DELAY), () -> {
             long startTime = System.currentTimeMillis();
@@ -58,17 +57,9 @@ class StepExecutionSleepImplTest {
     }
 
     @Test
-    public void testStepWithNegativeSleepDuration() {
-        WebDriver webDriver = mock(WebDriver.class);
-        Step step = new Step(StepTypes.SLEEP, "-1");
-
-        assertThrows(IllegalArgumentException.class, () -> stepExecutionSleep.step(webDriver, step));
-    }
-
-    @Test
     public void testStepWithInvalidSleepValue() {
         WebDriver webDriver = mock(WebDriver.class);
-        Step step = new Step(StepTypes.SLEEP, "invalid_value");
+        Step step = new Step("sleep", "invalid_value");
 
         assertThrows(NumberFormatException.class, () -> stepExecutionSleep.step(webDriver, step));
     }

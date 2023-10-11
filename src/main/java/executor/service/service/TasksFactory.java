@@ -2,7 +2,6 @@ package executor.service.service;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
-import executor.service.service.impl.parallel.ItemQueue;
 
 import java.util.concurrent.Callable;
 
@@ -16,14 +15,15 @@ import java.util.concurrent.Callable;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see executor.service.service.Listener
- * @see executor.service.service.ExecutionService
- * @see executor.service.model.Scenario
- * @see executor.service.model.ProxyConfigHolder
+ * @see ExecutionService
+ * @see Scenario
+ * @see ProxyConfigHolder
  */
 public interface TasksFactory {
 
-    Callable<ItemQueue> createTaskWorker(Listener listener);
+    Callable<Scenario> createScenarioTaskWorker();
+
+    Callable<ProxyConfigHolder> createProxyTaskWorker();
 
     Runnable createExecutionWorker(ExecutionService service,
                                    Scenario scenario,

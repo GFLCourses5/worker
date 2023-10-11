@@ -74,7 +74,6 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
      */
     private Flux<Scenario> getScenarioFlux(List<Scenario> scenarios) {
         return Flux.fromIterable(scenarios)
-                .log()
                 .delayElements(Duration.ofSeconds(getDelay()))
                 .repeat();
     }

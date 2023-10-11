@@ -3,7 +3,6 @@ package executor.service.service.impl.parallel;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.service.ExecutionService;
-import executor.service.service.Listener;
 import executor.service.service.TasksFactory;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +16,32 @@ import java.util.concurrent.Callable;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see executor.service.service.Listener
- * @see executor.service.service.ExecutionService
- * @see executor.service.model.Scenario
- * @see executor.service.model.ProxyConfigHolder
+ * @see ScenarioTaskWorker
+ * @see ProxyTaskWorker
+ * @see ExecutionService
+ * @see Scenario
+ * @see ProxyConfigHolder
  */
 @Service
 public class TasksFactoryImpl implements TasksFactory {
 
+    private final ScenarioTaskWorker scenarioTaskWorker;
+    private final ProxyTaskWorker proxyTaskWorker;
+
+    public TasksFactoryImpl(ScenarioTaskWorker scenarioTaskWorker,
+                            ProxyTaskWorker proxyTaskWorker) {
+        this.scenarioTaskWorker = scenarioTaskWorker;
+        this.proxyTaskWorker = proxyTaskWorker;
+    }
+
     @Override
-    public Callable<ItemQueue> createTaskWorker(Listener listener) {
-        return new TaskWorker(listener);
+    public Callable<Scenario> createScenarioTaskWorker() {
+        return scenarioTaskWorker;
+    }
+
+    @Override
+    public Callable<ProxyConfigHolder> createProxyTaskWorker() {
+        return proxyTaskWorker;
     }
 
     @Override

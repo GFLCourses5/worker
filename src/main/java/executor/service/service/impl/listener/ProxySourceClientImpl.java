@@ -5,7 +5,6 @@ import executor.service.model.ProxyConfigHolder;
 import executor.service.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
@@ -15,7 +14,7 @@ import java.util.Properties;
 import static executor.service.config.properties.PropertiesConstants.*;
 
 /**
- * The {@code ProxySourcesClientImpl} class implements the {@link ProxySourcesClient} interface
+ * The {@code ProxySourcesClientImpl} class implements the {@link ProxySourceClient} interface
  * that reads scenarios from a {@link ScenarioProvider}
  * and emits them as a {@link Flux} stream with a specified delay.
  * <p>
@@ -25,16 +24,15 @@ import static executor.service.config.properties.PropertiesConstants.*;
  * @see ScenarioProvider
  * @see PropertiesConfig
  */
-@Service
-public class ProxySourcesClientImpl implements ProxySourcesClient {
-    private static final Logger log = LoggerFactory.getLogger(ProxySourcesClientImpl.class);
+public class ProxySourceClientImpl implements ProxySourceClient {
+    private static final Logger log = LoggerFactory.getLogger(ProxySourceClientImpl.class);
     private final ProxyProvider provider;
     private final ProxyValidator proxyValidator;
     private final PropertiesConfig propertiesConfig;
 
-    public ProxySourcesClientImpl(ProxyProvider provider,
-                                  ProxyValidator proxyValidator,
-                                  PropertiesConfig propertiesConfig) {
+    public ProxySourceClientImpl(ProxyProvider provider,
+                                 ProxyValidator proxyValidator,
+                                 PropertiesConfig propertiesConfig) {
         this.provider = provider;
         this.proxyValidator = proxyValidator;
         this.propertiesConfig = propertiesConfig;
@@ -80,7 +78,6 @@ public class ProxySourcesClientImpl implements ProxySourcesClient {
      */
     private Flux<ProxyConfigHolder> getProxyFlux(List<ProxyConfigHolder> proxies) {
         return Flux.fromIterable(proxies)
-                .log()
                 .delayElements(Duration.ofSeconds(getDelay()))
                 .repeat();
     }
