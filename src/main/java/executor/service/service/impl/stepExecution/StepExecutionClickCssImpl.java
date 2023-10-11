@@ -5,6 +5,7 @@ import executor.service.service.StepExecutionClickCss;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.stereotype.Service;
 
 /**
  * The {@code StepExecutionClickCssImpl} class implements the {@link StepExecutionClickCss} interface
@@ -15,6 +16,7 @@ import org.openqa.selenium.WebElement;
  * @version 01
  * @see executor.service.model.Step
  */
+@Service
 public class StepExecutionClickCssImpl implements StepExecutionClickCss {
 
     @Override

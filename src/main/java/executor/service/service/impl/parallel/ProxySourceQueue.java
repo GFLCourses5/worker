@@ -1,6 +1,7 @@
 package executor.service.service.impl.parallel;
 
 import executor.service.model.ProxyConfigHolder;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -19,6 +20,7 @@ import java.util.concurrent.LinkedBlockingDeque;
  * @see ProxyConfigHolder
  * @see BlockingQueue
  */
+@Component
 public class ProxySourceQueue {
 
     private final BlockingQueue<ProxyConfigHolder> queue;

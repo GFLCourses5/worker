@@ -2,6 +2,8 @@ package executor.service.config.bean;
 
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ThreadPoolConfig;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -21,6 +23,7 @@ import static executor.service.config.properties.PropertiesConstants.KEEP_ALIVE_
  * @see PropertiesConfig
  * @see ThreadPoolConfig
  */
+@Component
 public class ThreadPoolExecutorObject {
 
     private final PropertiesConfig propertiesConfig;
@@ -32,6 +35,7 @@ public class ThreadPoolExecutorObject {
     /**
      * Create a ThreadPoolExecutor bean from properties file.
      * */
+    @Bean
     public ExecutorService threadPoolExecutor() {
         ThreadPoolConfig threadPoolConfig = threadPoolConfig();
         var properties = propertiesConfig.getProperties(THREAD_POOL_PROPERTIES);

@@ -6,6 +6,7 @@ import executor.service.service.ExecutionService;
 import executor.service.service.ParallelFlowExecutorService;
 import executor.service.service.ProxySourceClient;
 import executor.service.service.TasksFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -26,6 +27,7 @@ import java.util.concurrent.Future;
  * @see Scenario
  * @see ProxySourceClient
  */
+@Service
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
     private static boolean FLAG = true;

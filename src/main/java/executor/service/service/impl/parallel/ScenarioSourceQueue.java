@@ -1,6 +1,7 @@
 package executor.service.service.impl.parallel;
 
 import executor.service.model.Scenario;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -19,6 +20,7 @@ import java.util.concurrent.LinkedBlockingDeque;
  * @see Scenario
  * @see BlockingQueue
  */
+@Component
 public class ScenarioSourceQueue {
     private final BlockingQueue<Scenario> queue;
 

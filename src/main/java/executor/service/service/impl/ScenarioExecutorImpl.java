@@ -10,6 +10,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * The {@code ScenarioExecutorImpl} class implements the {@link ScenarioExecutor} interface
@@ -23,6 +24,7 @@ import org.slf4j.LoggerFactory;
  * @see executor.service.model.Scenario
  * @see executor.service.model.Step
  */
+@Service
 public class ScenarioExecutorImpl implements ScenarioExecutor {
 
     private static final Logger log = LoggerFactory.getLogger(ScenarioExecutorImpl.class);

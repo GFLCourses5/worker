@@ -3,6 +3,8 @@ package executor.service.config.bean;
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.WebDriverConfig;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import static executor.service.config.properties.PropertiesConstants.*;
 
@@ -16,6 +18,7 @@ import static executor.service.config.properties.PropertiesConstants.*;
  * @see PropertiesConfig
  * @see WebDriverConfig
  */
+@Component
 public class WebDriverConfigObject {
 
     private final PropertiesConfig propertiesConfig;
@@ -27,6 +30,7 @@ public class WebDriverConfigObject {
     /**
      * Create a default WebDriverConfig bean from properties file.
      * */
+    @Bean
     public WebDriverConfig webDriverConfig() {
         var properties = propertiesConfig.getProperties(WEB_DRIVER);
         var webDriverExecutable = properties.getProperty(WEB_DRIVER_EXECUTABLE);

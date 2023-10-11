@@ -3,6 +3,7 @@ package executor.service.service.impl.parallel;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.service.ItemHandler;
 import executor.service.service.ProxySourceClient;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -23,6 +24,7 @@ import java.util.function.Consumer;
  * @see ProxySourceQueue
  * @see ItemHandler
  */
+@Service
 public class ProxyTaskWorker implements Callable<ProxyConfigHolder> {
 
     private final ProxySourceClient listener;

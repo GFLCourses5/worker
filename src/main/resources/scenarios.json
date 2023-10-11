@@ -1,5 +1,5 @@
 [
-  {
+  /*{
     "name": "test scenario 1",
     "site": "https://info.cern.ch",
     "steps": [
@@ -52,14 +52,14 @@
         "value": ".nav-logo-base"
       }
     ]
-  },
+  },*/
   {
     "name": "Wikipedia Search",
     "site": "https://www.wikipedia.org",
     "steps": [
       {
         "action": "clickCss",
-        "value": "#searchInput"
+        "value": "#js-link-box-en > strong"
       },
       {
         "action": "sleep",
@@ -67,25 +67,11 @@
       },
       {
         "action": "clickXpath",
-        "value": "//button[@type='submit']"
-      }
-    ]
-  },
-  {
-    "name": "YouTube",
-    "site": "https://www.youtube.com",
-    "steps": [
-      {
-        "action": "clickCss",
-        "value": "a[href='/trending']"
+        "value": "//div[2]/span/a"
       },
       {
         "action": "sleep",
-        "value": "2"
-      },
-      {
-        "action": "clickXpath",
-        "value": "//input[@id='search']"
+        "value": "4"
       }
     ]
   }

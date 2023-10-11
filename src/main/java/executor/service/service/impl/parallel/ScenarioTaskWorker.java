@@ -3,6 +3,7 @@ package executor.service.service.impl.parallel;
 import executor.service.model.Scenario;
 import executor.service.service.ItemHandler;
 import executor.service.service.ScenarioSourceListener;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -23,6 +24,7 @@ import java.util.function.Consumer;
  * @see ScenarioSourceQueue
  * @see ItemHandler
  */
+@Service
 public class ScenarioTaskWorker implements Callable<Scenario> {
 
     private final ScenarioSourceListener listener;
