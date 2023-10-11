@@ -12,7 +12,7 @@ package executor.service.service;
  * @author Yurii Kotsiuba
  * @see ItemHandler
  */
-public interface ProxySourceClient extends Listener {
+public interface ProxySourceClient {
 
     /**
      * Executes the retrieval and handling of proxy configurations using the provided {@link ItemHandler}.
