@@ -108,7 +108,8 @@ public class DIFactory implements ObjectFactory {
             object = new ProxyTaskWorker(proxySourceClient, proxySourceQueue);
         } else if (clazz == WebDriverInitializer.class) {
             PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
-            object = new WebDriverInitializerImpl(propertiesConfig);
+            WebDriverConfig webDriverConfig = createObject(WebDriverConfig.class);
+            object = new WebDriverInitializerImpl(propertiesConfig, webDriverConfig);
         } else if (clazz == ExecutorService.class) {
             PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
             object = new ThreadPoolExecutorObject(propertiesConfig).threadPoolExecutor();
