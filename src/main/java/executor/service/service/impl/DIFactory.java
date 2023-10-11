@@ -130,8 +130,9 @@ public class DIFactory implements ObjectFactory {
         if (object != null) {
             cache.put(clazz, object);
             return (T) object;
+        } else {
+            throw new RuntimeException("Failed to create an instance of " + clazz.getName());
         }
 
-        return null;
     }
 }
