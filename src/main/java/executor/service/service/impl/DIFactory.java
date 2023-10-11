@@ -14,6 +14,7 @@ import executor.service.service.impl.webDriver.WebDriverInitializerImpl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -34,7 +35,7 @@ public class DIFactory implements ObjectFactory {
 
     private static DIFactory instance;
 
-    private final Map<Class<?>, Object> cache = new HashMap<>();
+    private final Map<Class<?>, Object> cache = new ConcurrentHashMap<>();
 
     private DIFactory() {
         if (instance != null) {
