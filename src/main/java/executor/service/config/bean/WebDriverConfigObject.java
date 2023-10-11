@@ -1,6 +1,7 @@
 package executor.service.config.bean;
 
 import executor.service.config.properties.PropertiesConfig;
+import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.WebDriverConfig;
 
 import static executor.service.config.properties.PropertiesConstants.*;
@@ -32,7 +33,10 @@ public class WebDriverConfigObject {
         var userAgent = properties.getProperty(USER_AGENT);
         var pageLoadTimeout = Long.parseLong(properties.getProperty(PAGE_LOAD_TIMEOUT));
         var implicitlyWait = Long.parseLong(properties.getProperty(IMPLICITLY_WAIT));
+        var chromeExecutable = properties.getProperty(PropertiesConstants.CHROME_EXECUTABLE);
+        var chromeVersion = properties.getProperty(PropertiesConstants.CHROME_VERSION);
 
-        return new WebDriverConfig(webDriverExecutable, userAgent, pageLoadTimeout, implicitlyWait);
+        return new WebDriverConfig(webDriverExecutable, userAgent, pageLoadTimeout,
+                implicitlyWait, chromeExecutable, chromeVersion);
     }
 }

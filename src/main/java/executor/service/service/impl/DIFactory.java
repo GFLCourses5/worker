@@ -107,17 +107,15 @@ public class DIFactory implements ObjectFactory {
             ProxySourceQueue proxySourceQueue = createObject(ProxySourceQueue.class);
             object = new ProxyTaskWorker(proxySourceClient, proxySourceQueue);
         } else if (clazz == WebDriverInitializer.class) {
-            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
             WebDriverConfig webDriverConfig = createObject(WebDriverConfig.class);
-            object = new WebDriverInitializerImpl(propertiesConfig, webDriverConfig);
+            object = new WebDriverInitializerImpl(webDriverConfig);
         } else if (clazz == ExecutorService.class) {
             PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
             object = new ThreadPoolExecutorObject(propertiesConfig).threadPoolExecutor();
         } else if (clazz == ExecutionService.class) {
             ScenarioExecutor scenarioExecutor = createObject(ScenarioExecutor.class);
-            WebDriverConfig webDriverConfig = createObject(WebDriverConfig.class);
             WebDriverInitializer webDriverInitializer = createObject(WebDriverInitializer.class);
-            object = new ExecutionServiceImpl(scenarioExecutor, webDriverConfig, webDriverInitializer);
+            object = new ExecutionServiceImpl(scenarioExecutor, webDriverInitializer);
         } else if (clazz == TasksFactory.class) {
             ScenarioTaskWorker scenarioTaskWorker = createObject(ScenarioTaskWorker.class);
             ProxyTaskWorker proxyTaskWorker = createObject(ProxyTaskWorker.class);

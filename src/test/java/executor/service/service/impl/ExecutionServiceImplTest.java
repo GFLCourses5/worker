@@ -2,7 +2,6 @@ package executor.service.service.impl;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
-import executor.service.model.WebDriverConfig;
 import executor.service.service.ExecutionService;
 import executor.service.service.ScenarioExecutor;
 import executor.service.service.WebDriverInitializer;
@@ -25,16 +24,15 @@ public class ExecutionServiceImplTest {
     public void testWorkMethodExecute() {
         Scenario scenario = new Scenario();
         ProxyConfigHolder proxyConfigHolder = new ProxyConfigHolder();
-        WebDriverConfig webDriverConfig = new WebDriverConfig();
 
         WebDriver webDriver = mock(WebDriver.class);
         WebDriverInitializer initializer = mock(WebDriverInitializerImpl.class);
         ScenarioExecutor scenarioExecutor = mock(ScenarioExecutor.class);
 
         doNothing().when(scenarioExecutor).execute(any(Scenario.class), any(WebDriver.class));
-        when(initializer.getInstance(webDriverConfig, proxyConfigHolder)).thenReturn(webDriver);
+        when(initializer.getInstance(proxyConfigHolder)).thenReturn(webDriver);
 
-        ExecutionService executionService = new ExecutionServiceImpl(scenarioExecutor, webDriverConfig, initializer);
+        ExecutionService executionService = new ExecutionServiceImpl(scenarioExecutor, initializer);
         executionService.execute(scenario, proxyConfigHolder);
 
         verify(scenarioExecutor, times(1)).execute(any(Scenario.class), any(WebDriver.class));

@@ -7,15 +7,21 @@ public class WebDriverConfig {
    private String userAgent;
    private Long pageLoadTimeout;
    private Long implicitlyWait;
+   private String chromeExecutable;
+   private String chromeVersion;
 
     public WebDriverConfig() {
     }
 
-    public WebDriverConfig(String webDriverExecutable, String userAgent, Long pageLoadTimeout, Long implicitlyWait) {
+    public WebDriverConfig(String webDriverExecutable, String userAgent,
+                           Long pageLoadTimeout, Long implicitlyWait,
+                           String chromeExecutable, String chromeVersion) {
         this.webDriverExecutable = webDriverExecutable;
         this.userAgent = userAgent;
         this.pageLoadTimeout = pageLoadTimeout;
         this.implicitlyWait = implicitlyWait;
+        this.chromeExecutable = chromeExecutable;
+        this.chromeVersion = chromeVersion;
     }
 
     public String getWebDriverExecutable() {
@@ -50,16 +56,38 @@ public class WebDriverConfig {
         this.implicitlyWait = implicitlyWait;
     }
 
+    public String getChromeExecutable() {
+        return chromeExecutable;
+    }
+
+    public void setChromeExecutable(String chromeExecutable) {
+        this.chromeExecutable = chromeExecutable;
+    }
+
+    public String getChromeVersion() {
+        return chromeVersion;
+    }
+
+    public void setChromeVersion(String chromeVersion) {
+        this.chromeVersion = chromeVersion;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WebDriverConfig that = (WebDriverConfig) o;
-        return Objects.equals(webDriverExecutable, that.webDriverExecutable) && Objects.equals(userAgent, that.userAgent) && Objects.equals(pageLoadTimeout, that.pageLoadTimeout) && Objects.equals(implicitlyWait, that.implicitlyWait);
+        return Objects.equals(webDriverExecutable, that.webDriverExecutable)
+                && Objects.equals(userAgent, that.userAgent)
+                && Objects.equals(pageLoadTimeout, that.pageLoadTimeout)
+                && Objects.equals(implicitlyWait, that.implicitlyWait)
+                && Objects.equals(chromeExecutable, that.chromeExecutable)
+                && Objects.equals(chromeVersion, that.chromeVersion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(webDriverExecutable, userAgent, pageLoadTimeout, implicitlyWait);
+        return Objects.hash(webDriverExecutable, userAgent, pageLoadTimeout,
+                implicitlyWait, chromeExecutable, chromeVersion);
     }
 }

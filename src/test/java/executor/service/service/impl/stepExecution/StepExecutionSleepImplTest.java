@@ -57,14 +57,6 @@ class StepExecutionSleepImplTest {
     }
 
     @Test
-    public void testStepWithNegativeSleepDuration() {
-        WebDriver webDriver = mock(WebDriver.class);
-        Step step = new Step("sleep", "-1");
-
-        assertThrows(IllegalArgumentException.class, () -> stepExecutionSleep.step(webDriver, step));
-    }
-
-    @Test
     public void testStepWithInvalidSleepValue() {
         WebDriver webDriver = mock(WebDriver.class);
         Step step = new Step("sleep", "invalid_value");

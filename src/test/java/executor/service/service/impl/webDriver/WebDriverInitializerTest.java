@@ -1,5 +1,6 @@
 package executor.service.service.impl.webDriver;
 
+import executor.service.config.bean.WebDriverConfigObject;
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.ProxyConfigHolder;
@@ -28,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 class WebDriverInitializerTest {
     private ProxyConfigHolder proxyConfigHolder;
-    private WebDriverConfig webDriverConfig;
     private WebDriver driver;
     private WebDriverInitializer webDriverInitializer;
 
@@ -39,10 +39,11 @@ class WebDriverInitializerTest {
         proxyConfigHolder = new ProxyConfigHolder(proxyNetworkConfig, proxyCredentials);
         PropertiesConfig propertiesConfig = new PropertiesConfig();
         Properties properties = propertiesConfig.getProperties(PropertiesConstants.WEB_DRIVER);
-        webDriverConfig = new WebDriverConfig(properties.getProperty(PropertiesConstants.WEB_DRIVER_EXECUTABLE),
+        /*webDriverConfig = new WebDriverConfig(properties.getProperty(PropertiesConstants.WEB_DRIVER_EXECUTABLE),
                 properties.getProperty(PropertiesConstants.USER_AGENT),
-                60000L, 60000L);
-        webDriverInitializer = new WebDriverInitializerImpl(propertiesConfig);
+                60000L, 60000L, "path_to_chrome", "chrome_version");*/
+        WebDriverConfig webDriverConfig = new WebDriverConfigObject(new PropertiesConfig()).webDriverConfig();
+        webDriverInitializer = new WebDriverInitializerImpl(webDriverConfig);
     }
 
     @AfterEach
@@ -52,13 +53,13 @@ class WebDriverInitializerTest {
 
     @Test
     void testGetInstance() {
-        driver = webDriverInitializer.getInstance(webDriverConfig, proxyConfigHolder);
+        driver = webDriverInitializer.getInstance(proxyConfigHolder);
         assertInstanceOf(WebDriver.class, driver);
     }
 
     @Test
     void testProxyConfigured() {
-        driver = webDriverInitializer.getInstance(webDriverConfig, proxyConfigHolder);
+        driver = webDriverInitializer.getInstance(proxyConfigHolder);
         driver.get("https://myip.com.ua/");
         WebElement element = driver.findElement(By.id("ip"));
         assertEquals(element.getAttribute("value"), proxyConfigHolder.getProxyNetworkConfig().getHostname());
@@ -67,7 +68,7 @@ class WebDriverInitializerTest {
     @Test
     void testNoProxy() {
         proxyConfigHolder.getProxyNetworkConfig().setHostname(null);
-        driver = webDriverInitializer.getInstance(webDriverConfig, proxyConfigHolder);
+        driver = webDriverInitializer.getInstance(proxyConfigHolder);
         driver.get("https://google.com");
         assertEquals(driver.getTitle(), "Google");
     }
