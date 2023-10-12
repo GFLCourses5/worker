@@ -21,30 +21,31 @@ import java.time.Duration;
 @Service
 public class WebDriverInitializerImpl implements WebDriverInitializer {
     private final WebDriverConfig webDriverConfig;
+    private final ChromeOptions chromeOptions;
 
     public WebDriverInitializerImpl(WebDriverConfig webDriverConfig) {
         this.webDriverConfig = webDriverConfig;
+        this.chromeOptions = configureChromeOptions();
     }
 
     @Override
-    public WebDriver getInstance(ProxyConfigHolder proxyConfigHolder) {
+    public synchronized WebDriver getInstance(ProxyConfigHolder proxyConfigHolder) {
         String host = proxyConfigHolder.getProxyNetworkConfig().getHostname();
         Integer port = proxyConfigHolder.getProxyNetworkConfig().getPort();
         String username = proxyConfigHolder.getProxyCredentials().getUsername();
         String password = proxyConfigHolder.getProxyCredentials().getPassword();
         File proxyPlugin = null;
-        ChromeOptions options = configureChromeOptions();
 
         if (!Strings.isNullOrEmpty(host)) {
             if (!Strings.isNullOrEmpty(username) && !Strings.isNullOrEmpty(password)) {
                 proxyPlugin = ChromeProxyPlugin.generate(host, port, username, password);
-                options.addExtensions(proxyPlugin);
+                chromeOptions.addExtensions(proxyPlugin);
             } else {
-                options.addArguments("--proxy-server=" + host + ":" + port);
+                chromeOptions.addArguments("--proxy-server=" + host + ":" + port);
             }
         }
 
-        ChromeDriver driver = new ChromeDriver(options);
+        ChromeDriver driver = new ChromeDriver(chromeOptions);
         if (proxyPlugin != null) {
             proxyPlugin.delete();
         }
@@ -62,6 +63,8 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
         chromeOptions.setImplicitWaitTimeout(Duration.ofMillis(webDriverConfig.getImplicitlyWait()));
         chromeOptions.setPageLoadTimeout(Duration.ofMillis(webDriverConfig.getPageLoadTimeout()));
         System.setProperty("webdriver.chrome.driver", webDriverConfig.getWebDriverExecutable());
+
         return chromeOptions;
     }
 }
+

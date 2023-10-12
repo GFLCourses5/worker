@@ -1,7 +1,7 @@
 package executor.service.service.impl.listener;
 
-import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ProxyConfigHolder;
+import executor.service.model.SourceListenerData;
 import executor.service.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +10,8 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Properties;
 
-import static executor.service.config.properties.PropertiesConstants.*;
+import static executor.service.config.properties.PropertiesConstants.FILE_NAME_PROXIES;
 
 /**
  * The {@code ProxySourcesClientImpl} class implements the {@link ProxySourceClient} interface
@@ -23,21 +22,23 @@ import static executor.service.config.properties.PropertiesConstants.*;
  * @author Oleksandr Tuleninov, NikitaHurmaza, Yurii Kotsiuba, Oleksii Bondarenko, Dima Silenko
  * @version 01
  * @see ScenarioProvider
- * @see PropertiesConfig
+ * @see SourceListenerData
  */
 @Service
 public class ProxySourceClientImpl implements ProxySourceClient {
+
     private static final Logger log = LoggerFactory.getLogger(ProxySourceClientImpl.class);
+
     private final ProxyProvider provider;
     private final ProxyValidator proxyValidator;
-    private final PropertiesConfig propertiesConfig;
+    private final SourceListenerData data;
 
     public ProxySourceClientImpl(ProxyProvider provider,
                                  ProxyValidator proxyValidator,
-                                 PropertiesConfig propertiesConfig) {
+                                 SourceListenerData data) {
         this.provider = provider;
         this.proxyValidator = proxyValidator;
-        this.propertiesConfig = propertiesConfig;
+        this.data = data;
     }
 
     /**
@@ -66,7 +67,7 @@ public class ProxySourceClientImpl implements ProxySourceClient {
      */
     private List<ProxyConfigHolder> validateProxies(List<ProxyConfigHolder> proxies) {
         if (proxies.isEmpty()) {
-            log.error("The proxies list is bad.");
+            log.error("The proxies list is bad");
         }
         return proxies;
     }
@@ -80,12 +81,7 @@ public class ProxySourceClientImpl implements ProxySourceClient {
      */
     private Flux<ProxyConfigHolder> getProxyFlux(List<ProxyConfigHolder> proxies) {
         return Flux.fromIterable(proxies)
-                .delayElements(Duration.ofSeconds(getDelay()))
+                .delayElements(Duration.ofSeconds(data.getDelayProxy()))
                 .repeat();
-    }
-
-    private Long getDelay() {
-        Properties properties = propertiesConfig.getProperties(SOURCES_PROPERTIES);
-        return Long.parseLong(properties.getProperty(DELAY_PROXY_SECONDS));
     }
 }

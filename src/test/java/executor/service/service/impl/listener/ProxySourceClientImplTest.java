@@ -1,17 +1,19 @@
 package executor.service.service.impl.listener;
 
-import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.ProxyConfigHolder;
-import executor.service.service.*;
+import executor.service.model.SourceListenerData;
+import executor.service.service.ItemHandler;
+import executor.service.service.ProxyProvider;
+import executor.service.service.ProxySourceClient;
+import executor.service.service.ProxyValidator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
-import static executor.service.config.properties.PropertiesConstants.*;
+import static executor.service.config.properties.PropertiesConstants.FILE_NAME_PROXIES;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -26,7 +28,7 @@ import static org.mockito.Mockito.*;
  * @version 01
  * @see ProxySourceClientImpl
  * @see ProxyProvider
- * @see PropertiesConfig
+ * @see SourceListenerData
  * @see ItemHandler
  */
 public class ProxySourceClientImplTest {
@@ -34,8 +36,7 @@ public class ProxySourceClientImplTest {
     private ProxySourceClientImpl listener;
     private ProxyProvider provider;
     private ProxyValidator proxyValidator;
-    private Properties properties;
-    private PropertiesConfig propertiesConfig;
+    private SourceListenerData sourceListenerData;
     private ItemHandler<ProxyConfigHolder> handler;
 
     @BeforeEach
@@ -43,15 +44,13 @@ public class ProxySourceClientImplTest {
         this.provider = mock(ProxyProvider.class);
         this.handler = mock(ItemHandler.class);
         this.proxyValidator = mock(ProxyValidator.class);
-        this.properties = mock(Properties.class);
-        this.propertiesConfig = mock(PropertiesConfig.class);
-        this.listener = new ProxySourceClientImpl(provider, proxyValidator, propertiesConfig);
+        this.sourceListenerData = mock(SourceListenerData.class);
+        this.listener = new ProxySourceClientImpl(provider, proxyValidator, sourceListenerData);
     }
 
     @AfterEach
     void tearDown() {
-        verifyNoMoreInteractions(propertiesConfig);
-        verifyNoMoreInteractions(properties);
+        verifyNoMoreInteractions(sourceListenerData);
         verifyNoMoreInteractions(handler);
         verifyNoMoreInteractions(provider);
         this.listener = null;
@@ -60,16 +59,14 @@ public class ProxySourceClientImplTest {
     @Test
     public void testExecute_numberOfTimes() {
         when(provider.readProxy(FILE_NAME_PROXIES)).thenReturn(prepareProxyList());
-        when(propertiesConfig.getProperties(SOURCES_PROPERTIES)).thenReturn(properties);
-        when(properties.getProperty(DELAY_PROXY_SECONDS)).thenReturn("1");
+        when(sourceListenerData.getDelayProxy()).thenReturn(1L);
         when(proxyValidator.isValid(any(ProxyConfigHolder.class))).thenReturn(true);
         doNothing().when(handler).onItemReceived(any(ProxyConfigHolder.class));
 
         listener.execute(handler);
 
         verify(handler, times(0)).onItemReceived(any(ProxyConfigHolder.class));
-        verify(propertiesConfig).getProperties(SOURCES_PROPERTIES);
-        verify(properties).getProperty(DELAY_PROXY_SECONDS);
+        verify(sourceListenerData).getDelayProxy();
         verify(provider).readProxy(FILE_NAME_PROXIES);
     }
 

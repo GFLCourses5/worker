@@ -11,7 +11,7 @@ package executor.service.service;
  * @author Yurii Kotsiuba
  * @see ItemHandler
  */
-public interface ScenarioSourceListener extends Listener {
+public interface ScenarioSourceListener {
 
     /**
      * Executes an action on received scenarios using the provided {@link ItemHandler}.

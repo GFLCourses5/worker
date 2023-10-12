@@ -25,24 +25,26 @@ import java.util.function.Consumer;
  * @see ItemHandler
  */
 @Service
-public class ProxyTaskWorker implements Callable<ProxyConfigHolder> {
+public class ProxySourceQueueHandler implements Runnable {
 
     private final ProxySourceClient listener;
     private final ProxySourceQueue queue;
 
-    public ProxyTaskWorker(ProxySourceClient listener,
-                           ProxySourceQueue queue) {
+    public ProxySourceQueueHandler(ProxySourceClient listener,
+                                   ProxySourceQueue queue) {
         this.listener = listener;
         this.queue = queue;
     }
 
+    public ProxyConfigHolder getProxy() {
+        return queue.getProxy();
+    }
+
     @Override
-    public ProxyConfigHolder call() {
+    public void run() {
         Consumer<ProxyConfigHolder> itemHandlerConsumer = queue::putProxy;
 
         listener.execute(createHandler(itemHandlerConsumer));
-
-        return queue.getProxy();
     }
 
     private ItemHandler<ProxyConfigHolder> createHandler(Consumer<ProxyConfigHolder> consumer) {
