@@ -22,34 +22,11 @@ import static org.mockito.Mockito.mock;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see ScenarioTaskWorker
- * @see ProxyTaskWorker
  * @see Scenario
  * @see Callable
  * @see Runnable
  */
 public class TasksFactoryImplTest {
-
-    private TasksFactory tasksFactory;
-
-    @BeforeEach
-    public void setUp() {
-        ScenarioTaskWorker scenarioTaskWorker = mock(ScenarioTaskWorker.class);
-        ProxyTaskWorker proxyTaskWorker = mock(ProxyTaskWorker.class);
-        this.tasksFactory = new TasksFactoryImpl(scenarioTaskWorker, proxyTaskWorker);
-    }
-
-    @AfterEach
-    void tearDown() {
-        this.tasksFactory = null;
-    }
-
-    @Test
-    public void testCreateTaskWorker() {
-        Callable<Scenario> callable = tasksFactory.createScenarioTaskWorker();
-
-        assertNotNull(callable);
-    }
 
     @Test
     public void testCreateExecutionWorker() {
@@ -57,6 +34,7 @@ public class TasksFactoryImplTest {
         var scenario = mock(executor.service.model.Scenario.class);
         var proxy = mock(ProxyConfigHolder.class);
 
+        var tasksFactory = new TasksFactoryImpl();
         Runnable runnable = tasksFactory.createExecutionWorker(executionService, scenario, proxy);
 
         assertNotNull(runnable);

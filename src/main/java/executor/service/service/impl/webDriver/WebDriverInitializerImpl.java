@@ -59,7 +59,7 @@ public class WebDriverInitializerImpl implements WebDriverInitializer {
         chromeOptions.addArguments("user-agent=" + webDriverConfig.getUserAgent());
         chromeOptions.setImplicitWaitTimeout(Duration.ofMillis(webDriverConfig.getImplicitlyWait()));
         chromeOptions.setPageLoadTimeout(Duration.ofMillis(webDriverConfig.getPageLoadTimeout()));
-        System.setProperty("webDriver.chrome.driver", webDriverConfig.getWebDriverExecutable());
+        System.setProperty("webdriver.chrome.driver", webDriverConfig.getWebDriverExecutable());
 
         return chromeOptions;
     }

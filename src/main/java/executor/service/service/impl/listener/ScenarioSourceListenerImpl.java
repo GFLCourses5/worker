@@ -2,6 +2,7 @@ package executor.service.service.impl.listener;
 
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.Scenario;
+import executor.service.model.SourceListenerData;
 import executor.service.service.ItemHandler;
 import executor.service.service.ScenarioProvider;
 import executor.service.service.ScenarioSourceListener;
@@ -23,20 +24,20 @@ import static executor.service.config.properties.PropertiesConstants.*;
  *
  * @author Yurii Kotsiuba, Oleksandr Tuleninov, Oleksii Bondarenko, Kostia Hromovii
  * @version 01
- * @see executor.service.service.ScenarioProvider
- * @see executor.service.config.properties.PropertiesConfig
+ * @see ScenarioProvider
+ * @see SourceListenerData
  */
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
 
     private static final Logger log = LoggerFactory.getLogger(ScenarioSourceListener.class);
 
     private final ScenarioProvider provider;
-    private final PropertiesConfig propertiesConfig;
+    private final SourceListenerData data;
 
     public ScenarioSourceListenerImpl(ScenarioProvider provider,
-                                      PropertiesConfig propertiesConfig) {
+                                      SourceListenerData data) {
         this.provider = provider;
-        this.propertiesConfig = propertiesConfig;
+        this.data = data;
     }
 
     /**
@@ -60,7 +61,7 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
      */
     private void validateScenarios(List<Scenario> scenarios) {
         if (scenarios == null || scenarios.isEmpty()) {
-            log.error("The scenarios list is bad.");
+            log.error("The scenarios list is bad");
         }
     }
 
@@ -72,12 +73,7 @@ public class ScenarioSourceListenerImpl implements ScenarioSourceListener {
      */
     private Flux<Scenario> getScenarioFlux(List<Scenario> scenarios) {
         return Flux.fromIterable(scenarios)
-                .delayElements(Duration.ofSeconds(getDelay()))
+                .delayElements(Duration.ofSeconds(data.getDelayScenario()))
                 .repeat();
-    }
-
-    private Long getDelay() {
-        Properties properties = propertiesConfig.getProperties(SOURCES_PROPERTIES);
-        return Long.parseLong(properties.getProperty(DELAY_SCENARIO_SECONDS));
     }
 }

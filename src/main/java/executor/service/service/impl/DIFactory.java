@@ -1,8 +1,12 @@
 package executor.service.service.impl;
 
+import executor.service.config.bean.QueueDataObject;
+import executor.service.config.bean.SourceListenerDataObject;
 import executor.service.config.bean.ThreadPoolExecutorObject;
 import executor.service.config.bean.WebDriverConfigObject;
 import executor.service.config.properties.PropertiesConfig;
+import executor.service.model.QueueData;
+import executor.service.model.SourceListenerData;
 import executor.service.model.WebDriverConfig;
 import executor.service.service.*;
 import executor.service.service.impl.listener.*;
@@ -69,6 +73,12 @@ public class DIFactory implements ObjectFactory {
         } else if (clazz == WebDriverConfig.class) {
             PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
             object = new WebDriverConfigObject(propertiesConfig).webDriverConfig();
+        } else if (clazz == SourceListenerData.class) {
+            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
+            object = new SourceListenerDataObject(propertiesConfig).sourceListenerData();
+        } else if (clazz == QueueData.class) {
+            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
+            object = new QueueDataObject(propertiesConfig).queueData();
         } else if (clazz == StepExecutionClickCss.class) {
             object = new StepExecutionClickCssImpl();
         } else if (clazz == StepExecutionSleep.class) {
@@ -84,28 +94,29 @@ public class DIFactory implements ObjectFactory {
             object = new JSONFileScenarioProvider();
         } else if (clazz == ScenarioSourceListener.class) {
             ScenarioProvider scenarioProvider = createObject(ScenarioProvider.class);
-            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
-            object = new ScenarioSourceListenerImpl(scenarioProvider, propertiesConfig);
+            SourceListenerData sourceListenerData = createObject(SourceListenerData.class);
+            object = new ScenarioSourceListenerImpl(scenarioProvider, sourceListenerData);
         } else if (clazz == ProxyValidator.class) {
             PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
             object = new ProxyValidatorImpl(propertiesConfig);
         } else if (clazz == ProxySourceClient.class) {
             ProxyProvider proxyProvider = createObject(ProxyProvider.class);
             ProxyValidator proxyValidator = createObject(ProxyValidator.class);
-            PropertiesConfig propertiesConfig = createObject(PropertiesConfig.class);
-            object = new ProxySourceClientImpl(proxyProvider, proxyValidator, propertiesConfig);
+            SourceListenerData sourceListenerData = createObject(SourceListenerData.class);
+            object = new ProxySourceClientImpl(proxyProvider, proxyValidator, sourceListenerData);
         } else if (clazz == ScenarioSourceQueue.class) {
             object = new ScenarioSourceQueue();
-        } else if (clazz == ScenarioTaskWorker.class) {
+        } else if (clazz == ScenarioSourceQueueHandler.class) {
             ScenarioSourceListener scenarioSourceListener = createObject(ScenarioSourceListener.class);
             ScenarioSourceQueue scenarioSourceQueue = createObject(ScenarioSourceQueue.class);
-            object = new ScenarioTaskWorker(scenarioSourceListener, scenarioSourceQueue);
+            object = new ScenarioSourceQueueHandler(scenarioSourceListener, scenarioSourceQueue);
         } else if (clazz == ProxySourceQueue.class) {
-            object = new ProxySourceQueue();
-        } else if (clazz == ProxyTaskWorker.class) {
+            QueueData queueData = createObject(QueueData.class);
+            object = new ProxySourceQueue(queueData);
+        } else if (clazz == ProxySourceQueueHandler.class) {
             ProxySourceClient proxySourceClient = createObject(ProxySourceClient.class);
             ProxySourceQueue proxySourceQueue = createObject(ProxySourceQueue.class);
-            object = new ProxyTaskWorker(proxySourceClient, proxySourceQueue);
+            object = new ProxySourceQueueHandler(proxySourceClient, proxySourceQueue);
         } else if (clazz == WebDriverInitializer.class) {
             WebDriverConfig webDriverConfig = createObject(WebDriverConfig.class);
             object = new WebDriverInitializerImpl(webDriverConfig);
@@ -117,14 +128,15 @@ public class DIFactory implements ObjectFactory {
             WebDriverInitializer webDriverInitializer = createObject(WebDriverInitializer.class);
             object = new ExecutionServiceImpl(scenarioExecutor, webDriverInitializer);
         } else if (clazz == TasksFactory.class) {
-            ScenarioTaskWorker scenarioTaskWorker = createObject(ScenarioTaskWorker.class);
-            ProxyTaskWorker proxyTaskWorker = createObject(ProxyTaskWorker.class);
-            object = new TasksFactoryImpl(scenarioTaskWorker, proxyTaskWorker);
+            object = new TasksFactoryImpl();
         } else if (clazz == ParallelFlowExecutorService.class) {
             ExecutorService threadPoolExecutor = createObject(ExecutorService.class);
-            ExecutionService executionService = createObject(ExecutionService.class);
+            ScenarioSourceQueueHandler scenarioHandler = createObject(ScenarioSourceQueueHandler.class);
+            ProxySourceQueueHandler proxyHandler = createObject(ProxySourceQueueHandler.class);
             TasksFactory tasksFactory = createObject(TasksFactory.class);
-            object = new ParallelFlowExecutorServiceImpl(threadPoolExecutor, executionService, tasksFactory);
+            ExecutionService executionService = createObject(ExecutionService.class);
+            object = new ParallelFlowExecutorServiceImpl(
+                    threadPoolExecutor, scenarioHandler, proxyHandler, tasksFactory, executionService);
         }
 
         if (object != null) {

@@ -1,14 +1,13 @@
 package executor.service.service.impl.parallel;
 
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.Scenario;
 import executor.service.service.ItemHandler;
 import executor.service.service.ProxySourceClient;
-import executor.service.service.ScenarioSourceListener;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.Callable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -25,7 +24,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
  * @see ProxySourceQueue
  * @see ProxyConfigHolder
  */
-public class ProxyTaskWorkerTest {
+public class ProxySourceQueueHandlerTest {
 
     @Test
     public void testScenarioTaskWorkerCall() {
@@ -36,11 +35,11 @@ public class ProxyTaskWorkerTest {
         doNothing().when(listener).execute(any(ItemHandler.class));
         when(queue.getProxy()).thenReturn(proxy);
 
-        var proxyTaskWorker = new ProxyTaskWorker(listener, queue);
-        var result = proxyTaskWorker.call();
+        var proxyHandler = new ProxySourceQueueHandler(listener, queue);
+        proxyHandler.run();
 
         verify(listener, times(1)).execute(any(ItemHandler.class));
-        assertNotNull(result);
+        assertEquals(proxy, proxyHandler.getProxy());
         verifyNoMoreInteractions(listener);
     }
 }

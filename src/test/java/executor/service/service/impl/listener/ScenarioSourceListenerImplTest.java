@@ -1,7 +1,7 @@
 package executor.service.service.impl.listener;
 
-import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.Scenario;
+import executor.service.model.SourceListenerData;
 import executor.service.service.ItemHandler;
 import executor.service.service.ScenarioProvider;
 import executor.service.service.ScenarioSourceListener;
@@ -11,15 +11,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
-import static executor.service.config.properties.PropertiesConstants.*;
 import static executor.service.config.properties.PropertiesConstants.FILE_NAME_SCENARIOS;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 
 /**
  * Test class for testing the functionality of the {@code ScenarioSourceListenerImpl} class
@@ -28,32 +25,29 @@ import static org.mockito.Mockito.verify;
  *
  * @author Kostia Hromovii, Yurii Kotsiuba.
  * @version 01
- * @see executor.service.service.impl.listener.ScenarioSourceListenerImpl
- * @see executor.service.service.ScenarioProvider
- * @see executor.service.config.properties.PropertiesConfig
- * @see executor.service.service.ItemHandler
+ * @see ScenarioSourceListenerImpl
+ * @see ScenarioProvider
+ * @see SourceListenerData
+ * @see ItemHandler
  */
 public class ScenarioSourceListenerImplTest {
 
     private ScenarioSourceListenerImpl listener;
     private ScenarioProvider provider;
-    private Properties properties;
-    private PropertiesConfig propertiesConfig;
+    private SourceListenerData sourceListenerData;
     private ItemHandler<Scenario> handler;
 
     @BeforeEach
     public void setUp() {
         this.provider = mock(ScenarioProvider.class);
         this.handler = mock(ItemHandler.class);
-        this.properties = mock(Properties.class);
-        this.propertiesConfig = mock(PropertiesConfig.class);
-        this.listener = new ScenarioSourceListenerImpl(provider, propertiesConfig);
+        this.sourceListenerData = mock(SourceListenerData.class);
+        this.listener = new ScenarioSourceListenerImpl(provider, sourceListenerData);
     }
 
     @AfterEach
     void tearDown() {
-        verifyNoMoreInteractions(propertiesConfig);
-        verifyNoMoreInteractions(properties);
+        verifyNoMoreInteractions(sourceListenerData);
         verifyNoMoreInteractions(handler);
         verifyNoMoreInteractions(provider);
         this.listener = null;
@@ -62,15 +56,13 @@ public class ScenarioSourceListenerImplTest {
     @Test
     public void testExecute_numberOfTimes() {
         when(provider.readScenarios(FILE_NAME_SCENARIOS)).thenReturn(prepareScenarioList());
-        when(propertiesConfig.getProperties(SOURCES_PROPERTIES)).thenReturn(properties);
-        when(properties.getProperty(DELAY_SCENARIO_SECONDS)).thenReturn("1");
+        when(sourceListenerData.getDelayScenario()).thenReturn(1L);
         doNothing().when(handler).onItemReceived(any(Scenario.class));
 
         listener.execute(handler);
 
         verify(handler, times(0)).onItemReceived(any(Scenario.class));
-        verify(propertiesConfig).getProperties(SOURCES_PROPERTIES);
-        verify(properties).getProperty(DELAY_SCENARIO_SECONDS);
+        verify(sourceListenerData).getDelayScenario();
         verify(provider).readScenarios(FILE_NAME_SCENARIOS);
     }
 

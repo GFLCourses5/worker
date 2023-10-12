@@ -5,8 +5,6 @@ import executor.service.model.Scenario;
 import executor.service.service.ExecutionService;
 import executor.service.service.TasksFactory;
 
-import java.util.concurrent.Callable;
-
 /**
  * The {@code TasksFactoryImpl} class is an implementation
  * of the {@link TasksFactory} interface.
@@ -15,32 +13,11 @@ import java.util.concurrent.Callable;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see ScenarioTaskWorker
- * @see ProxyTaskWorker
  * @see ExecutionService
  * @see Scenario
  * @see ProxyConfigHolder
  */
 public class TasksFactoryImpl implements TasksFactory {
-
-    private final ScenarioTaskWorker scenarioTaskWorker;
-    private final ProxyTaskWorker proxyTaskWorker;
-
-    public TasksFactoryImpl(ScenarioTaskWorker scenarioTaskWorker,
-                            ProxyTaskWorker proxyTaskWorker) {
-        this.scenarioTaskWorker = scenarioTaskWorker;
-        this.proxyTaskWorker = proxyTaskWorker;
-    }
-
-    @Override
-    public Callable<Scenario> createScenarioTaskWorker() {
-        return scenarioTaskWorker;
-    }
-
-    @Override
-    public Callable<ProxyConfigHolder> createProxyTaskWorker() {
-        return proxyTaskWorker;
-    }
 
     @Override
     public Runnable createExecutionWorker(ExecutionService service,

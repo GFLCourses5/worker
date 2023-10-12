@@ -16,7 +16,6 @@ import java.util.Properties;
  * */
 public class PropertiesConfig {
 
-
     private static final Logger log = LoggerFactory.getLogger(PropertiesConfig.class);
 
     /**
