@@ -1,5 +1,6 @@
 package executor.service.service.impl.stepExecution;
 
+import executor.service.exceptions.StepExecutionException;
 import executor.service.model.Step;
 import executor.service.service.StepExecutionSleep;
 import org.openqa.selenium.WebDriver;
@@ -33,6 +34,7 @@ public class StepExecutionSleepImpl implements StepExecutionSleep {
             TimeUnit.SECONDS.sleep(Long.parseLong(value));
         } catch (InterruptedException e) {
             log.error("Thread " + Thread.currentThread().getName() + " was interrupted in StepExecutionSleepImpl.class");
+            throw new StepExecutionException(e);
         }
     }
 }
