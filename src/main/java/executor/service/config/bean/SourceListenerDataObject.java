@@ -2,6 +2,8 @@ package executor.service.config.bean;
 
 import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.SourceListenerData;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import static executor.service.config.properties.PropertiesConstants.*;
 
@@ -14,6 +16,7 @@ import static executor.service.config.properties.PropertiesConstants.*;
  * @see PropertiesConfig
  * @see SourceListenerData
  */
+@Component
 public class SourceListenerDataObject {
 
     private final PropertiesConfig propertiesConfig;
@@ -25,6 +28,7 @@ public class SourceListenerDataObject {
     /**
      * Create a default SourceListenerData bean from properties file.
      */
+    @Bean
     public SourceListenerData sourceListenerData() {
         var properties = propertiesConfig.getProperties(SOURCES_PROPERTIES);
         var delayPoxy = Long.parseLong(properties.getProperty(DELAY_PROXY_SECONDS));
