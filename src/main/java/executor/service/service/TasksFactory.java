@@ -3,8 +3,6 @@ package executor.service.service;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 
-import java.util.concurrent.Callable;
-
 /**
  * The {@code TasksFactory} interface defines methods
  * for creating task and execution workers.
@@ -20,10 +18,6 @@ import java.util.concurrent.Callable;
  * @see ProxyConfigHolder
  */
 public interface TasksFactory {
-
-    Callable<Scenario> createScenarioTaskWorker();
-
-    Callable<ProxyConfigHolder> createProxyTaskWorker();
 
     Runnable createExecutionWorker(ExecutionService service,
                                    Scenario scenario,

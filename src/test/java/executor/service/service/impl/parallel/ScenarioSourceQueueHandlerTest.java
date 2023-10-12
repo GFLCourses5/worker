@@ -5,14 +5,12 @@ import executor.service.service.ItemHandler;
 import executor.service.service.ScenarioSourceListener;
 import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.Callable;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
  * Test class for testing the functionality of the {@code ScenarioTaskWorker} class
- * is an implementation of the {@link Callable}.
+ * is an implementation of the {@link Runnable}.
  * This class contains unit tests to verify that {@code ScenarioTaskWorker} is working correctly.
  *
  * @author Oleksandr Tuleninov
@@ -21,7 +19,7 @@ import static org.mockito.Mockito.*;
  * @see ScenarioSourceQueue
  * @see Scenario
  */
-public class ScenarioTaskWorkerTest {
+public class ScenarioSourceQueueHandlerTest {
 
     @Test
     public void testScenarioTaskWorkerCall() {
@@ -32,11 +30,11 @@ public class ScenarioTaskWorkerTest {
         doNothing().when(listener).execute(any(ItemHandler.class));
         when(queue.getScenario()).thenReturn(scenario);
 
-        var scenarioTaskWorker = new ScenarioTaskWorker(listener, queue);
-        var result = scenarioTaskWorker.call();
+        var scenarioHandler = new ScenarioSourceQueueHandler(listener, queue);
+        scenarioHandler.run();
 
         verify(listener, times(1)).execute(any(ItemHandler.class));
-        assertNotNull(result);
+        assertEquals(scenario, scenarioHandler.getScenario());
         verifyNoMoreInteractions(listener);
     }
 }

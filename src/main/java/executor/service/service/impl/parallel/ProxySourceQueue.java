@@ -1,6 +1,7 @@
 package executor.service.service.impl.parallel;
 
 import executor.service.model.ProxyConfigHolder;
+import executor.service.model.QueueData;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -23,8 +24,8 @@ public class ProxySourceQueue {
 
     private final BlockingQueue<ProxyConfigHolder> queue;
 
-    public ProxySourceQueue() {
-        this.queue = new LinkedBlockingDeque<>();
+    public ProxySourceQueue(QueueData data) {
+        this.queue = new LinkedBlockingDeque<>(data.getCapacity());
     }
 
     public void putProxy(ProxyConfigHolder proxy) {
