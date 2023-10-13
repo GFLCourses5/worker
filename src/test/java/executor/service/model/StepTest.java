@@ -1,13 +1,16 @@
 package executor.service.model;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
 
 public class StepTest {
 
-    private static final String DEFAULT_ACTION = "Default action";
+    private static final String DEFAULT_ACTION = "sleep";
     private static final String DEFAULT_VALUE = "Default value";
-    private static final String ANOTHER_ACTION = "Another action";
+    private static final String ANOTHER_ACTION = "clickCss";
     private static final String ANOTHER_VALUE = "Another value";
 
     @Test
@@ -27,8 +30,10 @@ public class StepTest {
     @Test
     public void testSetters() {
         Step step = new Step();
+
         step.setAction(DEFAULT_ACTION);
         step.setValue(DEFAULT_VALUE);
+
 
         assertNotNull(step.getAction());
         assertNotNull(step.getValue());

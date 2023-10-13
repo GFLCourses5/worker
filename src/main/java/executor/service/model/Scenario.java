@@ -1,7 +1,7 @@
 package executor.service.model;
 
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 public class Scenario {
     private String name;
@@ -52,5 +52,14 @@ public class Scenario {
     @Override
     public int hashCode() {
         return Objects.hash(name, site, steps);
+    }
+
+    @Override
+    public String toString() {
+        return "Scenario{" +
+                "name='" + name + '\'' +
+                ", site='" + site + '\'' +
+                ", steps=" + steps +
+                '}';
     }
 }

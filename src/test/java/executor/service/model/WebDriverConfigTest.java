@@ -15,9 +15,12 @@ public class WebDriverConfigTest {
 
     @BeforeEach
     public void setUp() {
-        config1 = new WebDriverConfig("driver.exe", "Chrome", 5000L, 2000L);
-        config2 = new WebDriverConfig("driver.exe", "Chrome", 5000L, 2000L);
-        config3 = new WebDriverConfig("geckodriver.exe", "Firefox", 3000L, 1000L);
+        config1 = new WebDriverConfig("driver.exe", "Chrome", 5000L,
+                2000L, "chrome.exe", "117");
+        config2 = new WebDriverConfig("driver.exe", "Chrome", 5000L,
+                2000L, "chrome.exe", "117");
+        config3 = new WebDriverConfig("geckodriver.exe", "Firefox", 3000L,
+                1000L, "firefox.exe", "116");
     }
 
     @AfterEach

@@ -1,20 +1,53 @@
 package executor.service.config.properties;
 
 /**
- * Class for application`s constants.
+ * Constants class containing property keys used in the application for configuration purposes.
+ * This class defines constants for properties related to thread pool, proxy validation, WebDriver configuration,
+ * user agent, timeouts, and file paths.
+ * <p>
  *
- * @author Oleksandr Tuleninov
+ * @author Oleksandr Tuleninov.
  * @version 01
- * */
+ */
 public final class PropertiesConstants {
 
     private PropertiesConstants() {
         throw new AssertionError("non-instantiable class");
     }
 
+    // region proxy-validator
+    public static final String PROXY_VALIDATOR_PROPERTIES = "proxy-validator.properties";
+    public static final String PROXY_VALIDATOR_TARGET_URL = "target.url";
+    public static final String PROXY_VALIDATOR_CONNECTION_TIMEOUT = "connection.timeout";
+    // endregion proxy-validator
+
+    // region queue
+    public static final String QUEUE_PROPERTIES = "queue.properties";
+    public static final String QUEUE_CAPACITY = "capacity";
+    // endregion queue
+
+    // region source-listeners
+    public static final String FILE_NAME_SCENARIOS = "/scenarios.json";
+    public static final String FILE_NAME_PROXIES = "/proxies.json";
+    public static final String SOURCES_PROPERTIES = "source-listeners.properties";
+    public static final String DELAY_PROXY_SECONDS = "delay.proxy.seconds";
+    public static final String DELAY_SCENARIO_SECONDS = "delay.scenario.seconds";
+    // endregion source-listeners
+
+    // region thread-pool
     public static final String THREAD_POOL_PROPERTIES = "thread-pool.properties";
     public static final String CORE_POOL_SIZE = "core.pool.size";
     public static final String KEEP_ALIVE_TIME = "keep.alive.time";
-    public static final String COMMONS_CONFIGURATION_PROPERTIES = "commons-configuration.properties";
+    public static final String MAXIMUM_POOL_SIZE = "maximum.pool.size";
+    // endregion thread-pool
 
+    // region web-driver
+    public static final String WEB_DRIVER = "web-driver.properties";
+    public static final String WEB_DRIVER_EXECUTABLE = "webdriver.executable";
+    public static final String CHROME_EXECUTABLE = "chrome.executable";
+    public static final String CHROME_VERSION = "chrome.version";
+    public static final String USER_AGENT = "user.agent";
+    public static final String PAGE_LOAD_TIMEOUT = "page.load.timeout";
+    public static final String IMPLICITLY_WAIT = "implicitly.wait";
+    // endregion web-driver
 }

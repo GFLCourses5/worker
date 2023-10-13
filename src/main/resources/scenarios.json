@@ -1,0 +1,92 @@
+[
+  {
+    "name": "test scenario 1",
+    "site": "https://info.cern.ch",
+    "steps": [
+      {
+        "action": "clickCss",
+        "value": "body > ul > li:nth-child(1) > a"
+      },
+      {
+        "action": "sleep",
+        "value": "5"
+      },
+      {
+        "action": "clickXpath",
+        "value": "/html/body/p"
+      }
+    ]
+  },
+  {
+    "name": "Google Search",
+    "site": "https://www.google.com",
+    "steps": [
+      {
+        "action": "clickCss",
+        "value": "#hplogo"
+      },
+      {
+        "action": "sleep",
+        "value": "3"
+      },
+      {
+        "action": "clickXpath",
+        "value": "//input[@name='q']"
+      }
+    ]
+  },
+  {
+    "name": "Amazon Shopping",
+    "site": "https://www.amazon.com",
+    "steps": [
+      {
+        "action": "clickXpath",
+        "value": "//a[@id='nav-hamburger-menu']"
+      },
+      {
+        "action": "sleep",
+        "value": "2"
+      },
+      {
+        "action": "clickCss",
+        "value": ".nav-logo-base"
+      }
+    ]
+  },
+  {
+    "name": "Wikipedia Search",
+    "site": "https://www.wikipedia.org",
+    "steps": [
+      {
+        "action": "clickCss",
+        "value": "#searchInput"
+      },
+      {
+        "action": "sleep",
+        "value": "4"
+      },
+      {
+        "action": "clickXpath",
+        "value": "//button[@type='submit']"
+      }
+    ]
+  },
+  {
+    "name": "YouTube",
+    "site": "https://www.youtube.com",
+    "steps": [
+      {
+        "action": "clickCss",
+        "value": "a[href='/trending']"
+      },
+      {
+        "action": "sleep",
+        "value": "2"
+      },
+      {
+        "action": "clickXpath",
+        "value": "//input[@id='search']"
+      }
+    ]
+  }
+]
