@@ -2,7 +2,10 @@ package executor.service.service.impl.listener;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.SourceListenerData;
-import executor.service.service.*;
+import executor.service.service.ItemHandler;
+import executor.service.service.ProxyProvider;
+import executor.service.service.ProxySourceClient;
+import executor.service.service.ProxyValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -14,14 +17,16 @@ import static executor.service.config.properties.PropertiesConstants.FILE_NAME_P
 
 /**
  * The {@code ProxySourcesClientImpl} class implements the {@link ProxySourceClient} interface
- * that reads scenarios from a {@link ScenarioProvider}
+ * that reads scenarios from a {@link ProxyProvider}
  * and emits them as a {@link Flux} stream with a specified delay.
  * <p>
  *
  * @author Oleksandr Tuleninov, NikitaHurmaza, Yurii Kotsiuba, Oleksii Bondarenko, Dima Silenko
  * @version 01
- * @see ScenarioProvider
+ * @see ProxyValidator
  * @see SourceListenerData
+ * @see ItemHandler
+ * @see ProxyConfigHolder
  */
 public class ProxySourceClientImpl implements ProxySourceClient {
 
@@ -47,8 +52,8 @@ public class ProxySourceClientImpl implements ProxySourceClient {
      */
     @Override
     public void execute(ItemHandler handler) {
-        List<ProxyConfigHolder> proxyConfigHolders = provider.readProxy(FILE_NAME_PROXIES);
-        List<ProxyConfigHolder> proxies = validateProxies(proxyConfigHolders);
+        List<ProxyConfigHolder> proxies = provider.readProxy(FILE_NAME_PROXIES);
+        validateProxies(proxies);
         Flux<ProxyConfigHolder> proxiesFlux = getProxyFlux(proxies);
         proxiesFlux.subscribe(proxy -> {
             if (proxyValidator.isValid(proxy)) {
@@ -61,13 +66,11 @@ public class ProxySourceClientImpl implements ProxySourceClient {
      * Validates the list of proxy configurations to ensure it is not empty.
      *
      * @param proxies The list of {@link ProxyConfigHolder} entities to validate.
-     * @return The validated list of proxy configurations.
      */
-    private List<ProxyConfigHolder> validateProxies(List<ProxyConfigHolder> proxies) {
+    private void validateProxies(List<ProxyConfigHolder> proxies) {
         if (proxies.isEmpty()) {
             log.error("The proxies list is bad");
         }
-        return proxies;
     }
 
     /**

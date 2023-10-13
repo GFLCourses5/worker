@@ -8,8 +8,11 @@ import executor.service.model.Scenario;
  *
  * @author Oleksandr Tuleninov
  * @version 01
+ * @see Scenario
+ * @see ProxyConfigHolder
  */
 public interface ExecutionService {
 
     void execute(Scenario scenario, ProxyConfigHolder proxy);
+
 }

@@ -16,6 +16,7 @@ import executor.service.model.Scenario;
  * @see ExecutionService
  * @see Scenario
  * @see ProxyConfigHolder
+ * @see Runnable
  */
 public interface TasksFactory {
 

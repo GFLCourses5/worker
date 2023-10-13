@@ -16,7 +16,11 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Anton Sokolsky
  * @version 01
- * @see executor.service.model.Step
+ * @see WebDriver
+ * @see Step
+ * @see TimeUnit
+ * @see InterruptedException
+ * @see StepExecutionException
  */
 public class StepExecutionSleepImpl implements StepExecutionSleep {
 

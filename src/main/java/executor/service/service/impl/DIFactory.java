@@ -33,6 +33,12 @@ import java.util.concurrent.ExecutorService;
  *
  * @author Dima Silenko, Oleksandr Tuleninov.
  * @version 01
+ * @see ObjectFactory
+ * @see Map
+ * @see ConcurrentHashMap
+ * @see Object
+ * @see Class
+ * @see RuntimeException
  */
 public class DIFactory implements ObjectFactory {
 

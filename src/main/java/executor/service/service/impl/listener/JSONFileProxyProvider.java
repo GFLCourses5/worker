@@ -22,8 +22,9 @@ import java.util.List;
  *
  * @author Yurii Kotsiuba, Oleksandr Tuleninov, Dima Silenko.
  * @version 01
- * @see ProxyProvider
- * @see executor.service.config.properties.PropertiesConfig
+ * @see ProxyConfigHolder
+ * @see BufferedReader
+ * @see IOException
  */
 public class JSONFileProxyProvider implements ProxyProvider {
 

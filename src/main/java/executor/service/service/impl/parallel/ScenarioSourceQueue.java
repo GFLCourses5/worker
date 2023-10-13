@@ -16,8 +16,9 @@ import java.util.concurrent.LinkedBlockingDeque;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see Scenario
  * @see BlockingQueue
+ * @see InterruptedException
+ * @see RuntimeException
  */
 public class ScenarioSourceQueue {
     private final BlockingQueue<Scenario> queue;

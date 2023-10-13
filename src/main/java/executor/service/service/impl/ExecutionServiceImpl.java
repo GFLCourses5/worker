@@ -16,8 +16,9 @@ import org.openqa.selenium.WebDriver;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see executor.service.service.ScenarioExecutor
- * @see executor.service.service.WebDriverInitializer
+ * @see WebDriver
+ * @see Scenario
+ * @see ProxyConfigHolder
  */
 public class ExecutionServiceImpl implements ExecutionService {
 

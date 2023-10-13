@@ -17,8 +17,9 @@ import java.util.concurrent.LinkedBlockingDeque;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see ProxyConfigHolder
  * @see BlockingQueue
+ * @see InterruptedException
+ * @see RuntimeException
  */
 public class ProxySourceQueue {
 

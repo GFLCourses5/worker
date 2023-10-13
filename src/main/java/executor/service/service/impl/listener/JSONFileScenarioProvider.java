@@ -21,8 +21,9 @@ import java.util.List;
  *
  * @author Yurii Kotsiuba, Oleksandr Tuleninov, Kostia Hromovii.
  * @version 01
- * @see executor.service.service.ScenarioProvider
- * @see executor.service.config.properties.PropertiesConfig
+ * @see Scenario
+ * @see BufferedReader
+ * @see IOException
  */
 public class JSONFileScenarioProvider implements ScenarioProvider {
 

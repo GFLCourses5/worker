@@ -13,7 +13,8 @@ import org.openqa.selenium.WebElement;
  *
  * @author Anton Sokolsky
  * @version 01
- * @see executor.service.model.Step
+ * @see WebDriver
+ * @see Step
  */
 public class StepExecutionClickCssImpl implements StepExecutionClickCss {
 

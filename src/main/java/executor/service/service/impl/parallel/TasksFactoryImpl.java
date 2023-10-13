@@ -13,9 +13,11 @@ import executor.service.service.TasksFactory;
  *
  * @author Oleksandr Tuleninov
  * @version 01
+ * @see ExecutionWorker
  * @see ExecutionService
  * @see Scenario
  * @see ProxyConfigHolder
+ * @see Runnable
  */
 public class TasksFactoryImpl implements TasksFactory {
 

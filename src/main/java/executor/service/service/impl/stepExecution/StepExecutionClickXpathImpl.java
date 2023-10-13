@@ -13,7 +13,8 @@ import org.openqa.selenium.WebElement;
  *
  * @author Yurii Kotsiuba
  * @version 01
- * @see executor.service.model.Step
+ * @see WebDriver
+ * @see Step
  */
 public class StepExecutionClickXpathImpl implements StepExecutionClickXpath {
 
