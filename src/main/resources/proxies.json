@@ -1,0 +1,32 @@
+[
+  {
+    "proxyNetworkConfig": {
+      "hostname": "38.154.227.167",
+      "port": 5868
+    },
+    "proxyCredentials": {
+      "username": "hnlulgzg",
+      "password": "cu0aaiy7bdzi"
+    }
+  },
+  {
+    "proxyNetworkConfig": {
+      "hostname": "185.199.229.156",
+      "port": 7492
+    },
+    "proxyCredentials": {
+      "username": "hnlulgzg",
+      "password": "cu0aaiy7bdzi"
+    }
+  },
+  {
+    "proxyNetworkConfig": {
+      "hostname": "host3",
+      "port": 8089
+    },
+    "proxyCredentials": {
+      "username": "user33",
+      "password": "pass3"
+    }
+  }
+]

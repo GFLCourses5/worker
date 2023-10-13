@@ -1,20 +1,18 @@
 package executor.service.service;
 
-public class ExecutionService {
+import executor.service.model.ProxyConfigHolder;
+import executor.service.model.Scenario;
 
-    private WebDriverInitializer driverInitializer;
-    private ScenarioExecutor scenarioExecutor;
-    private ScenarioSourceListener scenarioSourceListener;
+/**
+ * The facade for execute ScenarioExecutor.
+ *
+ * @author Oleksandr Tuleninov
+ * @version 01
+ * @see Scenario
+ * @see ProxyConfigHolder
+ */
+public interface ExecutionService {
 
-    public ExecutionService(WebDriverInitializer driverInitializer, ScenarioExecutor scenarioExecutor, ScenarioSourceListener scenarioSourceListener) {
-        this.driverInitializer = driverInitializer;
-        this.scenarioExecutor = scenarioExecutor;
-        this.scenarioSourceListener = scenarioSourceListener;
-    }
+    void execute(Scenario scenario, ProxyConfigHolder proxy);
 
-    public void execute() {
-
-        scenarioSourceListener.execute();
-
-    }
 }
