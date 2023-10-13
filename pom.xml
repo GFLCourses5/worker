@@ -31,6 +31,7 @@
     <reflections.version>0.10.2</reflections.version>
     <httpclient.version>4.5.14</httpclient.version>
     <openfeign.version>4.0.4</openfeign.version>
+    <reactor-test.version>3.5.4</reactor-test.version>
   </properties>
 
   <dependencies>
@@ -79,6 +80,12 @@
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>${httpclient.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>${reactor-test.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>

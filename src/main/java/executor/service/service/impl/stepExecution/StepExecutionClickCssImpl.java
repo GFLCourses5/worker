@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
  *
  * @author Anton Sokolsky
  * @version 01
- * @see executor.service.model.Step
+ * @see WebDriver
+ * @see Step
  */
 @Service
 public class StepExecutionClickCssImpl implements StepExecutionClickCss {

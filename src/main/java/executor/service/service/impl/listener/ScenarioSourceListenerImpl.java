@@ -1,6 +1,5 @@
 package executor.service.service.impl.listener;
 
-import executor.service.config.properties.PropertiesConfig;
 import executor.service.model.Scenario;
 import executor.service.model.SourceListenerData;
 import executor.service.service.ItemHandler;
@@ -13,9 +12,8 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Properties;
 
-import static executor.service.config.properties.PropertiesConstants.*;
+import static executor.service.config.properties.PropertiesConstants.FILE_NAME_SCENARIOS;
 
 /**
  * The {@code ScenarioSourceListenerImpl} class implements the {@link ScenarioSourceListener} interface
@@ -25,8 +23,10 @@ import static executor.service.config.properties.PropertiesConstants.*;
  *
  * @author Yurii Kotsiuba, Oleksandr Tuleninov, Oleksii Bondarenko, Kostia Hromovii
  * @version 01
- * @see ScenarioProvider
  * @see SourceListenerData
+ * @see ItemHandler
+ * @see Scenario
+ * @see Flux
  */
 @Service
 public class ScenarioSourceListenerImpl implements ScenarioSourceListener {

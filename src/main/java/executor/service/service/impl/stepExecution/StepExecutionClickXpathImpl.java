@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
  *
  * @author Yurii Kotsiuba
  * @version 01
- * @see executor.service.model.Step
+ * @see WebDriver
+ * @see Step
  */
 @Service
 public class StepExecutionClickXpathImpl implements StepExecutionClickXpath {

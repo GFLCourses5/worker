@@ -16,10 +16,8 @@ import java.util.concurrent.ExecutorService;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see ExecutorService
  * @see ScenarioSourceQueueHandler
  * @see ProxySourceQueueHandler
- * @see TasksFactory
  * @see ExecutionService
  */
 @Service

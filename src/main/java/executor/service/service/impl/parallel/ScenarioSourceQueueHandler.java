@@ -12,16 +12,12 @@ import java.util.function.Consumer;
  * and processes scenario configurations from a {@link ScenarioSourceListener}.
  * It implements the {@link Runnable} interface to perform its work asynchronously.
  * <p>
- * This class is responsible for executing the {@link ScenarioSourceListener} to fetch
- * proxy configurations and then stores them in a {@link ScenarioSourceQueue}.
- * The retrieved scenario configuration is returned as the result of the call.
- * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see ScenarioSourceListener
  * @see ScenarioSourceQueue
  * @see ItemHandler
+ * @see Consumer
  */
 @Service
 public class ScenarioSourceQueueHandler implements Runnable {

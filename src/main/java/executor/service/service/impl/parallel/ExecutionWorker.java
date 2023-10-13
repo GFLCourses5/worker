@@ -12,9 +12,8 @@ import executor.service.service.ExecutionService;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see executor.service.service.ExecutionService
- * @see executor.service.model.Scenario
- * @see executor.service.model.ProxyConfigHolder
+ * @see Scenario
+ * @see ProxyConfigHolder
  */
 public class ExecutionWorker implements Runnable {
 

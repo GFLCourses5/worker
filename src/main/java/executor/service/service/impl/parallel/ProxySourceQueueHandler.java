@@ -11,18 +11,13 @@ import java.util.function.Consumer;
 /**
  * The {@code ProxyTaskWorker} class represents a worker task that retrieves
  * and processes proxy configurations from a {@link ProxySourceClient}.
- * It implements the {@link Callable} interface to perform its work asynchronously.
- * <p>
- * This class is responsible for executing the {@link ProxySourceClient} to fetch
- * proxy configurations and then stores them in a {@link ProxySourceQueue}.
- * The retrieved proxy configuration is returned as the result of the call.
+ * It implements the {@link Runnable} interface to perform its work asynchronously.
  * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see ProxySourceClient
- * @see ProxySourceQueue
  * @see ItemHandler
+ * @see Consumer
  */
 @Service
 public class ProxySourceQueueHandler implements Runnable {

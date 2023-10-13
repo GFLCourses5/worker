@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
  *
  * @author Oleksandr Tuleninov
  * @version 01
+ * @see ExecutionWorker
  * @see ExecutionService
  * @see Scenario
  * @see ProxyConfigHolder
+ * @see Runnable
  */
 @Service
 public class TasksFactoryImpl implements TasksFactory {

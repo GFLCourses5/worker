@@ -19,11 +19,14 @@ import org.springframework.stereotype.Service;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see executor.service.service.impl.stepExecution.StepExecutionClickCssImpl
- * @see executor.service.service.impl.stepExecution.StepExecutionSleepImpl
- * @see executor.service.service.impl.stepExecution.StepExecutionClickXpathImpl
- * @see executor.service.model.Scenario
- * @see executor.service.model.Step
+ * @see StepExecutionClickCss
+ * @see StepExecutionSleep
+ * @see StepExecutionClickXpath
+ * @see Scenario
+ * @see WebDriver
+ * @see Step
+ * @see NoSuchElementException
+ * @see StepExecutionException
  */
 @Service
 public class ScenarioExecutorImpl implements ScenarioExecutor {
