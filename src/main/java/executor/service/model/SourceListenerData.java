@@ -1,10 +1,16 @@
 package executor.service.model;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.util.Objects;
 
+@Component
 public class SourceListenerData {
 
+    @Value("${listener.delayProxy}")
     private Long delayProxy;
+    @Value("${listener.delayScenario}")
     private Long delayScenario;
 
     public SourceListenerData() {

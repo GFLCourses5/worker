@@ -1,12 +1,18 @@
 package executor.service.model;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 import java.util.Objects;
 
 public class Scenario {
+
+    @NotBlank(message = "scenario name must not be null or empty")
     private String name;
+    @NotBlank(message = "scenario site must not be null or empty")
     private String site;
-    private List<Step> steps;
+    private @Valid List<Step> steps;
 
     public Scenario() {
     }

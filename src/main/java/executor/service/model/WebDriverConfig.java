@@ -1,14 +1,25 @@
 package executor.service.model;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.util.Objects;
 
+@Component
 public class WebDriverConfig {
-   private String webDriverExecutable;
-   private String userAgent;
-   private Long pageLoadTimeout;
-   private Long implicitlyWait;
-   private String chromeExecutable;
-   private String chromeVersion;
+
+    @Value("${driver.webDriverExecutable}")
+    private String webDriverExecutable;
+    @Value("${driver.userAgent}")
+    private String userAgent;
+    @Value("${driver.pageLoadTimeout}")
+    private Long pageLoadTimeout;
+    @Value("${driver.implicitlyWait}")
+    private Long implicitlyWait;
+    @Value("${chrome.executable}")
+    private String chromeExecutable;
+    @Value("${chrome.version}")
+    private String chromeVersion;
 
     public WebDriverConfig() {
     }
