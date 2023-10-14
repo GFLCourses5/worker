@@ -1,9 +1,14 @@
 package executor.service.model;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.Objects;
 
 public class Step {
+
+    @NotBlank(message = "step action must not be null or empty")
     private String action;
+    @NotBlank(message = "step value must not be null or empty")
     private String value;
 
     public Step() {
