@@ -1,4 +1,4 @@
-package executor.service.service.impl.mapper;
+package executor.service.service.impl.proxy.mapper;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;

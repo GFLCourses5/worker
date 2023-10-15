@@ -1,10 +1,11 @@
-package executor.service.service.impl.parallel;
+package executor.service.service.impl.scenario;
 
 import executor.service.model.Scenario;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * The {@code ScenarioSourceQueue} class represents a thread-safe queue for storing
@@ -26,9 +27,14 @@ public class ScenarioSourceQueue {
     private final BlockingQueue<Scenario> queue;
 
     public ScenarioSourceQueue() {
-        this.queue = new LinkedBlockingDeque<>();
+        this.queue = new LinkedBlockingQueue<>();
     }
 
+    /**
+     * Put a scenario into the queue.
+     *
+     * @param scenario The scenario to be added to the queue.
+     */
     public void putScenario(Scenario scenario) {
         try {
             queue.put(scenario);
@@ -37,11 +43,25 @@ public class ScenarioSourceQueue {
         }
     }
 
+    /**
+     * Get a scenario from the queue.
+     *
+     * @return The scenario retrieved from the queue.
+     */
     public Scenario getScenario() {
         try {
             return queue.take();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Add a list of scenarios to the queue.
+     *
+     * @param scenarios The list of scenarios to add to the queue.
+     */
+    public void addAllScenarios(List<Scenario> scenarios) {
+        queue.addAll(scenarios);
     }
 }

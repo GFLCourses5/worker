@@ -1,6 +1,7 @@
 package executor.service.service.impl.parallel;
 
 import executor.service.model.Scenario;
+import executor.service.service.impl.scenario.ScenarioSourceQueue;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

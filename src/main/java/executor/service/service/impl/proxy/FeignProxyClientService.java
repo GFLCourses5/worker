@@ -6,7 +6,7 @@ import executor.service.model.request.ProxyParameters;
 import executor.service.model.response.WebshareResponse;
 import executor.service.service.FeignProxyClient;
 import executor.service.service.ProxyClientService;
-import executor.service.service.impl.mapper.ProxyResponseMapper;
+import executor.service.service.impl.proxy.mapper.ProxyResponseMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

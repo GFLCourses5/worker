@@ -1,7 +1,7 @@
 package executor.service.service.impl.parallel;
 
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.QueueData;
+import executor.service.service.impl.proxy.ProxySourceQueue;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,9 +21,8 @@ public class ProxySourceQueueTest {
     @Test
     void testPutAndGetProxy() {
         var proxy = new ProxyConfigHolder();
-        var queueData = new QueueData(5);
 
-        var queue = new ProxySourceQueue(queueData);
+        var queue = new ProxySourceQueue();
         queue.putProxy(proxy);
 
         var result = queue.getProxy();

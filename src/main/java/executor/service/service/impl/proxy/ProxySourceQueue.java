@@ -1,11 +1,10 @@
-package executor.service.service.impl.parallel;
+package executor.service.service.impl.proxy;
 
 import executor.service.model.ProxyConfigHolder;
 import org.springframework.stereotype.Component;
-import executor.service.model.QueueData;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * The {@code ProxySourceQueue} class represents a thread-safe queue for storing
@@ -27,10 +26,15 @@ public class ProxySourceQueue {
 
     private final BlockingQueue<ProxyConfigHolder> queue;
 
-    public ProxySourceQueue(QueueData data) {
-        this.queue = new LinkedBlockingDeque<>(data.getCapacity());
+    public ProxySourceQueue() {
+        queue = new LinkedBlockingQueue<>();
     }
 
+    /**
+     * Put a proxy configuration into the queue.
+     *
+     * @param proxy The proxy configuration to be added to the queue.
+     */
     public void putProxy(ProxyConfigHolder proxy) {
         try {
             queue.put(proxy);
@@ -39,6 +43,11 @@ public class ProxySourceQueue {
         }
     }
 
+    /**
+     * Get a proxy configuration from the queue.
+     *
+     * @return The proxy configuration retrieved from the queue.
+     */
     public ProxyConfigHolder getProxy() {
         try {
             return queue.take();
