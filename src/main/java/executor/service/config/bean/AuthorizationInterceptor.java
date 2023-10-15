@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Request interceptor for adding authorization headers to outgoing HTTP requests.
- *
+ * <p>
  * This class implements the Spring Cloud OpenFeign `RequestInterceptor` interface
  * to add an "Authorization" header to HTTP requests when the target URL matches
  * a Webshare resource URL.
@@ -19,25 +19,21 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class AuthorizationInterceptor implements RequestInterceptor {
-    @Value("${PROXY_TOKEN}")
+
+    @Value("${webshare.token}")
     private String token;
-    @Value("https://proxy.webshare.io/api/v2")
+    @Value("${webshare.url}")
     private String url;
-    private final String headerName = "Authorization";
 
     /**
      * Applies the interceptor to the given request template.
      *
      * @param template The request template to which the interceptor should be applied.
-     * <p>
-     *  *
-     *  * @author Yurii Kotsiuba
-     *  * @version 01
      */
     @Override
     public void apply(RequestTemplate template) {
-        if(shouldAddAuthorizationHeader(template)) {
-            template.header(headerName, token);
+        if (shouldAddAuthorizationHeader(template)) {
+            template.header("Authorization", token);
         }
     }
 

@@ -1,7 +1,5 @@
-package executor.service.service.impl.listener;
+package executor.service.service.impl.proxy;
 
-import executor.service.config.properties.PropertiesConfig;
-import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.service.ProxyValidator;
 import org.apache.http.HttpHost;
@@ -17,9 +15,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.Properties;
 
 /**
  * The {@code ProxyValidatorImpl} class is responsible for checking the proxy functionality
@@ -33,11 +30,10 @@ public class ProxyValidatorImpl implements ProxyValidator {
 
     private static final Logger log = LoggerFactory.getLogger(ProxyValidatorImpl.class);
 
-    private final Properties properties;
-
-    public ProxyValidatorImpl(PropertiesConfig propertiesConfig) {
-        this.properties = propertiesConfig.getProperties(PropertiesConstants.PROXY_VALIDATOR_PROPERTIES);
-    }
+    @Value("${validator.targetUrl}")
+    private String targetUrl;
+    @Value("${validator.connectionTimeout}")
+    private String connectionTimeout;
 
     public Boolean isValid(ProxyConfigHolder proxyConfigHolder) {
         int responseCode;
@@ -47,7 +43,7 @@ public class ProxyValidatorImpl implements ProxyValidator {
             CloseableHttpClient httpClient = getHttpClient(proxyConfigHolder, credentialsProvider);
 
 
-            HttpGet httpGet = new HttpGet(properties.getProperty(PropertiesConstants.PROXY_VALIDATOR_TARGET_URL));
+            HttpGet httpGet = new HttpGet(targetUrl);
             CloseableHttpResponse response = httpClient.execute(httpGet);
             responseCode = response.getStatusLine().getStatusCode();
 
@@ -72,7 +68,7 @@ public class ProxyValidatorImpl implements ProxyValidator {
     }
 
     private CloseableHttpClient getHttpClient(ProxyConfigHolder proxyConfig, CredentialsProvider credentials) {
-        int timeout = Integer.parseInt(properties.getProperty(PropertiesConstants.PROXY_VALIDATOR_CONNECTION_TIMEOUT));
+        int timeout = Integer.parseInt(connectionTimeout);
         return HttpClients.custom()
                 .setDefaultCredentialsProvider(credentials)
                 .setProxy(new HttpHost(proxyConfig.getProxyNetworkConfig().getHostname(),

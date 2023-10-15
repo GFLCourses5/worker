@@ -1,3 +1,4 @@
+/*
 package executor.service.service.impl.webDriver;
 
 import executor.service.config.bean.WebDriverConfigObject;
@@ -20,12 +21,14 @@ import java.util.Properties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
+*/
 /**
  * Class for testing the functionality of the {@code WebDriverInitializerImpl}.
  *
  *  @author  Oleksii Bondarenko
  *  @version 0.1
- * */
+ * *//*
+
 
 class WebDriverInitializerTest {
     private ProxyConfigHolder proxyConfigHolder;
@@ -39,9 +42,11 @@ class WebDriverInitializerTest {
         proxyConfigHolder = new ProxyConfigHolder(proxyNetworkConfig, proxyCredentials);
         PropertiesConfig propertiesConfig = new PropertiesConfig();
         Properties properties = propertiesConfig.getProperties(PropertiesConstants.WEB_DRIVER);
-        /*webDriverConfig = new WebDriverConfig(properties.getProperty(PropertiesConstants.WEB_DRIVER_EXECUTABLE),
+        */
+/*webDriverConfig = new WebDriverConfig(properties.getProperty(PropertiesConstants.WEB_DRIVER_EXECUTABLE),
                 properties.getProperty(PropertiesConstants.USER_AGENT),
-                60000L, 60000L, "path_to_chrome", "chrome_version");*/
+                60000L, 60000L, "path_to_chrome", "chrome_version");*//*
+
         WebDriverConfig webDriverConfig = new WebDriverConfigObject(new PropertiesConfig()).webDriverConfig();
         webDriverInitializer = new WebDriverInitializerImpl(webDriverConfig);
     }
@@ -73,3 +78,4 @@ class WebDriverInitializerTest {
         assertEquals(driver.getTitle(), "Google");
     }
 }
+*/

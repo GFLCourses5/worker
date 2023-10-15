@@ -35,7 +35,7 @@ public class ProxyResponseMapper {
     }
 
     private static ProxyNetworkConfig getProxyNetworkConfig(ProxyResponse response) {
-        return new ProxyNetworkConfig(response.getHost(), response.getPort());
+        return new ProxyNetworkConfig(response.getProxy_address(), response.getPort());
     }
 
     private static ProxyCredentials getProxyCredentials(ProxyResponse response) {
