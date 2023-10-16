@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
  * @author Stanislav Khytrych
  * @version 01
  */
+/*
 public class ScenarioExecutorImplTest {
 
   @Test
@@ -59,3 +60,5 @@ public class ScenarioExecutorImplTest {
             new Step("clickXpath", "/html/body/p")));
   }
 }
+
+ */

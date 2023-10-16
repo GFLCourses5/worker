@@ -1,22 +1,29 @@
-CREATE TABLE Step
+CREATE TABLE scenario_results
 (
-    id     BIGINT AUTO_INCREMENT PRIMARY KEY,
-    "action" VARCHAR(255) NOT NULL,
-    "value"  VARCHAR(255) NOT NULL
+    id              BIGSERIAL PRIMARY KEY,
+    user_id         BIGINT      NOT NULL,
+    name            TEXT        NOT NULL,
+    site            TEXT        NOT NULL,
+    stepResults_id int,
+    executed_at     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE TABLE Scenario
+CREATE TABLE step_results
 (
-    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    site VARCHAR(255) NOT NULL
+    id          BIGSERIAL PRIMARY KEY,
+    action      TEXT   NOT NULL,
+    value       TEXT   NOT NULL,
+    is_passed   BOOLEAN,
+    scenario_id BIGINT NOT NULL REFERENCES scenario_results (id)
 );
 
-CREATE TABLE Scenario_Steps
+CREATE TABLE scenarios_steps
 (
     scenario_id BIGINT NOT NULL,
     step_id     BIGINT NOT NULL,
     PRIMARY KEY (scenario_id, step_id),
-    FOREIGN KEY (scenario_id) REFERENCES Scenario (id),
-    FOREIGN KEY (step_id) REFERENCES Step (id)
+    CONSTRAINT scenario_steps_scenario_fk FOREIGN KEY (scenario_id)
+        REFERENCES scenario_results (id) ON DELETE CASCADE,
+    CONSTRAINT scenario_steps_step_fk FOREIGN KEY (step_id)
+        REFERENCES step_results (id) ON DELETE CASCADE
 );
