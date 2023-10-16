@@ -2,12 +2,11 @@ package executor.service.controller;
 
 import executor.service.model.Scenario;
 import executor.service.model.request.ScenarioRequest;
-import executor.service.model.response.ScenarioResponse;
+import executor.service.model.response.ScenarioResultResponse;
 import executor.service.service.SourceHandler;
 import executor.service.service.impl.proxy.ProxySourceQueueHandler;
 import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +38,6 @@ public class ScenarioSourceController {
         this.handler = handler;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<ScenarioResponse>> getScenarioResult(@PathVariable Integer id) {
-        return null; // todo
-    }
-
     /**
      * Handles a POST request to process a scenario request.
      *
@@ -54,9 +48,19 @@ public class ScenarioSourceController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<ScenarioResponse>> test(@RequestBody @Valid ScenarioRequest request) {
+    public ResponseEntity<List<ScenarioResultResponse>> receiveScenarios(@RequestBody @Valid ScenarioRequest request) {
         handler.execute(request);
-        return null;  // todo add service with ScenarioResponse from DB
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Handles a GET request to retrieve scenario results for a specific user.
+     *
+     * @param userId The identifier of the user for whom scenario results are requested.
+     * @return A response entity with a list of scenario result responses.
+     */
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<ScenarioResultResponse>> getScenariosResult(@PathVariable Integer userId) {
+        return null; // todo
     }
 }
