@@ -1,4 +1,4 @@
-package executor.service.model;
+package executor.service.model.response;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,14 +15,14 @@ public class ScenarioResult {
     private Integer id;
     private String name;
     private String site;
-    private List<String> stepsResults;
+    private List<StepResult> stepsResults;
     private OffsetDateTime executedAt;
 
     public ScenarioResult() {
     }
 
     public ScenarioResult(Integer id, String name, String site,
-                          List<String> stepsResults, OffsetDateTime executedAt) {
+                          List<StepResult> stepsResults, OffsetDateTime executedAt) {
         this.id = id;
         this.name = name;
         this.site = site;
@@ -54,11 +54,11 @@ public class ScenarioResult {
         this.site = site;
     }
 
-    public List<String> getStepsResults() {
+    public List<StepResult> getStepsResults() {
         return stepsResults;
     }
 
-    public void setStepsResults(List<String> stepsResults) {
+    public void setStepsResults(List<StepResult> stepsResults) {
         this.stepsResults = stepsResults;
     }
 
@@ -75,7 +75,11 @@ public class ScenarioResult {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ScenarioResult that = (ScenarioResult) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(site, that.site) && Objects.equals(stepsResults, that.stepsResults) && Objects.equals(executedAt, that.executedAt);
+        return Objects.equals(id, that.id)
+                && Objects.equals(name, that.name)
+                && Objects.equals(site, that.site)
+                && Objects.equals(stepsResults, that.stepsResults)
+                && Objects.equals(executedAt, that.executedAt);
     }
 
     @Override
