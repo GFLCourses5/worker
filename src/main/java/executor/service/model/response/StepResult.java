@@ -3,7 +3,7 @@ package executor.service.model.response;
 public class StepResult {
     private String action;
     private String value;
-    private String result;
+    private Boolean isPassed;
 
     public String getAction() {
         return action;
@@ -21,11 +21,11 @@ public class StepResult {
         this.value = value;
     }
 
-    public String getResult() {
-        return result;
+    public Boolean getIsPassed() {
+        return isPassed;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setIsPassed(Boolean isPassed) {
+        this.isPassed = isPassed;
     }
 }
