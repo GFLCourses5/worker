@@ -3,8 +3,8 @@ package executor.service.model.response;
 import jakarta.persistence.*;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A class representing a response for scenarios.
@@ -30,9 +30,10 @@ public class ScenarioResult {
     private String site;
 
     @ManyToMany
-    @JoinTable(name = "scenario_steps", joinColumns = @JoinColumn(name = "scenario_id"),
-            inverseJoinColumns = @JoinColumn(name = "step_id"))
-    private List<StepResult> stepsResults;
+    @JoinTable(name = "scenario_results_step_results",
+            joinColumns = @JoinColumn(name = "scenario_result_id"),
+            inverseJoinColumns = @JoinColumn(name = "step_result_id"))
+    private Set<StepResult> stepsResults;
 
     @Column(name = "executed_at", nullable = false)
     private OffsetDateTime executedAt;
@@ -40,9 +41,9 @@ public class ScenarioResult {
     public ScenarioResult() {
     }
 
-    public ScenarioResult(Integer id, String name, String site,
-                          List<StepResult> stepsResults, OffsetDateTime executedAt) {
-        this.id = id;
+    public ScenarioResult(Integer userId, String name, String site,
+                          Set<StepResult> stepsResults, OffsetDateTime executedAt) {
+        this.userId = userId;
         this.name = name;
         this.site = site;
         this.stepsResults = stepsResults;
@@ -81,11 +82,11 @@ public class ScenarioResult {
         this.site = site;
     }
 
-    public List<StepResult> getStepsResults() {
+    public Set<StepResult> getStepsResults() {
         return stepsResults;
     }
 
-    public void setStepsResults(List<StepResult> stepsResults) {
+    public void setStepsResults(Set<StepResult> stepsResults) {
         this.stepsResults = stepsResults;
     }
 

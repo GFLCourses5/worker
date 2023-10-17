@@ -32,8 +32,11 @@ public class ProxySourceQueueHandler {
     /**
      * Set a proxy into the queue.
      */
-    public void setNoProxy() {
-        queue.putProxy(proxyConfigHolder);
+    public void setNoProxy(Integer sizeScenariosList) {
+        while (sizeScenariosList > 0) {
+            queue.putProxy(proxyConfigHolder);
+            sizeScenariosList--;
+        }
     }
 
     /**

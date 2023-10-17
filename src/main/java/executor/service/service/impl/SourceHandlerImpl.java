@@ -40,11 +40,18 @@ public class SourceHandlerImpl implements SourceHandler {
     @Override
     public void execute(ScenarioRequest request) {
         List<Scenario> scenarios = request.scenarios();
+        setUserIdToScenario(request.userId(), scenarios);
         scenarioHandler.addAllScenarios(scenarios);
         if (request.proxyRequired()) {
             proxyHandler.addAllProxies(scenarios.size());
         } else {
-            proxyHandler.setNoProxy();
+            proxyHandler.setNoProxy(scenarios.size());
+        }
+    }
+
+    private void setUserIdToScenario(Integer userId, List<Scenario> scenarios) {
+        for (Scenario scenario : scenarios) {
+            scenario.setUserId(userId);
         }
     }
 }

@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public class Scenario {
 
+    private Integer userId;
     @NotBlank(message = "scenario name must not be null or empty")
     private String name;
     @NotBlank(message = "scenario site must not be null or empty")
@@ -21,6 +22,14 @@ public class Scenario {
         this.name = name;
         this.site = site;
         this.steps = steps;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -51,13 +60,14 @@ public class Scenario {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Scenario that = (Scenario) o;
-        return Objects.equals(name, that.name) && Objects.equals(site, that.site) && Objects.equals(steps, that.steps);
+        Scenario scenario = (Scenario) o;
+        return Objects.equals(userId, scenario.userId) && Objects.equals(name, scenario.name)
+                && Objects.equals(site, scenario.site) && Objects.equals(steps, scenario.steps);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, site, steps);
+        return Objects.hash(userId, name, site, steps);
     }
 
     @Override

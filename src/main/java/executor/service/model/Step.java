@@ -1,13 +1,23 @@
 package executor.service.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
+@Entity
+@Table(name = "steps")
 public class Step {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
     @NotBlank(message = "step action must not be null or empty")
     private String action;
+
+    @Column(nullable = false)
     @NotBlank(message = "step value must not be null or empty")
     private String value;
 
@@ -51,8 +61,8 @@ public class Step {
     @Override
     public String toString() {
         return "Step{" +
-            "action='" + action + '\'' +
-            ", value='" + value + '\'' +
-            '}';
+                "action='" + action + '\'' +
+                ", value='" + value + '\'' +
+                '}';
     }
 }

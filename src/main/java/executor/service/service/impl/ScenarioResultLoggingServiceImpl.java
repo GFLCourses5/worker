@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
  * @see StepResultRepository
  * @see Scenario
  * @see Step
+ * @see ScenarioResultExceptions
  */
 @Service
 public class ScenarioResultLoggingServiceImpl implements ScenarioResultLoggingService {
@@ -35,16 +36,13 @@ public class ScenarioResultLoggingServiceImpl implements ScenarioResultLoggingSe
     private final ScenarioResultRepository scenarioResultRepository;
     private final StepResultRepository stepResultRepository;
     private final StepRepository stepRepository;
-    private final ScenarioResultLoggingService scenarioResultLoggingService;
 
     public ScenarioResultLoggingServiceImpl(ScenarioResultRepository scenarioResultRepository,
                                             StepResultRepository stepResultRepository,
-                                            StepRepository stepRepository,
-                                            ScenarioResultLoggingService scenarioResultLoggingService) {
+                                            StepRepository stepRepository) {
         this.scenarioResultRepository = scenarioResultRepository;
         this.stepResultRepository = stepResultRepository;
         this.stepRepository = stepRepository;
-        this.scenarioResultLoggingService = scenarioResultLoggingService;
     }
 
     @Override
@@ -123,8 +121,9 @@ public class ScenarioResultLoggingServiceImpl implements ScenarioResultLoggingSe
     @Override
     @Transactional
     public void deleteById(Integer scenarioId) {
-        if (!scenarioResultRepository.existsById(scenarioId))
-            throw ScenarioResultExceptions.scenarioNotFound(scenarioId);
+        ScenarioResult scenarioResult = scenarioResultRepository.findById(scenarioId)
+                .orElseThrow(() -> ScenarioResultExceptions.scenarioNotFound(scenarioId));
+        stepResultRepository.deleteAll(scenarioResult.getStepsResults());
         scenarioResultRepository.deleteById(scenarioId);
     }
 }
