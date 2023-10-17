@@ -8,4 +8,5 @@ import java.util.List;
 public interface ScenarioResultRepository extends JpaRepository<ScenarioResult, Integer> {
 
     List<ScenarioResult> findAllByUserId(Integer userId);
+
 }
