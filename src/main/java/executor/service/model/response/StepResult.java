@@ -1,5 +1,6 @@
 package executor.service.model.response;
 
+import executor.service.model.Step;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -12,17 +13,20 @@ public class StepResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private String action;
-
-    @Column(nullable = false)
-    private String value;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "step_id")
+    private Step step;
 
     @Column(name = "is_passed", nullable = false)
     private Boolean isPassed;
 
-    @Column(name = "scenario_id", nullable = false)
-    private Integer scenarioId;
+    public StepResult() {
+    }
+
+    public StepResult(Step step, Boolean isPassed) {
+        this.step = step;
+        this.isPassed = isPassed;
+    }
 
     public Integer getId() {
         return id;
@@ -32,20 +36,12 @@ public class StepResult {
         this.id = id;
     }
 
-    public String getAction() {
-        return action;
+    public Step getStep() {
+        return step;
     }
 
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
+    public void setStep(Step step) {
+        this.step = step;
     }
 
     public Boolean getIsPassed() {
@@ -56,27 +52,16 @@ public class StepResult {
         this.isPassed = isPassed;
     }
 
-    public Integer getScenarioId() {
-        return scenarioId;
-    }
-
-    public void setScenarioId(Integer scenarioId) {
-        this.scenarioId = scenarioId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StepResult that = (StepResult) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(action, that.action) &&
-                Objects.equals(value, that.value) &&
-                Objects.equals(isPassed, that.isPassed);
+        return Objects.equals(id, that.id) && Objects.equals(step, that.step) && Objects.equals(isPassed, that.isPassed);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, action, value, isPassed);
+        return Objects.hash(id, step, isPassed);
     }
 }
