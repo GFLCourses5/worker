@@ -26,11 +26,11 @@ public class SecurityConfig {
     }
 
     private void setWhiteList(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry request) {
+        AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizedUrl authorizedUrl = request.anyRequest();
         for (String ip : whiteList) {
-            request.anyRequest().access(
+            authorizedUrl.access(
                     (authentication, context) -> new AuthorizationDecision(
-                            getIpAddressMatcher(ip).matches(context.getRequest())
-                    ));
+                                getIpAddressMatcher(ip).matches(context.getRequest())));
         }
     }
 
