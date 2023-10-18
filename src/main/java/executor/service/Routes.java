@@ -18,4 +18,5 @@ public final class Routes {
 
     public static final String API_ROOT = "/api/v1";
     public static final String SCENARIOS = API_ROOT + "/scenarios";
+    public static final String EXECUTION = API_ROOT + "/execution";
 }

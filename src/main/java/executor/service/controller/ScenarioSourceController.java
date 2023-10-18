@@ -1,12 +1,9 @@
 package executor.service.controller;
 
-import executor.service.model.Scenario;
 import executor.service.model.request.ScenarioRequest;
 import executor.service.model.response.ScenarioResultResponse;
 import executor.service.service.ScenarioResultLoggingService;
 import executor.service.service.SourceHandler;
-import executor.service.service.impl.proxy.ProxySourceQueueHandler;
-import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,17 +15,16 @@ import java.util.List;
 import static executor.service.Routes.SCENARIOS;
 
 /**
- * The {@code ScenarioSourceController} class represents a RESTful controller for handling scenarios and proxy configurations.
- * It provides endpoints for adding scenarios and proxy configurations to the respective queues.
- * <p>
- * This controller is accessible via the base path defined by {@link ScenarioSourceController}.
+ * The {@code ScenarioSourceController} class
+ * represents a REST controller responsible for handling scenario-related requests and results.
  * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see ScenarioSourceQueueHandler
- * @see ProxySourceQueueHandler
- * @see Scenario
+ * @see SourceHandler
+ * @see ScenarioResultLoggingService
+ * @see ScenarioRequest
+ * @see ScenarioResultResponse
  */
 @RestController
 @RequestMapping(value = SCENARIOS)
@@ -71,6 +67,11 @@ public class ScenarioSourceController {
                 .body(scenarioResultLoggingService.getAllScenarioResultsByUserId(userId));
     }
 
+    /**
+     * Handles a DELETE request to delete a specific scenario result by its identifier.
+     *
+     * @param resultId The identifier of the scenario result to be deleted.
+     */
     @DeleteMapping(value = "/{resultId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteResultById(@PathVariable Integer resultId) {
