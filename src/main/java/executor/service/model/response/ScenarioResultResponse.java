@@ -1,7 +1,7 @@
 package executor.service.model.response;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
+import java.util.List;
 
 /**
  * A class representing a response for scenarios.
@@ -12,15 +12,19 @@ import java.util.Set;
 public record ScenarioResultResponse(Integer id,
                                      String name,
                                      String site,
-                                     Set<StepResult> stepsResults,
+                                     List<StepResultResponse> stepsResults,
                                      OffsetDateTime executedAt) {
 
     public static ScenarioResultResponse formScenarioResult(ScenarioResult result) {
+        var stepResultResponses = result.getStepsResults().stream()
+                .map(StepResultResponse::fromStepResult)
+                .toList();
+
         return new ScenarioResultResponse(
                 result.getId(),
                 result.getName(),
                 result.getSite(),
-                result.getStepsResults(),
+                stepResultResponses,
                 result.getExecutedAt()
         );
     }
