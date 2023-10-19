@@ -10,6 +10,8 @@ import executor.service.repository.ScenarioResultRepository;
 import executor.service.repository.StepRepository;
 import executor.service.repository.StepResultRepository;
 import executor.service.service.ScenarioResultLoggingService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,16 +101,14 @@ public class ScenarioResultLoggingServiceImpl implements ScenarioResultLoggingSe
 
     @Override
     @Transactional(readOnly = true)
-    public List<ScenarioResultResponse> getAllScenarioResultsByUserId(Integer userId) {
-        List<ScenarioResult> scenarioResults = scenarioResultRepository.findAllByUserId(userId);
-        List<ScenarioResult> sortedScenarioResults = sorted(scenarioResults);
+    public Page<ScenarioResultResponse> getAllScenarioResultsByUserId(Integer userId, Pageable pageable) {
+        Page<ScenarioResult> scenarioResults = scenarioResultRepository.findAllByUserId(userId, pageable);
+        Page<ScenarioResult> sortedScenarioResults = sorted(scenarioResults);
         return sortedScenarioResults
-                .stream()
-                .map(ScenarioResultResponse::formScenarioResult)
-                .toList();
+                .map(ScenarioResultResponse::formScenarioResult);
     }
 
-    private List<ScenarioResult> sorted(List<ScenarioResult> scenarioResults) {
+    private Page<ScenarioResult> sorted(Page<ScenarioResult> scenarioResults) {
         for (ScenarioResult scenarioResult : scenarioResults) {
             Set<StepResult> collect = scenarioResult.getStepsResults().stream()
                     .sorted(Comparator.comparing(StepResult::getId))

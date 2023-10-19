@@ -5,12 +5,11 @@ import executor.service.model.response.ScenarioResultResponse;
 import executor.service.service.ScenarioResultLoggingService;
 import executor.service.service.SourceHandler;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static executor.service.Routes.SCENARIOS;
 
@@ -25,6 +24,8 @@ import static executor.service.Routes.SCENARIOS;
  * @see ScenarioResultLoggingService
  * @see ScenarioRequest
  * @see ScenarioResultResponse
+ * @see Page
+ * @see Pageable
  */
 @RestController
 @RequestMapping(value = SCENARIOS)
@@ -62,9 +63,8 @@ public class ScenarioSourceController {
             value = "/{userId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<List<ScenarioResultResponse>> getScenariosResult(@PathVariable Integer userId) {
-        return ResponseEntity.ok()
-                .body(scenarioResultLoggingService.getAllScenarioResultsByUserId(userId));
+    public Page<ScenarioResultResponse> getScenariosResult(@PathVariable Integer userId, Pageable pageable) {
+        return scenarioResultLoggingService.getAllScenarioResultsByUserId(userId, pageable);
     }
 
     /**
