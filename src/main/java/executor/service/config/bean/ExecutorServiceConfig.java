@@ -1,8 +1,5 @@
 package executor.service.config.bean;
 
-import executor.service.model.ProxyConfigHolder;
-import executor.service.model.ProxyCredentials;
-import executor.service.model.ProxyNetworkConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,22 +10,19 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Configuration class responsible for defining and configuring Spring beans.
+ * Configuration class responsible for defining and configuring the thread pool executor bean.
  * <p>
- * This class contains methods annotated with {@code @Bean}, which define and configure
- * beans that can be managed by the Spring IoC container.
+ * This class contains a method annotated with {@code @Bean} that defines and configures
+ * a bean for an {@link ExecutorService} based on the specified properties, including core
+ * pool size, maximum pool size, and keep-alive time.
  * <p>
- * The {@code threadPoolExecutor} bean creates an {@link ExecutorService} based on the
- * specified properties, including core pool size, maximum pool size, and keep-alive time.
- * <p>
- * The {@code proxyConfigHolder} bean creates and configures a {@link ProxyConfigHolder} bean,
- * which is composed of a {@link ProxyNetworkConfig} and {@link ProxyCredentials}.
  *
  * @author Dima Silenko, Oleksandr Tuleninov
  * @version 01
+ * @see ThreadPoolExecutor
  */
 @Configuration
-public class BeanConfiguration {
+public class ExecutorServiceConfig {
 
     /**
      * Create a bean of type {@link ExecutorService} using the specified properties.
@@ -48,16 +42,5 @@ public class BeanConfiguration {
                 keepAliveTime,
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>());
-    }
-
-    /**
-     * Create and configure a bean of type {@link ProxyConfigHolder}.
-     *
-     * @return A {@link ProxyConfigHolder} bean configured with a {@link ProxyNetworkConfig}
-     * and {@link ProxyCredentials}.
-     */
-    @Bean
-    public ProxyConfigHolder proxyConfigHolder() {
-        return new ProxyConfigHolder(new ProxyNetworkConfig(), new ProxyCredentials());
     }
 }
