@@ -1,6 +1,5 @@
 package executor.service.model.request;
 
-import executor.service.model.Scenario;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +14,7 @@ import java.util.List;
  * @version 01
  * @see Scenario
  */
-public record ScenarioRequest(
+public record ScenariosRequest(
 
         @Valid
         List<Scenario> scenarios,

@@ -1,7 +1,6 @@
 package executor.service.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
@@ -14,11 +13,9 @@ public class Step {
     private Integer id;
 
     @Column(nullable = false)
-    @NotBlank(message = "step action must not be null or empty")
     private String action;
 
     @Column(nullable = false)
-    @NotBlank(message = "step value must not be null or empty")
     private String value;
 
     public Step() {

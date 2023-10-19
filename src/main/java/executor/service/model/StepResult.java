@@ -1,6 +1,5 @@
-package executor.service.model.response;
+package executor.service.model;
 
-import executor.service.model.Step;
 import jakarta.persistence.*;
 
 import java.util.Objects;

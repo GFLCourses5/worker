@@ -1,6 +1,6 @@
 package executor.service.controller;
 
-import executor.service.model.request.ScenarioRequest;
+import executor.service.model.request.ScenariosRequest;
 import executor.service.model.response.ScenarioResultResponse;
 import executor.service.service.ScenarioResultLoggingService;
 import executor.service.service.SourceHandler;
@@ -22,7 +22,7 @@ import static executor.service.Routes.SCENARIOS;
  * @version 01
  * @see SourceHandler
  * @see ScenarioResultLoggingService
- * @see ScenarioRequest
+ * @see ScenariosRequest
  * @see ScenarioResultResponse
  * @see Page
  * @see Pageable
@@ -49,7 +49,7 @@ public class ScenarioSourceController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseStatus(HttpStatus.OK)
-    public void receiveScenarios(@RequestBody @Valid ScenarioRequest request) {
+    public void receiveScenarios(@RequestBody @Valid ScenariosRequest request) {
         handler.execute(request);
     }
 

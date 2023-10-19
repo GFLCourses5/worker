@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * @author Alexander Antonenko
  * @version 01
  */
-class StepExecutionExceptionTest {
+class StepRequestExecutionExceptionTest {
 
     private static final String TEST_MESSAGE = "Test message";
     private static final Throwable TEST_CAUSE = new IllegalArgumentException("Cause exception");

@@ -1,9 +1,8 @@
 package executor.service.service.impl;
 
 import executor.service.exceptions.StepExecutionException;
-import executor.service.model.Scenario;
-import executor.service.model.Step;
-import executor.service.model.response.ScenarioResultResponse;
+import executor.service.model.request.StepRequest;
+import executor.service.model.request.Scenario;
 import executor.service.service.*;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.NoSuchElementException;
@@ -27,7 +26,7 @@ import java.util.Map;
  * @see ScenarioResultLoggingService
  * @see Scenario
  * @see WebDriver
- * @see Step
+ * @see StepRequest
  * @see NoSuchElementException
  * @see StepExecutionException
  * @see ElementClickInterceptedException
@@ -55,34 +54,34 @@ public class ScenarioExecutorImpl implements ScenarioExecutor {
     @Override
     public void execute(Scenario scenario, WebDriver webDriver) {
         log.info("Execution of scenario: " + scenario.getName() + " is started");
-        Map<Step, Boolean> stepResults = new HashMap<>();
+        Map<StepRequest, Boolean> stepResults = new HashMap<>();
 
         webDriver.get(scenario.getSite());
 
-        for (Step step : scenario.getSteps()) {
+        for (StepRequest stepRequest : scenario.getSteps()) {
             try {
-                String action = step.getAction();
+                String action = stepRequest.action();
                 switch (action) {
                     case "clickCss" -> {
-                        stepExecutionClickCss.step(webDriver, step);
-                        stepResults.put(step, true);
+                        stepExecutionClickCss.step(webDriver, stepRequest);
+                        stepResults.put(stepRequest, true);
                     }
                     case "sleep" -> {
-                        stepExecutionSleep.step(webDriver, step);
-                        stepResults.put(step, true);
+                        stepExecutionSleep.step(webDriver, stepRequest);
+                        stepResults.put(stepRequest, true);
                     }
                     case "clickXpath" -> {
-                        stepExecutionClickXpath.step(webDriver, step);
-                        stepResults.put(step, true);
+                        stepExecutionClickXpath.step(webDriver, stepRequest);
+                        stepResults.put(stepRequest, true);
                     }
                     default -> {
                         log.error("Invalid step action: " + action);
-                        stepResults.put(step, true);
+                        stepResults.put(stepRequest, true);
                     }
                 }
             } catch (NoSuchElementException | StepExecutionException | ElementClickInterceptedException e) {
-                log.error("Scenario: " + scenario.getName() + " - step failed: " + step);
-                stepResults.put(step, false);
+                log.error("Scenario: " + scenario.getName() + " - step failed: " + stepRequest);
+                stepResults.put(stepRequest, false);
             }
         }
 

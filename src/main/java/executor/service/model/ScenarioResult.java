@@ -1,4 +1,4 @@
-package executor.service.model.response;
+package executor.service.model;
 
 import jakarta.persistence.*;
 

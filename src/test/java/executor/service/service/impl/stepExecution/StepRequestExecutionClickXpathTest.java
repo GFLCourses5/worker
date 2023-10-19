@@ -1,6 +1,6 @@
 package executor.service.service.impl.stepExecution;
 
-import executor.service.model.Step;
+import executor.service.model.request.StepRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
  * @author Dima Silenko
  * @version 01
  */
-public class StepExecutionClickXpathTest {
+public class StepRequestExecutionClickXpathTest {
 
     private StepExecutionClickXpathImpl clickXpath;
 
@@ -36,12 +36,12 @@ public class StepExecutionClickXpathTest {
     @Test
     public void testStep_ClicksElementWhenFound() {
         WebDriver webDriver = mock(WebDriver.class);
-        Step step = new Step("clickXpath", "xpath_expression");
+        StepRequest stepRequest = new StepRequest("clickXpath", "xpath_expression");
         WebElement mockElement = mock(WebElement.class);
 
-        when(webDriver.findElement(By.xpath(step.getValue()))).thenReturn(mockElement);
+        when(webDriver.findElement(By.xpath(stepRequest.value()))).thenReturn(mockElement);
 
-        clickXpath.step(webDriver, step);
+        clickXpath.step(webDriver, stepRequest);
         verify(mockElement, times(1)).click();
     }
 }

@@ -1,6 +1,6 @@
 package executor.service.exceptions;
 
-import executor.service.model.response.ScenarioResult;
+import executor.service.model.ScenarioResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 

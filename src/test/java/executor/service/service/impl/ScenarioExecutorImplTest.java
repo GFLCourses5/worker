@@ -1,18 +1,6 @@
 package executor.service.service.impl;
 
-import executor.service.model.Scenario;
-import executor.service.model.Step;
-import executor.service.service.ScenarioExecutor;
-import executor.service.service.StepExecutionClickCss;
-import executor.service.service.StepExecutionClickXpath;
-import executor.service.service.StepExecutionSleep;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-
-import java.util.Arrays;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 /**
  * Test class for testing the functionality of the {@code ScenarioExecutorImpl} class is an

@@ -1,6 +1,6 @@
 package executor.service.service.impl.scenario;
 
-import executor.service.model.Scenario;
+import executor.service.model.request.Scenario;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

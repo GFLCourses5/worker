@@ -1,4 +1,4 @@
-package executor.service.model;
+package executor.service.model.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -13,15 +13,15 @@ public class Scenario {
     private String name;
     @NotBlank(message = "scenario site must not be null or empty")
     private String site;
-    private @Valid List<Step> steps;
+    private @Valid List<StepRequest> stepRequests;
 
     public Scenario() {
     }
 
-    public Scenario(String name, String site, List<Step> steps) {
+    public Scenario(String name, String site, List<StepRequest> stepRequests) {
         this.name = name;
         this.site = site;
-        this.steps = steps;
+        this.stepRequests = stepRequests;
     }
 
     public Integer getUserId() {
@@ -48,12 +48,12 @@ public class Scenario {
         this.site = site;
     }
 
-    public List<Step> getSteps() {
-        return steps;
+    public List<StepRequest> getSteps() {
+        return stepRequests;
     }
 
-    public void setSteps(List<Step> steps) {
-        this.steps = steps;
+    public void setSteps(List<StepRequest> stepRequests) {
+        this.stepRequests = stepRequests;
     }
 
     @Override
@@ -62,12 +62,12 @@ public class Scenario {
         if (o == null || getClass() != o.getClass()) return false;
         Scenario scenario = (Scenario) o;
         return Objects.equals(userId, scenario.userId) && Objects.equals(name, scenario.name)
-                && Objects.equals(site, scenario.site) && Objects.equals(steps, scenario.steps);
+                && Objects.equals(site, scenario.site) && Objects.equals(stepRequests, scenario.stepRequests);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, name, site, steps);
+        return Objects.hash(userId, name, site, stepRequests);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class Scenario {
         return "Scenario{" +
                 "name='" + name + '\'' +
                 ", site='" + site + '\'' +
-                ", steps=" + steps +
+                ", steps=" + stepRequests +
                 '}';
     }
 }

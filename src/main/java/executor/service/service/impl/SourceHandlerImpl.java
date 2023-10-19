@@ -1,7 +1,7 @@
 package executor.service.service.impl;
 
-import executor.service.model.Scenario;
-import executor.service.model.request.ScenarioRequest;
+import executor.service.model.request.Scenario;
+import executor.service.model.request.ScenariosRequest;
 import executor.service.service.SourceHandler;
 import executor.service.service.impl.proxy.ProxySourceQueueHandler;
 import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
@@ -38,7 +38,7 @@ public class SourceHandlerImpl implements SourceHandler {
      * @param request The scenario request to be processed.
      */
     @Override
-    public void execute(ScenarioRequest request) {
+    public void execute(ScenariosRequest request) {
         List<Scenario> scenarios = request.scenarios();
         setUserIdToScenario(request.userId(), scenarios);
         scenarioHandler.addAllScenarios(scenarios);

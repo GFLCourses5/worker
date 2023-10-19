@@ -1,6 +1,6 @@
 package executor.service.service.impl.stepExecution;
 
-import executor.service.model.Step;
+import executor.service.model.request.StepRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
  *  @author Alexander Antonenko
  *  @version 01
  * */
-class StepExecutionClickCssImplTest {
+class StepRequestExecutionClickCssImplTest {
 
     private StepExecutionClickCssImpl clickCss;
 
@@ -42,10 +42,10 @@ class StepExecutionClickCssImplTest {
     @Test
     public void testStepClickElementWhenFound() {
         WebDriver webDriver = mock(WebDriver.class);
-        Step step = new Step("clickCss", "css_expression");
+        StepRequest stepRequest = new StepRequest("clickCss", "css_expression");
         WebElement webElement = mock(WebElement.class);
-        when(webDriver.findElement(By.cssSelector(step.getValue()))).thenReturn(webElement);
-        clickCss.step(webDriver, step);
+        when(webDriver.findElement(By.cssSelector(stepRequest.value()))).thenReturn(webElement);
+        clickCss.step(webDriver, stepRequest);
         verify(webElement, times(1)).click();
     }
 }

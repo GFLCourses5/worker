@@ -1,11 +1,12 @@
 package executor.service.service.impl;
 
 import executor.service.exceptions.ScenarioResultExceptions;
-import executor.service.model.Scenario;
+import executor.service.model.ScenarioResult;
 import executor.service.model.Step;
-import executor.service.model.response.ScenarioResult;
+import executor.service.model.StepResult;
+import executor.service.model.request.Scenario;
+import executor.service.model.request.StepRequest;
 import executor.service.model.response.ScenarioResultResponse;
-import executor.service.model.response.StepResult;
 import executor.service.repository.ScenarioResultRepository;
 import executor.service.repository.StepRepository;
 import executor.service.repository.StepResultRepository;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  * @see ScenarioResultRepository
  * @see StepResultRepository
  * @see Scenario
- * @see Step
+ * @see StepRequest
  * @see ScenarioResultExceptions
  */
 @Service
@@ -49,15 +50,15 @@ public class ScenarioResultLoggingServiceImpl implements ScenarioResultLoggingSe
 
     @Override
     @Transactional
-    public void create(Scenario scenario, Map<Step, Boolean> stepResults) {
+    public void create(Scenario scenario, Map<StepRequest, Boolean> stepResults) {
         saveScenarioResult(scenario, stepResults);
     }
 
-    private void saveScenarioResult(Scenario scenario, Map<Step, Boolean> stepResults) {
+    private void saveScenarioResult(Scenario scenario, Map<StepRequest, Boolean> stepResults) {
         scenarioResultRepository.save(createScenarioResult(scenario, stepResults));
     }
 
-    private ScenarioResult createScenarioResult(Scenario scenario, Map<Step, Boolean> stepResults) {
+    private ScenarioResult createScenarioResult(Scenario scenario, Map<StepRequest, Boolean> stepResults) {
         return new ScenarioResult(
                 scenario.getUserId(),
                 scenario.getName(),
@@ -67,36 +68,44 @@ public class ScenarioResultLoggingServiceImpl implements ScenarioResultLoggingSe
         );
     }
 
-    private Set<StepResult> getStepResults(Scenario scenario, Map<Step, Boolean> stepResults) {
-        List<Step> steps = scenario.getSteps();
+    private Set<StepResult> getStepResults(Scenario scenario, Map<StepRequest, Boolean> stepResults) {
+        List<StepRequest> stepRequests = scenario.getSteps();
         Set<StepResult> listStepResults = new LinkedHashSet<>();
-        for (Step step : steps) {
-            Boolean resultFromStep = stepResults.get(step);
-            StepResult stepResult = saveStepResult(step, resultFromStep);
+        for (StepRequest stepRequest : stepRequests) {
+            Boolean resultFromStep = stepResults.get(stepRequest);
+            StepResult stepResult = saveStepResult(stepRequest, resultFromStep);
             listStepResults.add(stepResult);
         }
         return listStepResults;
     }
 
-    private StepResult saveStepResult(Step step, Boolean resultFromStep) {
-        StepResult stepResult = createStepResult(step, resultFromStep);
+    private StepResult saveStepResult(StepRequest stepRequest, Boolean resultFromStep) {
+        StepResult stepResult = createStepResult(stepRequest, resultFromStep);
         stepResultRepository.save(stepResult);
         return stepResult;
     }
 
-    private StepResult createStepResult(Step step, Boolean resultFromStep) {
-        Step savedStep = saveStep(step);
+    private StepResult createStepResult(StepRequest stepRequest, Boolean resultFromStep) {
+        Step savedStep = saveStepEntity(stepRequest);
         return new StepResult(
                 savedStep,
                 resultFromStep
         );
     }
 
-    private Step saveStep(Step step) {
-        String action = step.getAction();
-        String value = step.getValue();
+    private Step saveStepEntity(StepRequest stepRequest) {
+        String action = stepRequest.action();
+        String value = stepRequest.value();
         Optional<Step> stepByActionAndValue = stepRepository.findStepByActionAndValue(action, value);
+        Step step = getStepEntity(stepRequest);
         return stepByActionAndValue.orElseGet(() -> stepRepository.save(step));
+    }
+
+    private Step getStepEntity(StepRequest stepRequest) {
+        return new Step(
+                stepRequest.action(),
+                stepRequest.value()
+        );
     }
 
     @Override

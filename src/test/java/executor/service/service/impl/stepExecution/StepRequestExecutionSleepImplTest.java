@@ -1,6 +1,6 @@
 package executor.service.service.impl.stepExecution;
 
-import executor.service.model.Step;
+import executor.service.model.request.StepRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
  * @author Alexander Antonenko
  * @version 01
  */
-class StepExecutionSleepImplTest {
+class StepRequestExecutionSleepImplTest {
 
     private static final long EXPECTED_DURATION = 3000;
     private static final long MAX_ALLOWABLE_DELAY = 100;
@@ -44,11 +44,11 @@ class StepExecutionSleepImplTest {
     @Test
     public void testStepSleepForSpecifiedDuration() {
         WebDriver webDriver = mock(WebDriver.class);
-        Step step = new Step("sleep", "3");
+        StepRequest stepRequest = new StepRequest("sleep", "3");
 
         assertTimeout(Duration.ofMillis(EXPECTED_DURATION + MAX_ALLOWABLE_DELAY), () -> {
             long startTime = System.currentTimeMillis();
-            stepExecutionSleep.step(webDriver, step);
+            stepExecutionSleep.step(webDriver, stepRequest);
             long endTime = System.currentTimeMillis();
             long elapsedTime = endTime - startTime;
 
@@ -59,8 +59,8 @@ class StepExecutionSleepImplTest {
     @Test
     public void testStepWithInvalidSleepValue() {
         WebDriver webDriver = mock(WebDriver.class);
-        Step step = new Step("sleep", "invalid_value");
+        StepRequest stepRequest = new StepRequest("sleep", "invalid_value");
 
-        assertThrows(NumberFormatException.class, () -> stepExecutionSleep.step(webDriver, step));
+        assertThrows(NumberFormatException.class, () -> stepExecutionSleep.step(webDriver, stepRequest));
     }
 }

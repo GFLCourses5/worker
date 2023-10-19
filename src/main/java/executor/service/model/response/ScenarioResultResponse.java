@@ -1,5 +1,7 @@
 package executor.service.model.response;
 
+import executor.service.model.ScenarioResult;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 

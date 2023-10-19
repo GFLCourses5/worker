@@ -1,9 +1,9 @@
 package executor.service.service;
 
-import executor.service.model.request.ScenarioRequest;
+import executor.service.model.request.ScenariosRequest;
 
 public interface SourceHandler {
 
-    void execute(ScenarioRequest request);
+    void execute(ScenariosRequest request);
 
 }

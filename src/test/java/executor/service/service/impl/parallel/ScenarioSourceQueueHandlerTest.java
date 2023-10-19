@@ -1,6 +1,6 @@
 package executor.service.service.impl.parallel;
 
-import executor.service.model.Scenario;
+import executor.service.model.request.Scenario;
 import executor.service.service.impl.scenario.ScenarioSourceQueue;
 import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
 import org.junit.jupiter.api.BeforeEach;
