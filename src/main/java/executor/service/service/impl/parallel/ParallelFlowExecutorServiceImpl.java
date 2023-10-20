@@ -8,6 +8,7 @@ import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The {@code ParallelFlowExecutorServiceImpl} class implements the {@link ParallelFlowExecutorService} interface
@@ -64,5 +65,23 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     public void shutdown() {
         FLAG = false;
         threadPoolExecutor.shutdown();
+        exit();
+    }
+
+    private void exit() {
+        boolean b = false;
+        while (!b) {
+            try {
+                long timeout = 1;
+                b = threadPoolExecutor.awaitTermination(timeout, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        if (threadPoolExecutor.isTerminated()) {
+            int exitStatus = 0;
+            System.exit(exitStatus);
+        }
     }
 }
