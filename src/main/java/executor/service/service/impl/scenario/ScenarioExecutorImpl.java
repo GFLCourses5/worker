@@ -1,4 +1,4 @@
-package executor.service.service.impl;
+package executor.service.service.impl.scenario;
 
 import executor.service.exceptions.StepExecutionException;
 import executor.service.model.request.StepRequest;
@@ -23,7 +23,7 @@ import java.util.Map;
  * @see StepExecutionClickCss
  * @see StepExecutionSleep
  * @see StepExecutionClickXpath
- * @see ScenarioResultLoggingService
+ * @see ScenarioResultService
  * @see Scenario
  * @see WebDriver
  * @see StepRequest
@@ -39,16 +39,16 @@ public class ScenarioExecutorImpl implements ScenarioExecutor {
     private final StepExecutionClickCss stepExecutionClickCss;
     private final StepExecutionSleep stepExecutionSleep;
     private final StepExecutionClickXpath stepExecutionClickXpath;
-    private final ScenarioResultLoggingService scenarioResultLoggingService;
+    private final ScenarioResultService scenarioResultService;
 
     public ScenarioExecutorImpl(StepExecutionClickCss stepExecutionClickCss,
                                 StepExecutionSleep stepExecutionSleep,
                                 StepExecutionClickXpath stepExecutionClickXpath,
-                                ScenarioResultLoggingService scenarioResultLoggingService) {
+                                ScenarioResultService scenarioResultService) {
         this.stepExecutionClickCss = stepExecutionClickCss;
         this.stepExecutionSleep = stepExecutionSleep;
         this.stepExecutionClickXpath = stepExecutionClickXpath;
-        this.scenarioResultLoggingService = scenarioResultLoggingService;
+        this.scenarioResultService = scenarioResultService;
     }
 
     @Override
@@ -88,6 +88,6 @@ public class ScenarioExecutorImpl implements ScenarioExecutor {
         webDriver.close();
 
         log.info("Execution of scenario: " + scenario.getName() + " is finished");
-        scenarioResultLoggingService.create(scenario, stepResults);
+        scenarioResultService.create(scenario, stepResults);
     }
 }

@@ -1,4 +1,4 @@
-package executor.service.service.impl.parallel;
+package executor.service.service.impl.scenario;
 
 import executor.service.model.request.Scenario;
 import executor.service.service.impl.scenario.ScenarioSourceQueue;

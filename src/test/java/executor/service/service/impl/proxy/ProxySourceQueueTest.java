@@ -1,4 +1,4 @@
-package executor.service.service.impl.parallel;
+package executor.service.service.impl.proxy;
 
 import executor.service.model.ProxyConfigHolder;
 import executor.service.service.impl.proxy.ProxySourceQueue;

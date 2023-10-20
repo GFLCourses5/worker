@@ -2,8 +2,7 @@ package executor.service.controller;
 
 import executor.service.model.request.ScenariosRequest;
 import executor.service.model.response.ScenarioResultResponse;
-import executor.service.service.ScenarioResultLoggingService;
-import executor.service.service.SourceHandler;
+import executor.service.service.ScenarioOperations;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,12 +15,13 @@ import static executor.service.Routes.SCENARIOS;
 /**
  * The {@code ScenarioSourceController} class
  * represents a REST controller responsible for handling scenario-related requests and results.
+ * This controller provides endpoints to process scenario requests, retrieve scenario results for
+ * specific users, and delete specific scenario results by their identifier.
  * <p>
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see SourceHandler
- * @see ScenarioResultLoggingService
+ * @see ScenarioOperations
  * @see ScenariosRequest
  * @see ScenarioResultResponse
  * @see Page
@@ -31,13 +31,10 @@ import static executor.service.Routes.SCENARIOS;
 @RequestMapping(value = SCENARIOS)
 public class ScenarioSourceController {
 
-    private final SourceHandler handler;
-    private final ScenarioResultLoggingService scenarioResultLoggingService;
+    private final ScenarioOperations scenarioOperations;
 
-    public ScenarioSourceController(SourceHandler handler,
-                                    ScenarioResultLoggingService scenarioResultService) {
-        this.handler = handler;
-        this.scenarioResultLoggingService = scenarioResultService;
+    public ScenarioSourceController(ScenarioOperations scenarioOperations) {
+        this.scenarioOperations = scenarioOperations;
     }
 
     /**
@@ -50,7 +47,7 @@ public class ScenarioSourceController {
     )
     @ResponseStatus(HttpStatus.OK)
     public void receiveScenarios(@RequestBody @Valid ScenariosRequest request) {
-        handler.execute(request);
+        scenarioOperations.execute(request);
     }
 
     /**
@@ -64,7 +61,7 @@ public class ScenarioSourceController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Page<ScenarioResultResponse> getScenariosResult(@PathVariable Integer userId, Pageable pageable) {
-        return scenarioResultLoggingService.getAllScenarioResultsByUserId(userId, pageable);
+        return scenarioOperations.getAllScenarioResultsByUserId(userId, pageable);
     }
 
     /**
@@ -75,6 +72,6 @@ public class ScenarioSourceController {
     @DeleteMapping(value = "/{resultId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteResultById(@PathVariable Integer resultId) {
-        scenarioResultLoggingService.deleteById(resultId);
+        scenarioOperations.deleteById(resultId);
     }
 }

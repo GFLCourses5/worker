@@ -1,4 +1,4 @@
-package executor.service.service.impl;
+package executor.service.service.impl.scenario;
 
 import executor.service.exceptions.ScenarioResultExceptions;
 import executor.service.model.ScenarioResult;
@@ -10,7 +10,7 @@ import executor.service.model.response.ScenarioResultResponse;
 import executor.service.repository.ScenarioResultRepository;
 import executor.service.repository.StepRepository;
 import executor.service.repository.StepResultRepository;
-import executor.service.service.ScenarioResultLoggingService;
+import executor.service.service.ScenarioResultService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * The {@code ScenarioResultLoggingServiceImpl} class implements the {@link ScenarioResultLoggingService} interface and
+ * The {@code ScenarioResultLoggingServiceImpl} class implements the {@link ScenarioResultService} interface and
  * working with scenario results ({@link ScenarioResult}) and step results ({@link StepResult}).
  * <p>
  *
@@ -34,15 +34,15 @@ import java.util.stream.Collectors;
  * @see ScenarioResultExceptions
  */
 @Service
-public class ScenarioResultLoggingServiceImpl implements ScenarioResultLoggingService {
+public class ScenarioResultServiceImpl implements ScenarioResultService {
 
     private final ScenarioResultRepository scenarioResultRepository;
     private final StepResultRepository stepResultRepository;
     private final StepRepository stepRepository;
 
-    public ScenarioResultLoggingServiceImpl(ScenarioResultRepository scenarioResultRepository,
-                                            StepResultRepository stepResultRepository,
-                                            StepRepository stepRepository) {
+    public ScenarioResultServiceImpl(ScenarioResultRepository scenarioResultRepository,
+                                     StepResultRepository stepResultRepository,
+                                     StepRepository stepRepository) {
         this.scenarioResultRepository = scenarioResultRepository;
         this.stepResultRepository = stepResultRepository;
         this.stepRepository = stepRepository;
