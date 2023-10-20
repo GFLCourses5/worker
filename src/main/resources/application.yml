@@ -30,3 +30,6 @@ pool:
 validator:
   targetUrl: https://www.google.com
   connectionTimeout: 10000
+
+proxiesCache:
+  size: 5
