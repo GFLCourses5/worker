@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static executor.service.Routes.SCENARIOS;
 
 /**
@@ -57,11 +59,25 @@ public class ScenarioSourceController {
      * @return A response entity with a list of scenario result responses.
      */
     @GetMapping(
-            value = "/{userId}",
+            value = "/{userId}/page",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Page<ScenarioResultResponse> getScenariosResult(@PathVariable Integer userId, Pageable pageable) {
         return scenarioOperations.getAllScenarioResultsByUserId(userId, pageable);
+    }
+
+    /**
+     * Handles a GET request to retrieve scenario results for a specific user.
+     *
+     * @param userId The identifier of the user for whom scenario results are requested.
+     * @return A response entity with a list of scenario result responses.
+     */
+    @GetMapping(
+            value = "/{userId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public List<ScenarioResultResponse> getScenariosResult(@PathVariable Integer userId) {
+        return scenarioOperations.getAllScenarioResultsByUserId(userId);
     }
 
     /**

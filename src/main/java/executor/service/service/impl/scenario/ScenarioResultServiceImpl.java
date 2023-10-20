@@ -128,6 +128,27 @@ public class ScenarioResultServiceImpl implements ScenarioResultService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<ScenarioResultResponse> getAllScenarioResultsByUserId(Integer userId) {
+        List<ScenarioResult> scenarioResults = scenarioResultRepository.findAllByUserId(userId);
+        List<ScenarioResult> sortedScenarioResults = sorted(scenarioResults);
+        return sortedScenarioResults
+                .stream()
+                .map(ScenarioResultResponse::formScenarioResult)
+                .toList();
+    }
+
+    private List<ScenarioResult> sorted(List<ScenarioResult> scenarioResults) {
+        for (ScenarioResult scenarioResult : scenarioResults) {
+            Set<StepResult> collect = scenarioResult.getStepsResults().stream()
+                    .sorted(Comparator.comparing(StepResult::getId))
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
+            scenarioResult.setStepsResults(collect);
+        }
+        return scenarioResults;
+    }
+
+    @Override
     @Transactional
     public void deleteById(Integer scenarioId) {
         ScenarioResult scenarioResult = scenarioResultRepository.findById(scenarioId)
@@ -135,4 +156,6 @@ public class ScenarioResultServiceImpl implements ScenarioResultService {
         stepResultRepository.deleteAll(scenarioResult.getStepsResults());
         scenarioResultRepository.deleteById(scenarioId);
     }
+
+
 }

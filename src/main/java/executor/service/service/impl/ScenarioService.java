@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * The {@code ScenarioService} class is a service responsible for executing and managing scenarios.
  * <p>
@@ -57,6 +59,17 @@ public class ScenarioService implements ScenarioOperations {
     @Override
     public Page<ScenarioResultResponse> getAllScenarioResultsByUserId(Integer userId, Pageable pageable) {
         return scenarioResultService.getAllScenarioResultsByUserId(userId, pageable);
+    }
+
+    /**
+     * Retrieves a page of scenario results for a specific user.
+     *
+     * @param userId The identifier of the user for whom scenario results are requested.
+     * @return A page of scenario result responses.
+     */
+    @Override
+    public List<ScenarioResultResponse> getAllScenarioResultsByUserId(Integer userId) {
+        return scenarioResultService.getAllScenarioResultsByUserId(userId);
     }
 
     /**
