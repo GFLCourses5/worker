@@ -151,11 +151,44 @@ public class ScenarioResultServiceImpl implements ScenarioResultService {
     @Override
     @Transactional
     public void deleteById(Integer scenarioId) {
-        ScenarioResult scenarioResult = scenarioResultRepository.findById(scenarioId)
-                .orElseThrow(() -> ScenarioResultExceptions.scenarioNotFound(scenarioId));
-        stepResultRepository.deleteAll(scenarioResult.getStepsResults());
+        Set<StepResult> stepResults = deleteStepResults(scenarioId);
+        deleteSteps(stepResults);
         scenarioResultRepository.deleteById(scenarioId);
     }
 
+    private Set<StepResult> deleteStepResults(Integer scenarioId) {
+        Set<StepResult> stepResults = getStepResults(scenarioId);
+        stepResultRepository.deleteAll(stepResults);
+        return stepResults;
+    }
 
+    private Set<StepResult> getStepResults(Integer scenarioId) {
+        return getScenarioResult(scenarioId).getStepsResults();
+    }
+
+    private ScenarioResult getScenarioResult(Integer scenarioId) {
+        return scenarioResultRepository.findById(scenarioId)
+                .orElseThrow(() -> ScenarioResultExceptions.scenarioNotFound(scenarioId));
+    }
+
+    private void deleteSteps(Set<StepResult> stepResults) {
+        stepRepository.deleteAll(getStepsForDelete(stepResults));
+    }
+
+    private List<Step> getStepsForDelete(Set<StepResult> stepResults) {
+        List<Step> stepsForDelete = new ArrayList<>();
+
+        Set<Step> steps = stepResults.stream()
+                .map(StepResult::getStep)
+                .collect(Collectors.toSet());
+
+        List<StepResult> stepResultsByStep;
+        for (Step step : steps) {
+            stepResultsByStep = stepResultRepository.findAllByStep(step);
+            if (stepResultsByStep.size() == 0) {
+                stepsForDelete.add(step);
+            }
+        }
+        return stepsForDelete;
+    }
 }
