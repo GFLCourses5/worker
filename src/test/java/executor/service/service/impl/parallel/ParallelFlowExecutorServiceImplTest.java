@@ -9,29 +9,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.openqa.selenium.WebDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class DeadlockParallelFlowExecutorServiceImplTest {
+public class ParallelFlowExecutorServiceImplTest {
 
     private ParallelFlowExecutorServiceImpl parallelFlowExecutorService;
 
-    @Autowired
     private ExecutorService threadPoolExecutor;
     private ScenarioSourceQueueHandler scenarioHandler;
     private ProxySourceQueueHandler proxyHandler;
 
     private ScenarioExecutor scenarioExecutor;
 
-    @Autowired
     private TasksFactory tasksFactory;
 
     private ExecutionService executionService;
+
     @BeforeEach
     void setUp() {
         scenarioHandler = Mockito.mock(ScenarioSourceQueueHandler.class);
@@ -53,15 +50,29 @@ public class DeadlockParallelFlowExecutorServiceImplTest {
         when(scenarioHandler.getScenario()).thenReturn(scenario).thenThrow(new RuntimeException()).thenReturn(scenario);
 
         doNothing().when(scenarioExecutor).execute(any(Scenario.class),any(WebDriver.class));
-
         parallelFlowExecutorService.execute();
-        //parallelFlowExecutorService.shutdown();
-
-        //verify(executionService, times(2)).execute(any(Scenario.class), any(ProxyConfigHolder.class));
-        assertThrows(RuntimeException.class, () -> parallelFlowExecutorService.execute() );
+        parallelFlowExecutorService.shutdown();
+        verify(executionService, times(2)).execute(any(Scenario.class), any(ProxyConfigHolder.class));
 
     }
 
+    @Test
+    public void notRunNewThreads() {
 
+        Scenario scenario = new Scenario();
+        ProxyConfigHolder proxy = new ProxyConfigHolder();
+
+        when(proxyHandler.getProxy()).thenReturn(proxy).thenReturn(proxy);
+        when(scenarioHandler.getScenario()).thenReturn(scenario).thenReturn(scenario);
+
+        doNothing().when(scenarioExecutor).execute(any(Scenario.class),any(WebDriver.class));
+        parallelFlowExecutorService.execute();
+        verify(executionService, times(2)).execute(any(Scenario.class), any(ProxyConfigHolder.class));
+        parallelFlowExecutorService.shutdown();
+
+        parallelFlowExecutorService.execute();
+        verify(executionService, times(0)).execute(any(Scenario.class), any(ProxyConfigHolder.class));
+
+    }
 
 }
