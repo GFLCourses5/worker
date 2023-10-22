@@ -3,45 +3,65 @@ package executor.service.service.impl.parallel;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.Scenario;
 import executor.service.service.ExecutionService;
-import executor.service.service.ParallelFlowExecutorService;
+import executor.service.service.ScenarioExecutor;
+import executor.service.service.TasksFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@ExtendWith(SpringExtension.class)
-class DeadlockParallelFlowExecutorServiceImplTest {
+public class DeadlockParallelFlowExecutorServiceImplTest {
+
+    private ParallelFlowExecutorServiceImpl parallelFlowExecutorService;
 
     @Autowired
-    ParallelFlowExecutorService service;
+    private ExecutorService threadPoolExecutor;
+    private ScenarioSourceQueueHandler scenarioHandler;
+    private ProxySourceQueueHandler proxyHandler;
 
-    @MockBean
-    ScenarioSourceQueue scenarioSourceQueue;
+    private ScenarioExecutor scenarioExecutor;
 
-    @MockBean
-    ExecutionService executionService;
+    @Autowired
+    private TasksFactory tasksFactory;
 
-    @MockBean
-    ProxySourceQueue proxySourceQueue;
-
+    private ExecutionService executionService;
+    @BeforeEach
+    void setUp() {
+        scenarioHandler = Mockito.mock(ScenarioSourceQueueHandler.class);
+        proxyHandler = Mockito.mock(ProxySourceQueueHandler.class);
+        scenarioExecutor = Mockito.mock(ScenarioExecutor.class);
+        executionService = Mockito.mock(ExecutionService.class);
+        threadPoolExecutor = Executors.newCachedThreadPool();
+        tasksFactory = new TasksFactoryImpl();
+        parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(
+                threadPoolExecutor, scenarioHandler, proxyHandler, tasksFactory, executionService);
+    }
 
     @Test
-    public  void whenCatchRuntimeError() {
+    public void whenParallelFlowGetRuntimeException() {
+        Scenario scenario = new Scenario();
+        ProxyConfigHolder proxy = new ProxyConfigHolder();
 
-        when(scenarioSourceQueue.getScenario()).thenReturn(new Scenario()).thenThrow(new RuntimeException()).thenReturn(new Scenario());
-        when(proxySourceQueue.getProxy()).thenReturn(new ProxyConfigHolder()).thenReturn(new ProxyConfigHolder()).thenReturn(new ProxyConfigHolder());
+        when(proxyHandler.getProxy()).thenReturn(proxy).thenReturn(proxy).thenReturn(proxy);
+        when(scenarioHandler.getScenario()).thenReturn(scenario).thenThrow(new RuntimeException()).thenReturn(scenario);
 
-        //verify(executionService, times(3)).execute();
-        verify(service, times(3)).execute();
+        doNothing().when(scenarioExecutor).execute(any(Scenario.class),any(WebDriver.class));
 
+        parallelFlowExecutorService.execute();
+        //parallelFlowExecutorService.shutdown();
 
+        //verify(executionService, times(2)).execute(any(Scenario.class), any(ProxyConfigHolder.class));
+        assertThrows(RuntimeException.class, () -> parallelFlowExecutorService.execute() );
 
     }
+
 
 
 }
