@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The {@code ScenarioService} class is a service responsible for executing and managing scenarios.
@@ -57,7 +58,7 @@ public class ScenarioService implements ScenarioOperations {
      * @return A page of scenario result responses.
      */
     @Override
-    public Page<ScenarioResultResponse> getAllScenarioResultsByUserId(Integer userId, Pageable pageable) {
+    public Page<ScenarioResultResponse> getAllScenarioResultsByUserId(Long userId, Pageable pageable) {
         return scenarioResultService.getAllScenarioResultsByUserId(userId, pageable);
     }
 
@@ -68,8 +69,19 @@ public class ScenarioService implements ScenarioOperations {
      * @return A page of scenario result responses.
      */
     @Override
-    public List<ScenarioResultResponse> getAllScenarioResultsByUserId(Integer userId) {
+    public List<ScenarioResultResponse> getAllScenarioResultsByUserId(Long userId) {
         return scenarioResultService.getAllScenarioResultsByUserId(userId);
+    }
+
+    /**
+     * Retrieves scenario result by a specific id.
+     *
+     * @param id The identifier of the scenario result is requested.
+     * @return A scenario result response.
+     */
+    @Override
+    public Optional<ScenarioResultResponse> getScenarioResultById(Long id) {
+        return scenarioResultService.getScenarioResultById(id);
     }
 
     /**
@@ -78,7 +90,7 @@ public class ScenarioService implements ScenarioOperations {
      * @param resultId The identifier of the scenario result to be deleted.
      */
     @Override
-    public void deleteById(Integer resultId) {
+    public void deleteById(Long resultId) {
         scenarioResultService.deleteById(resultId);
     }
 }

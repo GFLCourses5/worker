@@ -6,11 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface ScenarioResultRepository extends JpaRepository<ScenarioResult, Integer> {
+public interface ScenarioResultRepository extends JpaRepository<ScenarioResult, Long> {
 
-    Page<ScenarioResult> findAllByUserId(Integer userId, Pageable pageable);
+    Page<ScenarioResult> findAllByUserId(Long userId, Pageable pageable);
 
-    List<ScenarioResult> findAllByUserId(Integer userId);
+    List<ScenarioResult> findAllByUserId(Long userId);
+
+    Optional<ScenarioResult> findScenarioResultById(Long id);
 
 }

@@ -44,7 +44,7 @@ public class ScenarioServiceTest {
 
     @Test
     public void testGetAllScenarioResultsByUserId() {
-        int userId = 1;
+        Long userId = 1L;
         Pageable pageable = Pageable.unpaged();
         Page<ScenarioResultResponse> expectedResult = Page.empty();
 
@@ -57,7 +57,7 @@ public class ScenarioServiceTest {
 
     @Test
     public void testDeleteById() {
-        int resultId = 2;
+        Long resultId = 2L;
         scenarioService.deleteById(resultId);
 
         verify(scenarioResultService, times(1)).deleteById(resultId);

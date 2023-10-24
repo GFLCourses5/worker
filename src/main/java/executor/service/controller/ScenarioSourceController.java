@@ -1,5 +1,6 @@
 package executor.service.controller;
 
+import executor.service.exceptions.ScenarioResultExceptions;
 import executor.service.model.request.ScenariosRequest;
 import executor.service.model.response.ScenarioResultResponse;
 import executor.service.service.ScenarioOperations;
@@ -62,7 +63,7 @@ public class ScenarioSourceController {
             value = "/{userId}/page",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Page<ScenarioResultResponse> getScenariosResult(@PathVariable Integer userId, Pageable pageable) {
+    public Page<ScenarioResultResponse> getScenariosResult(@PathVariable Long userId, Pageable pageable) {
         return scenarioOperations.getAllScenarioResultsByUserId(userId, pageable);
     }
 
@@ -73,11 +74,26 @@ public class ScenarioSourceController {
      * @return A response entity with a list of scenario result responses.
      */
     @GetMapping(
-            value = "/{userId}",
+            value = "/user/{userId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<ScenarioResultResponse> getScenariosResult(@PathVariable Integer userId) {
+    public List<ScenarioResultResponse> getScenariosResult(@PathVariable Long userId) {
         return scenarioOperations.getAllScenarioResultsByUserId(userId);
+    }
+
+    /**
+     * Handles a GET request to retrieve a specific scenario result by id.
+     *
+     * @param id The identifier of scenario result is requested.
+     * @return A response entity.
+     */
+    @GetMapping(
+            value = "/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ScenarioResultResponse getScenarioById(@PathVariable Long id) {
+        return scenarioOperations.getScenarioResultById(id)
+                .orElseThrow(() -> ScenarioResultExceptions.scenarioNotFound(id));
     }
 
     /**
@@ -87,7 +103,7 @@ public class ScenarioSourceController {
      */
     @DeleteMapping(value = "/{resultId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteResultById(@PathVariable Integer resultId) {
+    public void deleteResultById(@PathVariable Long resultId) {
         scenarioOperations.deleteById(resultId);
     }
 }

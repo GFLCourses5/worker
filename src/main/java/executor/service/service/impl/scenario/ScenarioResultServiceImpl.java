@@ -110,7 +110,7 @@ public class ScenarioResultServiceImpl implements ScenarioResultService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<ScenarioResultResponse> getAllScenarioResultsByUserId(Integer userId, Pageable pageable) {
+    public Page<ScenarioResultResponse> getAllScenarioResultsByUserId(Long userId, Pageable pageable) {
         Page<ScenarioResult> scenarioResults = scenarioResultRepository.findAllByUserId(userId, pageable);
         Page<ScenarioResult> sortedScenarioResults = sorted(scenarioResults);
         return sortedScenarioResults
@@ -129,13 +129,20 @@ public class ScenarioResultServiceImpl implements ScenarioResultService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ScenarioResultResponse> getAllScenarioResultsByUserId(Integer userId) {
+    public List<ScenarioResultResponse> getAllScenarioResultsByUserId(Long userId) {
         List<ScenarioResult> scenarioResults = scenarioResultRepository.findAllByUserId(userId);
         List<ScenarioResult> sortedScenarioResults = sorted(scenarioResults);
         return sortedScenarioResults
                 .stream()
                 .map(ScenarioResultResponse::formScenarioResult)
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ScenarioResultResponse> getScenarioResultById(Long id) {
+        return scenarioResultRepository.findScenarioResultById(id)
+                .map(ScenarioResultResponse::formScenarioResult);
     }
 
     private List<ScenarioResult> sorted(List<ScenarioResult> scenarioResults) {
@@ -150,23 +157,23 @@ public class ScenarioResultServiceImpl implements ScenarioResultService {
 
     @Override
     @Transactional
-    public void deleteById(Integer scenarioId) {
+    public void deleteById(Long scenarioId) {
         Set<StepResult> stepResults = deleteStepResults(scenarioId);
         deleteSteps(stepResults);
         scenarioResultRepository.deleteById(scenarioId);
     }
 
-    private Set<StepResult> deleteStepResults(Integer scenarioId) {
+    private Set<StepResult> deleteStepResults(Long scenarioId) {
         Set<StepResult> stepResults = getStepResults(scenarioId);
         stepResultRepository.deleteAll(stepResults);
         return stepResults;
     }
 
-    private Set<StepResult> getStepResults(Integer scenarioId) {
+    private Set<StepResult> getStepResults(Long scenarioId) {
         return getScenarioResult(scenarioId).getStepsResults();
     }
 
-    private ScenarioResult getScenarioResult(Integer scenarioId) {
+    private ScenarioResult getScenarioResult(Long scenarioId) {
         return scenarioResultRepository.findById(scenarioId)
                 .orElseThrow(() -> ScenarioResultExceptions.scenarioNotFound(scenarioId));
     }

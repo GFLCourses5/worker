@@ -21,4 +21,8 @@ public class ScenarioResultExceptions {
     public static ResponseStatusException scenarioNotFound(Integer scenarioId) {
         return new ResponseStatusException(HttpStatus.NOT_FOUND, "Scenario result with id " + scenarioId + " not found");
     }
+
+    public static ResponseStatusException scenarioNotFound(Long scenarioId) {
+        return new ResponseStatusException(HttpStatus.NOT_FOUND, "Scenario result with id " + scenarioId + " not found");
+    }
 }
