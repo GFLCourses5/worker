@@ -57,9 +57,10 @@ public class ScenarioServiceTest {
 
     @Test
     public void testDeleteById() {
+        Long userId = 2L;
         Long resultId = 2L;
-        scenarioService.deleteById(resultId);
+        scenarioService.deleteById(userId, resultId);
 
-        verify(scenarioResultService, times(1)).deleteById(resultId);
+        verify(scenarioResultService, times(1)).deleteById(userId, resultId);
     }
 }

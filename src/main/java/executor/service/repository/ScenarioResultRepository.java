@@ -16,4 +16,8 @@ public interface ScenarioResultRepository extends JpaRepository<ScenarioResult, 
 
     Optional<ScenarioResult> findScenarioResultById(Long id);
 
+    Optional<ScenarioResult> findScenarioResultByIdAndUserId(Long scenarioId, Long userId);
+
+    boolean existsByIdAndUserId(Long scenarioId, Long userId);
+
 }

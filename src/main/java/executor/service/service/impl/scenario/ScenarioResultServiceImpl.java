@@ -157,10 +157,18 @@ public class ScenarioResultServiceImpl implements ScenarioResultService {
 
     @Override
     @Transactional
-    public void deleteById(Long scenarioId) {
-        Set<StepResult> stepResults = deleteStepResults(scenarioId);
-        deleteSteps(stepResults);
-        scenarioResultRepository.deleteById(scenarioId);
+    public void deleteById(Long scenarioId, Long userId) {
+        if (!scenarioResultRepository.existsByIdAndUserId(scenarioId, userId))
+            throw ScenarioResultExceptions.scenarioNotFound(scenarioId);
+
+        Optional<ScenarioResult> scenarioResultByIdAndUserId =
+                scenarioResultRepository.findScenarioResultByIdAndUserId(scenarioId, userId);
+
+        if (scenarioResultByIdAndUserId.isPresent()) {
+            Set<StepResult> stepResults = deleteStepResults(scenarioId);
+            deleteSteps(stepResults);
+            scenarioResultByIdAndUserId.ifPresent(scenarioResultRepository::delete);
+        }
     }
 
     private Set<StepResult> deleteStepResults(Long scenarioId) {

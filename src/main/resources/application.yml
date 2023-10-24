@@ -33,3 +33,6 @@ validator:
 
 proxiesCache:
   size: 5
+
+server:
+  port: 8080

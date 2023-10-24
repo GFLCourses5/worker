@@ -103,7 +103,8 @@ public class ScenarioSourceController {
      */
     @DeleteMapping(value = "/{resultId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteResultById(@PathVariable Long resultId) {
-        scenarioOperations.deleteById(resultId);
+    public void deleteResultById(@PathVariable(value = "resultId") Long resultId,
+                                 @RequestParam(value = "userId") Long userId) {
+        scenarioOperations.deleteById(resultId, userId);
     }
 }

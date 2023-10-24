@@ -18,6 +18,6 @@ public interface ScenarioOperations {
 
     Optional<ScenarioResultResponse> getScenarioResultById(Long id);
 
-    void deleteById(Long resultId);
+    void deleteById(Long resultId, Long userId);
 
 }

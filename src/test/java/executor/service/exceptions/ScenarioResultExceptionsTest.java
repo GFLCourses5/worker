@@ -20,7 +20,7 @@ public class ScenarioResultExceptionsTest {
 
     @Test
     public void testScenarioNotFound() {
-        Integer scenarioId = 1;
+        Long scenarioId = 1L;
         ResponseStatusException exception = ScenarioResultExceptions.scenarioNotFound(scenarioId);
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());

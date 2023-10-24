@@ -88,9 +88,10 @@ public class ScenarioService implements ScenarioOperations {
      * Deletes a specific scenario result by its identifier.
      *
      * @param resultId The identifier of the scenario result to be deleted.
+     * @param userId   The identifier of the user.
      */
     @Override
-    public void deleteById(Long resultId) {
-        scenarioResultService.deleteById(resultId);
+    public void deleteById(Long resultId, Long userId) {
+        scenarioResultService.deleteById(resultId, userId);
     }
 }
