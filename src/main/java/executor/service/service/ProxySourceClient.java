@@ -1,5 +1,9 @@
 package executor.service.service;
 
+import executor.service.model.ProxyConfigHolder;
+
+import java.util.List;
+
 /**
  * The {@code ProxySourcesClient} interface defines a contract for clients responsible for executing
  * the retrieval and handling of proxy configurations using a {@link ItemHandler}.
@@ -16,9 +20,7 @@ public interface ProxySourceClient {
 
     /**
      * Executes the retrieval and handling of proxy configurations using the provided {@link ItemHandler}.
-     *
-     * @param handler The handler responsible for processing received Item configurations.
      */
-    void execute(ItemHandler handler);
+    List<ProxyConfigHolder> execute();
 
 }

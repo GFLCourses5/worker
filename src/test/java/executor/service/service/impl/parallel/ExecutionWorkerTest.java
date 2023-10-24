@@ -1,10 +1,8 @@
 package executor.service.service.impl.parallel;
 
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.Scenario;
+import executor.service.model.request.Scenario;
 import executor.service.service.ExecutionService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
@@ -17,9 +15,9 @@ import static org.mockito.Mockito.*;
  *
  * @author Oleksandr Tuleninov
  * @version 01
- * @see executor.service.service.ExecutionService
- * @see executor.service.model.Scenario
- * @see executor.service.model.ProxyConfigHolder
+ * @see ExecutionService
+ * @see Scenario
+ * @see ProxyConfigHolder
  */
 public class ExecutionWorkerTest {
 

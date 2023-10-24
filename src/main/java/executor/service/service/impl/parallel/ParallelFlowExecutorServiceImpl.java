@@ -3,9 +3,12 @@ package executor.service.service.impl.parallel;
 import executor.service.service.ExecutionService;
 import executor.service.service.ParallelFlowExecutorService;
 import executor.service.service.TasksFactory;
+import executor.service.service.impl.proxy.ProxySourceQueueHandler;
+import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The {@code ParallelFlowExecutorServiceImpl} class implements the {@link ParallelFlowExecutorService} interface
@@ -44,14 +47,10 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     }
 
     /**
-     * Starts the getting scenario, getting proxy and ExecutionService
-     * in parallel multithreading mode.
+     * Starts ExecutionService in parallel multithreading mode.
      */
     @Override
     public void execute() {
-        threadPoolExecutor.execute(scenarioHandler);
-        threadPoolExecutor.execute(proxyHandler);
-
         while (FLAG) {
             threadPoolExecutor.execute(tasksFactory.createExecutionWorker(
                     service, scenarioHandler.getScenario(), proxyHandler.getProxy()));
@@ -66,5 +65,23 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     public void shutdown() {
         FLAG = false;
         threadPoolExecutor.shutdown();
+        exit();
+    }
+
+    private void exit() {
+        boolean b = false;
+        while (!b) {
+            try {
+                long timeout = 1;
+                b = threadPoolExecutor.awaitTermination(timeout, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        if (threadPoolExecutor.isTerminated()) {
+            int exitStatus = 0;
+            System.exit(exitStatus);
+        }
     }
 }

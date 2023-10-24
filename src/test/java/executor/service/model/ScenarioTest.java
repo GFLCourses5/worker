@@ -1,5 +1,7 @@
 package executor.service.model;
 
+import executor.service.model.request.Scenario;
+import executor.service.model.request.StepRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,23 +18,23 @@ public class ScenarioTest {
     private static final String NAME_ANOTHER = "Scenario 1";
     private static final String SITE = "example.com";
     private static final String SITE_ANOTHER = "site1.com";
-    private List<Step> steps1;
-    private List<Step> steps2;
-    private List<Step> steps3;
+    private List<StepRequest> steps1;
+    private List<StepRequest> steps2;
+    private List<StepRequest> steps3;
 
     @BeforeEach
     public void setUp() {
         steps1 = new ArrayList<>();
-        steps1.add(new Step("sleep", "5000:15000"));
-        steps1.add(new Step("clickCss", "body > ul > li:nth-child(1) > a"));
+        steps1.add(new StepRequest("sleep", "5000:15000"));
+        steps1.add(new StepRequest("clickCss", "body > ul > li:nth-child(1) > a"));
 
         steps2 = new ArrayList<>();
-        steps2.add(new Step("sleep", "5000:15000"));
-        steps2.add(new Step("clickCss", "body > ul > li:nth-child(1) > a"));
+        steps2.add(new StepRequest("sleep", "5000:15000"));
+        steps2.add(new StepRequest("clickCss", "body > ul > li:nth-child(1) > a"));
 
         steps3 = new ArrayList<>();
-        steps3.add(new Step("sleep", "5000:15000"));
-        steps3.add(new Step("clickCss", "body"));
+        steps3.add(new StepRequest("sleep", "5000:15000"));
+        steps3.add(new StepRequest("clickCss", "body"));
     }
 
     @AfterEach

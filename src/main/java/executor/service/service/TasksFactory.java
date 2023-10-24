@@ -1,7 +1,7 @@
 package executor.service.service;
 
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.Scenario;
+import executor.service.model.request.Scenario;
 
 /**
  * The {@code TasksFactory} interface defines methods

@@ -1,6 +1,6 @@
 package executor.service.service.impl.stepExecution;
 
-import executor.service.model.Step;
+import executor.service.model.request.StepRequest;
 import executor.service.service.StepExecutionClickXpath;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @author Yurii Kotsiuba
  * @version 01
  * @see WebDriver
- * @see Step
+ * @see StepRequest
  */
 @Service
 public class StepExecutionClickXpathImpl implements StepExecutionClickXpath {
@@ -26,8 +26,8 @@ public class StepExecutionClickXpathImpl implements StepExecutionClickXpath {
     }
 
     @Override
-    public void step(WebDriver webDriver, Step step) {
-        String value = step.getValue();
+    public void step(WebDriver webDriver, StepRequest stepRequest) {
+        String value = stepRequest.value();
         WebElement element = webDriver.findElement(By.xpath(value));
         element.click();
     }

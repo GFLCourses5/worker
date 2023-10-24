@@ -1,12 +1,8 @@
 package executor.service.service.impl.webDriver;
 
-import executor.service.config.bean.WebDriverConfigObject;
-import executor.service.config.properties.PropertiesConfig;
-import executor.service.config.properties.PropertiesConstants;
 import executor.service.model.ProxyConfigHolder;
 import executor.service.model.ProxyCredentials;
 import executor.service.model.ProxyNetworkConfig;
-import executor.service.model.WebDriverConfig;
 import executor.service.service.WebDriverInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.Properties;
+import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -26,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
  *  @author  Oleksii Bondarenko
  *  @version 0.1
  * */
-
 class WebDriverInitializerTest {
     private ProxyConfigHolder proxyConfigHolder;
     private WebDriver driver;
@@ -34,16 +29,26 @@ class WebDriverInitializerTest {
 
     @BeforeEach
     void setUp() {
-        ProxyCredentials proxyCredentials = new ProxyCredentials("heix9999", "5ljkoauiuicw");
+        ProxyCredentials proxyCredentials = new ProxyCredentials("ztzzilba", "l6q37njhw5s2");
         ProxyNetworkConfig proxyNetworkConfig = new ProxyNetworkConfig("185.199.229.156", 7492);
         proxyConfigHolder = new ProxyConfigHolder(proxyNetworkConfig, proxyCredentials);
-        PropertiesConfig propertiesConfig = new PropertiesConfig();
-        Properties properties = propertiesConfig.getProperties(PropertiesConstants.WEB_DRIVER);
-        /*webDriverConfig = new WebDriverConfig(properties.getProperty(PropertiesConstants.WEB_DRIVER_EXECUTABLE),
-                properties.getProperty(PropertiesConstants.USER_AGENT),
-                60000L, 60000L, "path_to_chrome", "chrome_version");*/
-        WebDriverConfig webDriverConfig = new WebDriverConfigObject(new PropertiesConfig()).webDriverConfig();
-        webDriverInitializer = new WebDriverInitializerImpl(webDriverConfig);
+        webDriverInitializer = new WebDriverInitializerImpl();
+
+        try {
+            Field driverExecutable = webDriverInitializer.getClass().getDeclaredField("webDriverExecutable");
+            Field chromeExecutable = webDriverInitializer.getClass().getDeclaredField("chromeExecutable");
+            Field chromeVersion = webDriverInitializer.getClass().getDeclaredField("chromeVersion");
+            Field pageLoadTimeout = webDriverInitializer.getClass().getDeclaredField("pageLoadTimeout");
+            Field implicitlyWait = webDriverInitializer.getClass().getDeclaredField("implicitlyWait");
+
+            driverExecutable.set(webDriverInitializer, System.getenv("DRIVER_EXECUTABLE"));
+            chromeExecutable.set(webDriverInitializer, System.getenv("CHROME_EXECUTABLE"));
+            chromeVersion.set(webDriverInitializer, "117.0.5938.88");
+            pageLoadTimeout.set(webDriverInitializer, 30000L);
+            implicitlyWait.set(webDriverInitializer, 30000L);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @AfterEach
@@ -60,9 +65,13 @@ class WebDriverInitializerTest {
     @Test
     void testProxyConfigured() {
         driver = webDriverInitializer.getInstance(proxyConfigHolder);
-        driver.get("https://myip.com.ua/");
-        WebElement element = driver.findElement(By.id("ip"));
-        assertEquals(element.getAttribute("value"), proxyConfigHolder.getProxyNetworkConfig().getHostname());
+        driver.get("https://www.ipaddress.my/");
+        //WebElement element = driver.findElement(By.id("ip"));
+        WebElement element = driver.findElement(By.cssSelector("li > span"));
+
+        //assertEquals(element.getAttribute("value"), proxyConfigHolder.getProxyNetworkConfig().getHostname());
+        assertEquals(element.getText(), proxyConfigHolder.getProxyNetworkConfig().getHostname());
+
     }
 
     @Test
