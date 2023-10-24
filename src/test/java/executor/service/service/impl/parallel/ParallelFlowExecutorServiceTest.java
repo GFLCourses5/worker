@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Mockito.*;
 
@@ -68,7 +69,9 @@ public class ParallelFlowExecutorServiceTest {
     }
 
     @Test
-    public void testShutdown() {
+    public void testShutdown() throws InterruptedException {
+        when(threadPoolExecutor.awaitTermination(1, TimeUnit.SECONDS)).thenReturn(true);
+
         parallelFlowExecutorService.shutdown();
 
         verify(threadPoolExecutor).shutdown();
