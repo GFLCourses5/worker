@@ -1,4 +1,4 @@
-package executor.service;
+package executor.service.config.bean;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
