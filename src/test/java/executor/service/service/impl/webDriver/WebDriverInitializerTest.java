@@ -6,6 +6,7 @@ import executor.service.model.ProxyNetworkConfig;
 import executor.service.service.WebDriverInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
  *  @author  Oleksii Bondarenko
  *  @version 0.1
  * */
+@Disabled("because there are no chrome and webdriver executables when running on github CI")
 class WebDriverInitializerTest {
     private ProxyConfigHolder proxyConfigHolder;
     private WebDriver driver;
@@ -59,6 +61,7 @@ class WebDriverInitializerTest {
     @Test
     void testGetInstance() {
         driver = webDriverInitializer.getInstance(proxyConfigHolder);
+
         assertInstanceOf(WebDriver.class, driver);
     }
 
@@ -66,12 +69,9 @@ class WebDriverInitializerTest {
     void testProxyConfigured() {
         driver = webDriverInitializer.getInstance(proxyConfigHolder);
         driver.get("https://www.ipaddress.my/");
-        //WebElement element = driver.findElement(By.id("ip"));
         WebElement element = driver.findElement(By.cssSelector("li > span"));
 
-        //assertEquals(element.getAttribute("value"), proxyConfigHolder.getProxyNetworkConfig().getHostname());
         assertEquals(element.getText(), proxyConfigHolder.getProxyNetworkConfig().getHostname());
-
     }
 
     @Test
@@ -79,6 +79,7 @@ class WebDriverInitializerTest {
         proxyConfigHolder.getProxyNetworkConfig().setHostname(null);
         driver = webDriverInitializer.getInstance(proxyConfigHolder);
         driver.get("https://google.com");
+
         assertEquals(driver.getTitle(), "Google");
     }
 }
