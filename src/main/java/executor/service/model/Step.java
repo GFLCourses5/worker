@@ -1,9 +1,21 @@
 package executor.service.model;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name = "steps")
 public class Step {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
     private String action;
+
+    @Column(nullable = false)
     private String value;
 
     public Step() {
@@ -46,8 +58,8 @@ public class Step {
     @Override
     public String toString() {
         return "Step{" +
-            "action='" + action + '\'' +
-            ", value='" + value + '\'' +
-            '}';
+                "action='" + action + '\'' +
+                ", value='" + value + '\'' +
+                '}';
     }
 }

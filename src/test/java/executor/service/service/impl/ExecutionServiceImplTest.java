@@ -1,7 +1,7 @@
 package executor.service.service.impl;
 
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.Scenario;
+import executor.service.model.request.Scenario;
 import executor.service.service.ExecutionService;
 import executor.service.service.ScenarioExecutor;
 import executor.service.service.WebDriverInitializer;

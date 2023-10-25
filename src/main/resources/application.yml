@@ -1,0 +1,38 @@
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/worker
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
+webshare:
+  token: ${WEBSHARE_TOKEN}
+  url: https://proxy.webshare.io/api/v2
+
+driver:
+  webDriverExecutable: ${DRIVER_EXECUTABLE}
+  userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36
+  pageLoadTimeout: 15000
+  implicitlyWait: 5000
+
+chrome:
+  executable: ${CHROME_EXECUTABLE}
+  version: 117.0.5938.88
+
+pool:
+  corePoolSize: 2
+  keepAliveTime: 10
+  maximumPoolSize: 5
+
+validator:
+  targetUrl: https://www.google.com
+  connectionTimeout: 10000
+
+proxiesCache:
+  size: 5
+
+server:
+  port: 8080

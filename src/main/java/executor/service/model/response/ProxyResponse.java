@@ -3,7 +3,7 @@ package executor.service.model.response;
 public class ProxyResponse {
     private String username;
     private String password;
-    private String host;
+    private String proxy_address;
     private int port;
     private boolean valid;
 
@@ -11,10 +11,10 @@ public class ProxyResponse {
     }
 
     public ProxyResponse(String username, String password,
-                         String host, int port, boolean valid) {
+                         String proxy_address, int port, boolean valid) {
         this.username = username;
         this.password = password;
-        this.host = host;
+        this.proxy_address = proxy_address;
         this.port = port;
         this.valid = valid;
     }
@@ -35,12 +35,12 @@ public class ProxyResponse {
         this.password = password;
     }
 
-    public String getHost() {
-        return host;
+    public String getProxy_address() {
+        return proxy_address;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setProxy_address(String proxy_address) {
+        this.proxy_address = proxy_address;
     }
 
     public int getPort() {
