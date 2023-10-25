@@ -1,18 +1,22 @@
 package executor.service.model.request;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+
 
 import java.util.List;
 import java.util.Objects;
 
 public class Scenario {
 
+    @Min(1)
     private Integer userId;
     @NotBlank(message = "scenario name must not be null or empty")
     private String name;
     @NotBlank(message = "scenario site must not be null or empty")
     private String site;
+
     private @Valid List<StepRequest> stepRequests;
 
     public Scenario() {
