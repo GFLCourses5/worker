@@ -36,3 +36,7 @@ proxiesCache:
 
 server:
   port: 8080
+
+white:
+  list:
+    ip: 127.0.0.1,176.38.6.176
