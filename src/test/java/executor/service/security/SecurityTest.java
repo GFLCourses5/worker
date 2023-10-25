@@ -19,6 +19,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,11 +48,17 @@ public class SecurityTest {
     @Test
     public void isPermittedAddress() throws Exception {
         mvc.perform(get("/").remoteAddress("192.168.0.1")).andExpect(status().is(404));
+        mvc.perform(get("/").remoteAddress("192.168.0.3")).andExpect(status().is(404));
+        mvc.perform(get("/").remoteAddress("192.168.0.5")).andExpect(status().is(404));
+        mvc.perform(get("/").remoteAddress("192.168.0.6")).andExpect(status().is(404));
     }
 
     @Test
     public void isNotPermittedAddress() throws Exception {
         mvc.perform(get("/").remoteAddress("192.168.0.2")).andExpect(status().is(403));
+        mvc.perform(get("/").remoteAddress("192.168.0.10")).andExpect(status().is(403));
+        mvc.perform(get("/").remoteAddress("192.168.0.11")).andExpect(status().is(403));
+        mvc.perform(get("/").remoteAddress("192.168.0.12")).andExpect(status().is(403));
     }
 
 
@@ -60,15 +69,20 @@ public class SecurityTest {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            IpAddressMatcher hasIpAddress = new IpAddressMatcher("192.168.0.1");
+            List<IpAddressMatcher> whiteList = getWhiteList();
             http.authorizeHttpRequests(request ->
                     request.requestMatchers("/").access(
-                            (authentication, context) -> new AuthorizationDecision(
-                                    hasIpAddress.matches(context.getRequest())
+                            (authentication, context)-> new AuthorizationDecision(
+                                    whiteList.stream().anyMatch(s -> s.matches(context.getRequest()))
                             ))
             );
             return http.build();
         }
+
+        private List<IpAddressMatcher> getWhiteList() {
+            return List.of(new IpAddressMatcher("192.168.0.1"), new IpAddressMatcher("192.168.0.3"), new IpAddressMatcher("192.168.0.5"), new IpAddressMatcher("192.168.0.6"));
+        }
+
     }
 
 }
