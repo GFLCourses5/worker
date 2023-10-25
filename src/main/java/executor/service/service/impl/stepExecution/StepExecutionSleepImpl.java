@@ -1,7 +1,7 @@
 package executor.service.service.impl.stepExecution;
 
 import executor.service.exceptions.StepExecutionException;
-import executor.service.model.Step;
+import executor.service.model.request.StepRequest;
 import executor.service.service.StepExecutionSleep;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @author Anton Sokolsky
  * @version 01
  * @see WebDriver
- * @see Step
+ * @see StepRequest
  * @see TimeUnit
  * @see InterruptedException
  * @see StepExecutionException
@@ -34,8 +34,8 @@ public class StepExecutionSleepImpl implements StepExecutionSleep {
     }
 
     @Override
-    public void step(WebDriver webDriver, Step step) {
-        String value = step.getValue();
+    public void step(WebDriver webDriver, StepRequest stepRequest) {
+        String value = stepRequest.value();
         try {
             TimeUnit.SECONDS.sleep(Long.parseLong(value));
         } catch (InterruptedException e) {

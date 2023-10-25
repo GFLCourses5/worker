@@ -1,13 +1,9 @@
 package executor.service.service.impl.parallel;
 
 import executor.service.model.ProxyConfigHolder;
-import executor.service.model.Scenario;
+import executor.service.model.request.Scenario;
 import executor.service.service.ExecutionService;
-import executor.service.service.ProxySourceClient;
-import executor.service.service.ScenarioSourceListener;
 import executor.service.service.TasksFactory;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.Callable;
@@ -31,7 +27,7 @@ public class TasksFactoryImplTest {
     @Test
     public void testCreateExecutionWorker() {
         var executionService = mock(ExecutionService.class);
-        var scenario = mock(executor.service.model.Scenario.class);
+        var scenario = mock(Scenario.class);
         var proxy = mock(ProxyConfigHolder.class);
 
         var tasksFactory = new TasksFactoryImpl();

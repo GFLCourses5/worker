@@ -1,6 +1,6 @@
 package executor.service.service.impl.stepExecution;
 
-import executor.service.model.Step;
+import executor.service.model.request.StepRequest;
 import executor.service.service.StepExecutionClickCss;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @author Anton Sokolsky
  * @version 01
  * @see WebDriver
- * @see Step
+ * @see StepRequest
  */
 @Service
 public class StepExecutionClickCssImpl implements StepExecutionClickCss {
@@ -26,8 +26,8 @@ public class StepExecutionClickCssImpl implements StepExecutionClickCss {
     }
 
     @Override
-    public void step(WebDriver webDriver, Step step) {
-        String value = step.getValue();
+    public void step(WebDriver webDriver, StepRequest stepRequest) {
+        String value = stepRequest.value();
         WebElement element = webDriver.findElement(By.cssSelector(value));
         element.click();
     }
