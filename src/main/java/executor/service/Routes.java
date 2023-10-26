@@ -21,4 +21,5 @@ public final class Routes {
     public static final String EXECUTION = API_ROOT + "/execution";
 
     public static final String SCENARIOS_v2 = "/api/v2/scenarios";
+    public static final String RESULTS = "/api/v1/results";
 }

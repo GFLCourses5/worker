@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static executor.service.Routes.RESULTS;
+
 @RestController
+@RequestMapping(RESULTS)
 public class ResultsController {
 
 
@@ -25,13 +28,8 @@ public class ResultsController {
         return new ScenarioResultResponse(null,null,null,null, null);
     }
 
-    @GetMapping(value = "/list")
-    public ResponseEntity<List<ScenarioResultResponse>> getResults() {
-        return ResponseEntity.ok(List.of(getEmptyResult(),getEmptyResult()));
-    }
-
     @DeleteMapping
-    public ResponseEntity<HttpStatusCode> deleteScenario(@RequestParam(name="scenarioId") Integer scenarioId,
+    public ResponseEntity<HttpStatusCode> deleteResult(@RequestParam(name="scenarioId") Integer scenarioId,
                                                          @RequestParam(name="resultId") Integer userId) {
         return new ResponseEntity<>(HttpStatusCode.valueOf(202));
     }
