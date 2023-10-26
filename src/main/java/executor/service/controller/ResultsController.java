@@ -12,9 +12,13 @@ public class ResultsController {
 
 
     @GetMapping
-    public ResponseEntity<ScenarioResultResponse> getResultByScenario(@RequestParam Integer scenarioId,
-                                                                      @RequestParam Integer userId) {
+    public ResponseEntity<ScenarioResultResponse> getResultByScenario(@RequestParam(name = "scenarioId")  Integer scenarioId) {
         return ResponseEntity.ok(getEmptyResult());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ScenarioResultResponse>> getUserResults(@RequestParam(name = "userId") Integer userId) {
+        return ResponseEntity.ok(List.of(getEmptyResult(), getEmptyResult()));
     }
 
     private ScenarioResultResponse getEmptyResult() {
@@ -27,8 +31,8 @@ public class ResultsController {
     }
 
     @DeleteMapping
-    public ResponseEntity<HttpStatusCode> deleteScenario(@RequestParam Integer scenarioId,
-                                                         @RequestParam Integer userId) {
+    public ResponseEntity<HttpStatusCode> deleteScenario(@RequestParam(name="scenarioId") Integer scenarioId,
+                                                         @RequestParam(name="resultId") Integer userId) {
         return new ResponseEntity<>(HttpStatusCode.valueOf(202));
     }
 
