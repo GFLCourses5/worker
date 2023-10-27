@@ -1,8 +1,9 @@
 package executor.service.service.impl.scenario;
 
 import executor.service.model.request.Scenario;
-import executor.service.service.impl.scenario.ScenarioSourceQueue;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,9 +22,10 @@ public class ScenarioSourceQueueTest {
     @Test
     void testPutAndGetScenario() {
         var scenario = new Scenario();
+        var scenarios = List.of(scenario);
 
         var queue = new ScenarioSourceQueue();
-        queue.putScenario(scenario);
+        queue.addAllScenarios(scenarios);
 
         var result = queue.getScenario();
 

@@ -1,6 +1,8 @@
 package executor.service.service.impl.proxy;
 
 import executor.service.model.ProxyConfigHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.BlockingQueue;
@@ -24,6 +26,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 @Component
 public class ProxySourceQueue {
 
+    private static final Logger log = LoggerFactory.getLogger(ProxySourceQueue.class);
+
     private final BlockingQueue<ProxyConfigHolder> queue;
 
     public ProxySourceQueue() {
@@ -39,7 +43,12 @@ public class ProxySourceQueue {
         try {
             queue.put(proxy);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            try {
+                log.error("Thread '" + "'" + Thread.currentThread().getName() + " was interrupted");
+                queue.put(proxy);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
@@ -52,7 +61,12 @@ public class ProxySourceQueue {
         try {
             return queue.take();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            log.error("Thread '" + "'" + Thread.currentThread().getName() + " was interrupted");
+            try {
+                return queue.take();
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 }

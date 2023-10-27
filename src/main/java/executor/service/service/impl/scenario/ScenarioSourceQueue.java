@@ -1,6 +1,8 @@
 package executor.service.service.impl.scenario;
 
 import executor.service.model.request.Scenario;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,23 +26,13 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 @Component
 public class ScenarioSourceQueue {
+
+    private static final Logger log = LoggerFactory.getLogger(ScenarioSourceQueue.class);
+
     private final BlockingQueue<Scenario> queue;
 
     public ScenarioSourceQueue() {
         this.queue = new LinkedBlockingQueue<>();
-    }
-
-    /**
-     * Put a scenario into the queue.
-     *
-     * @param scenario The scenario to be added to the queue.
-     */
-    public void putScenario(Scenario scenario) {
-        try {
-            queue.put(scenario);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**
@@ -52,7 +44,12 @@ public class ScenarioSourceQueue {
         try {
             return queue.take();
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            log.error("Thread '" + "'" + Thread.currentThread().getName() + " was interrupted");
+            try {
+                return queue.take();
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
