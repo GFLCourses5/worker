@@ -9,6 +9,7 @@ import executor.service.model.request.StepRequest;
 import executor.service.model.response.ScenarioResultResponse;
 import executor.service.model.response.StepResultResponse;
 import executor.service.service.ScenarioOperations;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -63,17 +64,21 @@ class ScenarioSourceControllerTest {
     }
 
     @Test
-    void getScenariosResult() {
+    @Disabled
+    void getScenarioResultResponseAsPage() {
     }
 
     @Test
-    void testGetScenariosResult() {
+    void getScenarioResultResponseAsList() throws Exception {
+        when(service.getAllScenarioResultsByUserId(any(Long.class))).thenReturn(List.of(getScenarioResultResponse(getStepResultResponse())));
+        mvc.perform(get(SCENARIOS+ "/user/1")).andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
     void getScenarioByIdIfPresent() throws Exception {
 
-        StepResultResponse stepResultResponse = new StepResultResponse(new Step("action", "value"), true);
+        StepResultResponse stepResultResponse = getStepResultResponse();
 
         when(service.getScenarioResultById(any(Long.class))).thenReturn(Optional.of(getScenarioResultResponse(stepResultResponse)));
         mvc.perform(get(SCENARIOS+ "/1")).andExpect(status().isOk())
@@ -82,6 +87,10 @@ class ScenarioSourceControllerTest {
                 .andExpect(jsonPath("$.executedAt").value(now.toString()))
                 .andExpect(jsonPath("$.stepsResults").isArray())
                 .andExpect(validResponse("$.stepsResults[0]", stepResultResponse));
+    }
+
+    private StepResultResponse getStepResultResponse() {
+        return new StepResultResponse(new Step("action", "value"), true);
     }
 
     public static ResultMatcher validResponse(String prefix, StepResultResponse stepResultResponse) {
