@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -65,7 +66,8 @@ class ScenarioSourceControllerTest {
 
     @Test
     @Disabled
-    void getScenarioResultResponseAsPage() {
+    //TODO I don't how it important to test method witch doesn't use
+    void getScenarioResultResponseAsPage() throws Exception {
     }
 
     @Test
