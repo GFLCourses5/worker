@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -64,11 +65,10 @@ public class ParallelFlowExecutorServiceTest {
         parallelFlowExecutorService.execute();
         parallelFlowExecutorService.shutdown();
 
-        Thread.currentThread().wait(1l);
         parallelFlowExecutorService.execute();
 
         List<Runnable> runnables = threadPoolExecutor.shutdownNow();
-        verify(runnables).isEmpty();
+        assertTrue(runnables.isEmpty());
         verify(threadPoolExecutor).shutdown();
     }
 
