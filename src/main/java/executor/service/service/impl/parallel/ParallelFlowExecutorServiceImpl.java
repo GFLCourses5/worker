@@ -8,7 +8,6 @@ import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The {@code ParallelFlowExecutorServiceImpl} class implements the {@link ParallelFlowExecutorService} interface
@@ -29,17 +28,14 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     private final ExecutorService threadPoolExecutor;
     private final ScenarioSourceQueueHandler scenarioHandler;
     private final ProxySourceQueueHandler proxyHandler;
-    private final TasksFactory tasksFactory;
     private final ExecutionService service;
 
     public ParallelFlowExecutorServiceImpl(ExecutorService threadPoolExecutor,
                                            ScenarioSourceQueueHandler scenarioHandler,
                                            ProxySourceQueueHandler proxyHandler,
-                                           TasksFactory tasksFactory,
                                            ExecutionService service) {
         this.threadPoolExecutor = threadPoolExecutor;
         this.service = service;
-        this.tasksFactory = tasksFactory;
         this.scenarioHandler = scenarioHandler;
         this.proxyHandler = proxyHandler;
     }
@@ -50,10 +46,19 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
     @Override
     public void execute() {
 
-        threadPoolExecutor.execute(tasksFactory.createExecutionWorker(
-                    service, scenarioHandler.getScenario(), proxyHandler.getProxy()));
+        threadPoolExecutor.execute(this::runParallelExecute);
 
     }
+
+    private void runParallelExecute() {
+        while (!threadPoolExecutor.isShutdown()){
+            threadPoolExecutor.execute(() -> service.execute(
+                    scenarioHandler.getScenario(),
+                    proxyHandler.getProxy()
+            ));
+        }
+    }
+
 
     /**
      * Initiates an orderly shutdown in which previously submitted tasks are executed,
