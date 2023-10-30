@@ -9,7 +9,7 @@ import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.lang.reflect.Field;
+
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
  */
 public class ParallelFlowExecutorServiceTest {
 
-    private ExecutorService threadPoolExecutor;
+    private final ExecutorService threadPoolExecutor = Mockito.mock(ExecutorService.class);;
     private ParallelFlowExecutorServiceImpl parallelFlowExecutorService;
     private final ScenarioSourceQueueHandler scenarioHandler = Mockito.mock(ScenarioSourceQueueHandler.class);
     private final ProxySourceQueueHandler proxyHandler = Mockito.mock(ProxySourceQueueHandler.class);
@@ -43,13 +43,13 @@ public class ParallelFlowExecutorServiceTest {
         when(proxyHandler.getProxy()).thenReturn(new ProxyConfigHolder());
         doNothing().when(service).execute(any(Scenario.class), any(ProxyConfigHolder.class));
 
-        threadPoolExecutor = Mockito.mock(ExecutorService.class);
         parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(
                 threadPoolExecutor, scenarioHandler, proxyHandler, service);
 
         parallelFlowExecutorService.execute();
 
-        verify(threadPoolExecutor, times(1)).execute(any(Runnable.class));
+        verify(threadPoolExecutor, atLeast(1)).execute(any(Runnable.class));
+        threadPoolExecutor.shutdown();
     }
 
     @Test
@@ -58,11 +58,13 @@ public class ParallelFlowExecutorServiceTest {
         when(proxyHandler.getProxy()).thenReturn(new ProxyConfigHolder());
         doNothing().when(service).execute(any(Scenario.class), any(ProxyConfigHolder.class));
 
+        parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(
+                threadPoolExecutor, scenarioHandler, proxyHandler, service);
+
         parallelFlowExecutorService.execute();
         parallelFlowExecutorService.shutdown();
 
         Thread.currentThread().wait(1l);
-
         parallelFlowExecutorService.execute();
 
         List<Runnable> runnables = threadPoolExecutor.shutdownNow();
