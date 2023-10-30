@@ -70,9 +70,5 @@ public class ParallelFlowExecutorServiceTest {
         verify(threadPoolExecutor).shutdown();
     }
 
-    private void changeWhileCycleFlagField() throws NoSuchFieldException, IllegalAccessException {
-        Field flagField = parallelFlowExecutorService.getClass().getDeclaredField("FLAG");
-        flagField.setAccessible(true);
-        flagField.set(parallelFlowExecutorService, false);
-    }
+
 }
