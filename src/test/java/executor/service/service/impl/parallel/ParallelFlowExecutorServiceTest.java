@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -63,6 +64,7 @@ public class ParallelFlowExecutorServiceTest {
                 threadPoolExecutor, scenarioHandler, proxyHandler, service);
 
         parallelFlowExecutorService.execute();
+        verify(threadPoolExecutor, atLeast(1)).execute(any(Runnable.class));
         parallelFlowExecutorService.shutdown();
 
         parallelFlowExecutorService.execute();
