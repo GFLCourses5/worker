@@ -1,13 +1,10 @@
 package executor.service.service.impl.parallel;
 
-import executor.service.model.ProxyConfigHolder;
-import executor.service.model.request.Scenario;
 import executor.service.service.ExecutionService;
 import executor.service.service.ParallelFlowExecutorService;
 import executor.service.service.TasksFactory;
 import executor.service.service.impl.proxy.ProxySourceQueueHandler;
 import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -29,43 +26,25 @@ import static org.mockito.Mockito.*;
  * @see ParallelFlowExecutorServiceImpl
  * @see ScenarioSourceQueueHandler
  * @see ProxySourceQueueHandler
- * @see TasksFactory
  */
 public class ParallelFlowExecutorServiceTest {
 
     private ExecutorService threadPoolExecutor;
-    private Runnable runnable;
     private ParallelFlowExecutorServiceImpl parallelFlowExecutorService;
+    private ScenarioSourceQueueHandler scenarioHandler = Mockito.mock(ScenarioSourceQueueHandler.class);
+    private ProxySourceQueueHandler proxyHandler = Mockito.mock(ProxySourceQueueHandler.class);
+    private ExecutionService service = Mockito.mock(ExecutionService.class);
 
-    @BeforeEach
-    public void setUp() {
-        threadPoolExecutor = Mockito.mock(ExecutorService.class);
-        runnable = mock(Runnable.class);
-        ScenarioSourceQueueHandler scenarioHandler = Mockito.mock(ScenarioSourceQueueHandler.class);
-        ProxySourceQueueHandler proxyHandler = Mockito.mock(ProxySourceQueueHandler.class);
-        TasksFactory tasksFactory = Mockito.mock(TasksFactory.class);
-        ExecutionService service = Mockito.mock(ExecutionService.class);
-
-        var scenario = new Scenario();
-        var proxy = new ProxyConfigHolder();
-
-        when(scenarioHandler.getScenario()).thenReturn(scenario);
-        when(proxyHandler.getProxy()).thenReturn(proxy);
-        when(tasksFactory.createExecutionWorker(service, scenario, proxy)).thenReturn(runnable);
-        doAnswer(invocation -> {
-            changeWhileCycleFlagField();
-            return null;
-        }).when(threadPoolExecutor).execute(runnable);
-
-        parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(
-                threadPoolExecutor, scenarioHandler, proxyHandler, tasksFactory, service);
-    }
 
     @Test
     public void testExecute() {
+        threadPoolExecutor = Mockito.mock(ExecutorService.class);
+        parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(
+                threadPoolExecutor, scenarioHandler, proxyHandler, service);
+
         parallelFlowExecutorService.execute();
 
-        verify(threadPoolExecutor, times(1)).execute(runnable);
+        verify(threadPoolExecutor, times(1)).execute(any(Runnable.class));
     }
 
     @Test
