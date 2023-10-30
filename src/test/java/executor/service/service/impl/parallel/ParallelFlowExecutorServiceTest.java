@@ -1,16 +1,17 @@
 package executor.service.service.impl.parallel;
 
+import executor.service.model.ProxyConfigHolder;
+import executor.service.model.request.Scenario;
 import executor.service.service.ExecutionService;
 import executor.service.service.ParallelFlowExecutorService;
-import executor.service.service.TasksFactory;
 import executor.service.service.impl.proxy.ProxySourceQueueHandler;
 import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Mockito.*;
 
@@ -31,13 +32,17 @@ public class ParallelFlowExecutorServiceTest {
 
     private ExecutorService threadPoolExecutor;
     private ParallelFlowExecutorServiceImpl parallelFlowExecutorService;
-    private ScenarioSourceQueueHandler scenarioHandler = Mockito.mock(ScenarioSourceQueueHandler.class);
-    private ProxySourceQueueHandler proxyHandler = Mockito.mock(ProxySourceQueueHandler.class);
-    private ExecutionService service = Mockito.mock(ExecutionService.class);
+    private final ScenarioSourceQueueHandler scenarioHandler = Mockito.mock(ScenarioSourceQueueHandler.class);
+    private final ProxySourceQueueHandler proxyHandler = Mockito.mock(ProxySourceQueueHandler.class);
+    private final ExecutionService service = Mockito.mock(ExecutionService.class);
 
 
     @Test
     public void testExecute() {
+        when(scenarioHandler.getScenario()).thenReturn(new Scenario());
+        when(proxyHandler.getProxy()).thenReturn(new ProxyConfigHolder());
+        doNothing().when(service).execute(any(Scenario.class), any(ProxyConfigHolder.class));
+
         threadPoolExecutor = Mockito.mock(ExecutorService.class);
         parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(
                 threadPoolExecutor, scenarioHandler, proxyHandler, service);
@@ -49,10 +54,19 @@ public class ParallelFlowExecutorServiceTest {
 
     @Test
     public void testShutdown() throws InterruptedException {
-        when(threadPoolExecutor.awaitTermination(1, TimeUnit.SECONDS)).thenReturn(true);
+        when(scenarioHandler.getScenario()).thenReturn(new Scenario());
+        when(proxyHandler.getProxy()).thenReturn(new ProxyConfigHolder());
+        doNothing().when(service).execute(any(Scenario.class), any(ProxyConfigHolder.class));
 
+        parallelFlowExecutorService.execute();
         parallelFlowExecutorService.shutdown();
 
+        Thread.currentThread().wait(1l);
+
+        parallelFlowExecutorService.execute();
+
+        List<Runnable> runnables = threadPoolExecutor.shutdownNow();
+        verify(runnables).isEmpty();
         verify(threadPoolExecutor).shutdown();
     }
 
