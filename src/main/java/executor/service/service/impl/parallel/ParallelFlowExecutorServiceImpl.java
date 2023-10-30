@@ -26,8 +26,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorService {
 
-    private static boolean FLAG = true;
-
     private final ExecutorService threadPoolExecutor;
     private final ScenarioSourceQueueHandler scenarioHandler;
     private final ProxySourceQueueHandler proxyHandler;
@@ -51,10 +49,10 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
      */
     @Override
     public void execute() {
-        while (FLAG) {
-            threadPoolExecutor.execute(tasksFactory.createExecutionWorker(
+
+        threadPoolExecutor.execute(tasksFactory.createExecutionWorker(
                     service, scenarioHandler.getScenario(), proxyHandler.getProxy()));
-        }
+
     }
 
     /**
@@ -63,25 +61,6 @@ public class ParallelFlowExecutorServiceImpl implements ParallelFlowExecutorServ
      */
     @Override
     public void shutdown() {
-        FLAG = false;
         threadPoolExecutor.shutdown();
-        exit();
-    }
-
-    private void exit() {
-        boolean b = false;
-        while (!b) {
-            try {
-                long timeout = 1;
-                b = threadPoolExecutor.awaitTermination(timeout, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-
-        if (threadPoolExecutor.isTerminated()) {
-            int exitStatus = 0;
-            System.exit(exitStatus);
-        }
     }
 }
