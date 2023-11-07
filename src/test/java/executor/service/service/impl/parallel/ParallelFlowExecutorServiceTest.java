@@ -4,17 +4,17 @@ import executor.service.model.ProxyConfigHolder;
 import executor.service.model.request.Scenario;
 import executor.service.service.ExecutionService;
 import executor.service.service.ParallelFlowExecutorService;
-import executor.service.service.TasksFactory;
 import executor.service.service.impl.proxy.ProxySourceQueueHandler;
 import executor.service.service.impl.scenario.ScenarioSourceQueueHandler;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.lang.reflect.Field;
+
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -29,57 +29,50 @@ import static org.mockito.Mockito.*;
  * @see ParallelFlowExecutorServiceImpl
  * @see ScenarioSourceQueueHandler
  * @see ProxySourceQueueHandler
- * @see TasksFactory
  */
 public class ParallelFlowExecutorServiceTest {
 
-    private ExecutorService threadPoolExecutor;
-    private Runnable runnable;
+    private final ExecutorService threadPoolExecutor = Mockito.mock(ExecutorService.class);;
     private ParallelFlowExecutorServiceImpl parallelFlowExecutorService;
+    private final ScenarioSourceQueueHandler scenarioHandler = Mockito.mock(ScenarioSourceQueueHandler.class);
+    private final ProxySourceQueueHandler proxyHandler = Mockito.mock(ProxySourceQueueHandler.class);
+    private final ExecutionService service = Mockito.mock(ExecutionService.class);
 
-    @BeforeEach
-    public void setUp() {
-        threadPoolExecutor = Mockito.mock(ExecutorService.class);
-        runnable = mock(Runnable.class);
-        ScenarioSourceQueueHandler scenarioHandler = Mockito.mock(ScenarioSourceQueueHandler.class);
-        ProxySourceQueueHandler proxyHandler = Mockito.mock(ProxySourceQueueHandler.class);
-        TasksFactory tasksFactory = Mockito.mock(TasksFactory.class);
-        ExecutionService service = Mockito.mock(ExecutionService.class);
-
-        var scenario = new Scenario();
-        var proxy = new ProxyConfigHolder();
-
-        when(scenarioHandler.getScenario()).thenReturn(scenario);
-        when(proxyHandler.getProxy()).thenReturn(proxy);
-        when(tasksFactory.createExecutionWorker(service, scenario, proxy)).thenReturn(runnable);
-        doAnswer(invocation -> {
-            changeWhileCycleFlagField();
-            return null;
-        }).when(threadPoolExecutor).execute(runnable);
-
-        parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(
-                threadPoolExecutor, scenarioHandler, proxyHandler, tasksFactory, service);
-    }
 
     @Test
     public void testExecute() {
+        when(scenarioHandler.getScenario()).thenReturn(new Scenario());
+        when(proxyHandler.getProxy()).thenReturn(new ProxyConfigHolder());
+        doNothing().when(service).execute(any(Scenario.class), any(ProxyConfigHolder.class));
+
+        parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(
+                threadPoolExecutor, scenarioHandler, proxyHandler, service);
+
         parallelFlowExecutorService.execute();
 
-        verify(threadPoolExecutor, times(1)).execute(runnable);
+        verify(threadPoolExecutor, atLeast(1)).execute(any(Runnable.class));
+        threadPoolExecutor.shutdown();
     }
 
     @Test
     public void testShutdown() throws InterruptedException {
-        when(threadPoolExecutor.awaitTermination(1, TimeUnit.SECONDS)).thenReturn(true);
+        when(scenarioHandler.getScenario()).thenReturn(new Scenario());
+        when(proxyHandler.getProxy()).thenReturn(new ProxyConfigHolder());
+        doNothing().when(service).execute(any(Scenario.class), any(ProxyConfigHolder.class));
 
+        parallelFlowExecutorService = new ParallelFlowExecutorServiceImpl(
+                threadPoolExecutor, scenarioHandler, proxyHandler, service);
+
+        parallelFlowExecutorService.execute();
+        verify(threadPoolExecutor, atLeast(1)).execute(any(Runnable.class));
         parallelFlowExecutorService.shutdown();
 
+        parallelFlowExecutorService.execute();
+
+        List<Runnable> runnables = threadPoolExecutor.shutdownNow();
+        assertTrue(runnables.isEmpty());
         verify(threadPoolExecutor).shutdown();
     }
 
-    private void changeWhileCycleFlagField() throws NoSuchFieldException, IllegalAccessException {
-        Field flagField = parallelFlowExecutorService.getClass().getDeclaredField("FLAG");
-        flagField.setAccessible(true);
-        flagField.set(parallelFlowExecutorService, false);
-    }
+
 }
