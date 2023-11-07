@@ -18,12 +18,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 /**
  * The {@code ProxyValidatorImpl} class is responsible for checking the proxy functionality
  * by sending http request to specified url and awaiting a http response code 200
  *
  * @author Oleksii Bondarenko
- * @version 0.2
+ * @version 0.3
  */
 @Service
 public class ProxyValidatorImpl implements ProxyValidator {
@@ -36,25 +38,29 @@ public class ProxyValidatorImpl implements ProxyValidator {
     private String connectionTimeout;
 
     public Boolean isValid(ProxyConfigHolder proxyConfigHolder) {
-        int responseCode;
+        try (CloseableHttpClient httpClient = getHttpClient(proxyConfigHolder)){
+            CloseableHttpResponse response = httpClient.execute(new HttpGet(targetUrl));
 
-        try {
-            CredentialsProvider credentialsProvider = getCredentialsProvider(proxyConfigHolder);
-            CloseableHttpClient httpClient = getHttpClient(proxyConfigHolder, credentialsProvider);
-
-
-            HttpGet httpGet = new HttpGet(targetUrl);
-            CloseableHttpResponse response = httpClient.execute(httpGet);
-            responseCode = response.getStatusLine().getStatusCode();
-
-            response.close();
-            httpClient.close();
-        } catch (Exception e) {
+            return response.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
+        } catch (IOException e) {
             log.error("Proxy [" + proxyConfigHolder.getProxyNetworkConfig().getHostname() + ":" +
                     proxyConfigHolder.getProxyNetworkConfig().getPort() + "] is not valid");
+
             return false;
         }
-        return responseCode == HttpStatus.SC_OK;
+    }
+
+    private CloseableHttpClient getHttpClient(ProxyConfigHolder proxyConfig) {
+        int timeout = Integer.parseInt(connectionTimeout);
+        return HttpClients.custom()
+                .setDefaultCredentialsProvider(getCredentialsProvider(proxyConfig))
+                .setProxy(new HttpHost(proxyConfig.getProxyNetworkConfig().getHostname(),
+                        proxyConfig.getProxyNetworkConfig().getPort()))
+                .setDefaultRequestConfig(RequestConfig.custom()
+                        .setConnectTimeout(timeout)
+                        .setSocketTimeout(timeout)
+                        .build())
+                .build();
     }
 
     private CredentialsProvider getCredentialsProvider(ProxyConfigHolder proxyConfig) {
@@ -65,18 +71,5 @@ public class ProxyValidatorImpl implements ProxyValidator {
                 new UsernamePasswordCredentials(proxyConfig.getProxyCredentials().getUsername(),
                         proxyConfig.getProxyCredentials().getPassword()));
         return credentialsProvider;
-    }
-
-    private CloseableHttpClient getHttpClient(ProxyConfigHolder proxyConfig, CredentialsProvider credentials) {
-        int timeout = Integer.parseInt(connectionTimeout);
-        return HttpClients.custom()
-                .setDefaultCredentialsProvider(credentials)
-                .setProxy(new HttpHost(proxyConfig.getProxyNetworkConfig().getHostname(),
-                        proxyConfig.getProxyNetworkConfig().getPort()))
-                .setDefaultRequestConfig(RequestConfig.custom()
-                        .setConnectTimeout(timeout)
-                        .setSocketTimeout(timeout)
-                        .build())
-                .build();
     }
 }
